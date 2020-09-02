@@ -127,7 +127,8 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
   <entry>
     <title>[Note] AuTO: Scaling Deep Reinforcement Learnign for Datacenter-Scale Automatic Traffic Optimization</title>
     <url>/2020/09/02/auto-note/</url>
-    <content><![CDATA[<blockquote>
+    <content><![CDATA[<p><img src="https://i.imgur.com/xLpxJlN.png" alt=""></p>
+<blockquote>
 <p>原論文：Li Chen, J. Lingys, Kai Chen and Feng Liu. AuTO: Scaling Deep Reinforcement Learnign for Datacenter-Scale Automatic Traffic Optimization. SIGCOMM 2018.</p>
 </blockquote>
 <a id="more"></a>
