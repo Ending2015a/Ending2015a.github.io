@@ -258,7 +258,8 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
 <li>AuTO 的反應 traffic dynamics 的速度</li>
 <li>performance overheads and overall scalability</li>
 </ol>
-<h4 id="Summary-of-results-grouped-by-scenarios"><a href="#Summary-of-results-grouped-by-scenarios" class="headerlink" title="Summary of results (grouped by scenarios):"></a>Summary of results (grouped by scenarios):</h4><ul>
+<p><strong>Summary of results (grouped by scenarios):</strong></p>
+<ul>
 <li><strong>Homogeneous</strong>: fixed flow size distribution 跟 load 情況下，AuTO 的 threshold 能 converge 且 average FCT 表現的比 standard heuristics 快 48.14% </li>
 <li><strong>Spatially Heterogeneous</strong>: 將 server 分成 4 個 clusters，各自產生不同 flow size distribution 跟 load；AuTO 的 threshold 能 converge，且 average FCT 表現的比 standard heuristics 快 37.20%</li>
 <li><strong>Spatially &amp; Temporally Heterogeneous</strong>: 同上述情景，但 flow size distribution 跟 load 會回時間改變，AuTO 能夠 learning 且展現很好的 adaptation。跟 fixed heuristics 比較，heuristics 只有在某些特定的 traffic settings combination 下能夠險勝 AuTO。</li>
