@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://i.imgur.com/AeZSiRb.png">
 <meta property="og:image" content="https://i.imgur.com/PZz8Zvo.png =500x">
 <meta property="article:published_time" content="2020-09-02T08:52:53.000Z">
-<meta property="article:modified_time" content="2020-09-03T04:39:44.694Z">
+<meta property="article:modified_time" content="2020-09-03T04:53:40.002Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="Note">
 <meta property="article:tag" content="Paper Note">
@@ -246,7 +246,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-09-03 12:39:44" itemprop="dateModified" datetime="2020-09-03T12:39:44+08:00">2020-09-03</time>
+                <time title="修改時間：2020-09-03 12:53:40" itemprop="dateModified" datetime="2020-09-03T12:53:40+08:00">2020-09-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -279,7 +279,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">文章字數：</span>
-              <span>8.7k</span>
+              <span>8.8k</span>
             </span>
             <span class="post-meta-item" title="所需閱讀時間">
               <span class="post-meta-item-icon">
@@ -328,7 +328,7 @@ C_i\big(\mathbf{p}_1,\cdots,\mathbf{p}_n\big)=\frac{\rho_i}{\rho_0}-1\tag{1}</sc
             <p><strong>註:</strong> Poly 6 為 $6^{th}$ degree polynomial kernel 的簡稱，以下為其函數:</p><script type="math/tex; mode=display">W_{\text{poly6}}\big(\mathbf{r},h\big)=\frac{315}{64\pi h^9}\begin{cases}    \big(h^2-\lVert\mathbf{r}\rVert^2\big)^3, &0\le\lVert\mathbf{r}\rVert\le h\\    0, &\lVert\mathbf{r}\rVert\gt h\end{cases}</script><p>Poly 6 的 Gradient:</p><script type="math/tex; mode=display">\nabla W_{\text{poly6}}\big(\mathbf{r},h\big)=-\frac{945}{32\pi h^9}\mathbf{r} \big(h^2-\lVert\mathbf{r}\rVert^2\big)^2</script><p>Poly 6 的 Laplacian:</p><script type="math/tex; mode=display">\nabla^2 W_{\text{poly6}}\big(\mathbf{r},h\big)=-\frac{945}{32\pi h^9}\big(h^2-\lVert\mathbf{r}\rVert^2\big)\big(3h^2-7\lVert\mathbf{r}\rVert^2\big)</script>
           </div>
 <div class="note info">
-            <p><strong>註:</strong> Spiky Kernel 函數:</p><script type="math/tex; mode=display">W_{\text{spiky}}\big(\mathbf{r},h\big)=\frac{15}{\pi h^6}\begin{cases}    \big(h-\lVert\mathbf{r}\rVert\big)^3, &0\le\lVert\mathbf{r}\rVert\le h\\    0, &\lVert\mathbf{r}\rVert\gt h\end{cases}</script><p>Spiky Kernel 的 Gradient:</p><script type="math/tex; mode=display">\begin{align}\nabla W_{\text{spiky}}\big(\mathbf{r},h\big)=-\frac{45}{\pi h^6}\frac{\mathbf{r}}{\lVert\mathbf{r}\rVert}\big(h-\lVert\mathbf{r}\rVert\big)^2,\\\lim_{r\rightarrow0^-}\nabla W_{\text{spiky}}\big(\mathbf{r},h\big)=\frac{45}{\pi h^6},\\\lim_{r\rightarrow0^+}\nabla W_{\text{spiky}}\big(\mathbf{r},h\big)=-\frac{45}{\pi h^6},\\\end{align}</script><p>Spiky Kernel 的 Laplacian:</p><script type="math/tex; mode=display">\nabla^2 W_{\text{spiky}}\big(\mathbf{r},h\big)=-\frac{90}{\pi h^6}\frac{1}{\lVert\mathbf{r}\rVert}\big(h-\lVert\mathbf{r}\rVert\big)\big(h-2\lVert\mathbf{r}\rVert\big),\\\lim_{r\rightarrow0}\nabla^2 W_{\text{spiky}}\big(\mathbf{r},h\big)=-\infty,</script>
+            <p><strong>註:</strong> Spiky Kernel 函數:</p><script type="math/tex; mode=display">W_{\text{spiky}}\big(\mathbf{r},h\big)=\frac{15}{\pi h^6}\begin{cases}    \big(h-\lVert\mathbf{r}\rVert\big)^3, &0\le\lVert\mathbf{r}\rVert\le h\\    0, &\lVert\mathbf{r}\rVert\gt h\end{cases}</script><p>Spiky Kernel 的 Gradient:</p><script type="math/tex; mode=display">\begin{gathered}\nabla W_{\text{spiky}}\big(\mathbf{r},h\big)=-\frac{45}{\pi h^6}\frac{\mathbf{r}}{\lVert\mathbf{r}\rVert}\big(h-\lVert\mathbf{r}\rVert\big)^2,\\\lim_{r\rightarrow0^-}\nabla W_{\text{spiky}}\big(\mathbf{r},h\big)=\frac{45}{\pi h^6},\\\lim_{r\rightarrow0^+}\nabla W_{\text{spiky}}\big(\mathbf{r},h\big)=-\frac{45}{\pi h^6},\\\end{gathered}</script><p>Spiky Kernel 的 Laplacian:</p><script type="math/tex; mode=display">\nabla^2 W_{\text{spiky}}\big(\mathbf{r},h\big)=-\frac{90}{\pi h^6}\frac{1}{\lVert\mathbf{r}\rVert}\big(h-\lVert\mathbf{r}\rVert\big)\big(h-2\lVert\mathbf{r}\rVert\big),\\\\\lim_{r\rightarrow0}\nabla^2 W_{\text{spiky}}\big(\mathbf{r},h\big)=-\infty</script>
           </div>
 <p>PBD 的目標在於找出粒子位置的修正項 $\Delta\mathbf{p}$來滿足Constraint:</p>
 <script type="math/tex; mode=display">
