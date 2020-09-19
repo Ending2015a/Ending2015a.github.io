@@ -640,7 +640,7 @@ d^T_iA(e_i+\alpha_ip_i) = 0</script><p>移項整理後求得 $\alpha_i$：</p>
 <li><a href="https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process">Gram–Schmidt process - wiki</a></li>
 </ul>
 <p>假設一組 Linearly independent set $\{u_0, \dots, u_{N-1}\}$，Gram-Schmidt process 利用 Projection 的方式來製造出兩兩互相 Orthogonal 的 Vectors，原理非常簡單：</p>
-<p><img src="https://i.imgur.com/bjvovNI.png =300x300" alt=""></p>
+<p><img src="https://i.imgur.com/bjvovNI.png?300x" alt=""></p>
 <p>首先兩個 Linearly independent vectors $u_0, u_1$，先將 $u_1$ Project 到 $u_0$ 上算出投影向量 $\text{proj}_{u_0}(u_1)$，接著再將 $u_1$ 扣掉 $\text{proj}_{u_0}(u_1)$ 得到的就會是與 $u_0$ Orthogonal 的 Vector $u_1-\text{proj}_{u_0}(u_1)$。此時我們只需要令 $p_0=u_0$、$p_1=u_1-\text{proj}_{d_0}(u_1)$ 就可以得到兩個 Mutually orthogonal vectors $p_0, p_1$ 以同樣方式推廣至 $i$：</p>
 <script type="math/tex; mode=display">
 \begin{align*}
