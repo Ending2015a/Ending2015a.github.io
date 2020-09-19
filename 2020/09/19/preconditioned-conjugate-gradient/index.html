@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://i.imgur.com/hL1FiZD.png">
 <meta property="og:image" content="https://i.imgur.com/iX7VgCC.png">
 <meta property="article:published_time" content="2020-09-19T14:52:53.000Z">
-<meta property="article:modified_time" content="2020-09-19T15:59:38.859Z">
+<meta property="article:modified_time" content="2020-09-19T16:02:09.864Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Tuto">
@@ -261,10 +261,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">發表於</span>
-              
 
-              <time title="創建時間：2020-09-19 22:52:53 / 修改時間：23:59:38" itemprop="dateCreated datePublished" datetime="2020-09-19T22:52:53+08:00">2020-09-19</time>
+              <time title="創建時間：2020-09-19 22:52:53" itemprop="dateCreated datePublished" datetime="2020-09-19T22:52:53+08:00">2020-09-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-09-20 00:02:09" itemprop="dateModified" datetime="2020-09-20T00:02:09+08:00">2020-09-20</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -382,15 +388,15 @@ f(x) = \frac{1}{2}x^TAx-b^Tx+c \tag{1.3.3}</script><p>則目標變成：找到 $
 <p>證明方法非常簡單，假設 $x^* $ 滿足 $Ax^* = b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^* + e) &gt; f(x^*)$：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-f(x^* + e) 
-    &= \frac{1}{2}(x^* + e)^TA(x^* + e)-b^T(x^* + e)+c\\
-    &= \frac{1}{2}(x^*)^T A x^* + e^T\underbrace{Ax^*}_{=b}+\frac{1}{2}e^TAe-b^Tx^*-b^Te+c\\
-    &= \underbrace{\left(\frac{1}{2}(x^*)^TAx^*-b^Tx^* + c\right)}_{=f(x^*)}+e^Tb+\frac{1}{2}e^TAe-b^Te\\
-    &= f(x^*)+\frac{1}{2}e^TAe > f(x^*)
-\end{aligned}</script><p>由於 $A$ 是 Positive definite，且 $e\ne \mathbf{0}$，因此最後一項 $\frac{1}{2}e^TAe &gt; 0$，則可以得證當 $Ax^<em> =b$ 時，$f(x^</em>)$ 一定為最小值。因此我們將一個 Linear system 的問題變成了 Minimization problem：找到 $x$ 使得 minimize $f(x)$。</p>
+f(x^\* + e) 
+    &= \frac{1}{2}(x^\* + e)^TA(x^\* + e)-b^T(x^\* + e)+c\\
+    &= \frac{1}{2}(x^\*)^T A x^\* + e^T\underbrace{Ax^\*}_{=b}+\frac{1}{2}e^TAe-b^Tx^\*-b^Te+c\\
+    &= \underbrace{\left(\frac{1}{2}(x^\*)^TAx^\*-b^Tx^\* + c\right)}_{=f(x^\*)}+e^Tb+\frac{1}{2}e^TAe-b^Te\\
+    &= f(x^\*)+\frac{1}{2}e^TAe > f(x^\*)
+\end{aligned}</script><p>由於 $A$ 是 Positive definite，且 $e\ne \mathbf{0}$，因此最後一項 $\frac{1}{2}e^TAe &gt; 0$，則可以得證當 $Ax^* =b$ 時，$f(x^*)$ 一定為最小值。因此我們將一個 Linear system 的問題變成了 Minimization problem：找到 $x$ 使得 minimize $f(x)$。</p>
 <p>接著是要如何解這個 Minimization problem，一種方法就是使用 <strong>Steepest descent method</strong>。</p>
 <div class="note info">
-            <p>這邊列出一些常用的 term：</p><ul><li>Error: $e_i=x_i-x^*$，寫成 Iterative form，$e_{i+1}=e_i+\alpha_i r_i$</li><li>Residual: $r_i=b-Ax_i=-f’(x_i)$。</li></ul><p>Residual 與 Error 的關係式 $r_i=b-Ax_i=Ax^<em>-Ax_i=A(x^</em>-x_i)=-Ae_i$</p>
+            <p>這邊列出一些常用的 term：</p><ul><li>Error: $e_i=x_i-x^*$，寫成 Iterative form，$e_{i+1}=e_i+\alpha_i r_i$</li><li>Residual: $r_i=b-Ax_i=-f’(x_i)$。</li></ul><p>Residual 與 Error 的關係式 $r_i=b-Ax_i=Ax^*-Ax_i=A(x^*-x_i)=-Ae_i$</p>
           </div>
 <p>首先從任意一點 $x_0$ 開始，選擇負梯度方向 $-f’(x_0)=r_0$ 前進適當步長 $\alpha_0$，這個步長必須能夠在負梯度方向上最小化下一個 Step 的值 $f(x_1)$，也就是 $\alpha_0=\arg\min f(x_1)=\arg\min f(x_{0}+\alpha_0 r_0)$，通常會使用 Line search 的方式求得。求得步長後，移動到下一個位置 $x_1=x_0 + \alpha_0 r_0$，求出下一個步長 $\alpha_1$，再移動到下一個位置 $x_2=x_1+\alpha_1 r_1$ …，重複動作直到找到最佳解為止。<br><img src="https://i.imgur.com/OK3pGcQ.png" alt=""></p>
 <p>至於求解步長 $\alpha_i$ 可以使用求極值 (導數為 $0$) 的方式求得：</p>
@@ -421,19 +427,19 @@ x_{i+1}=x_i+\alpha_ir_i
 <script type="math/tex; mode=display">
 x_{i+1}=x_i+\alpha_i p_{i} \tag{2.1.1}</script><p>且</p>
 <script type="math/tex; mode=display">
-x^*=x_0+\sum_{i=0}^{N-1}\alpha_i p_{i} \tag{2.1.2}</script><p>這樣就能夠確保每個搜索方向只需要搜尋一次就能夠找到最佳。由於每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直，因此：</p>
+x^\*=x_0+\sum_{i=0}^{N-1}\alpha_i p_{i} \tag{2.1.2}</script><p>這樣就能夠確保每個搜索方向只需要搜尋一次就能夠找到最佳。由於每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直，因此：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 p^T_ie_{i+1} &= 0\\
 p^T(e_i+\alpha_ip_i) &= 0\\
 \end{align}</script><div class="note info">
-            <p>Prove 每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直：<br>因為 $e_{i+1}=x_{i+1}-x^<em>$ 且 $x^</em>=x_{i+1}+\sum_{j=i+1}^{N-1}\alpha_jp_j$，因此 $e_{i+1}=-\sum_{j=i+1}^{N-1}\alpha_jp_j$，也就是說，$e_{i+1}$ 是 $\{p_{i+1}, \dots, p_{N-1}\}$ 的 Linear combination，而 $p_{i}$ 與所有$\{p_{i+1}, \dots, p_{N-1}\}$ 互為 Orthogonal，因此可以得證 $p_{i}$ 與 $e_i$ 一定是 Orthogonal。</p>
+            <p>Prove 每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直：<br>因為 $e_{i+1}=x_{i+1}-x^*$ 且 $x^*=x_{i+1}+\sum_{j=i+1}^{N-1}\alpha_jp_j$，因此 $e_{i+1}=-\sum_{j=i+1}^{N-1}\alpha_jp_j$，也就是說，$e_{i+1}$ 是 $\{p_{i+1}, \dots, p_{N-1}\}$ 的 Linear combination，而 $p_{i}$ 與所有$\{p_{i+1}, \dots, p_{N-1}\}$ 互為 Orthogonal，因此可以得證 $p_{i}$ 與 $e_i$ 一定是 Orthogonal。</p>
           </div>
 <p>如上根據 Error 的 Iterative form 展開後，可以算出：</p>
 <script type="math/tex; mode=display">
-\alpha_i=-\frac{p^T_ie_i}{p^T_ip_i}</script><p>然而，尷尬的是我們沒有辦法求出 $e_i$，因為 $e_i=x_i-x^<em>$，如果可以求得 $e_i$ 那麼 $x^</em>$ 就已經算出來了。避免掉這個窘境的方式是改變假設 Search directions 兩兩互為 $A$-orthogonal ($A$-conjugate)，而非 Orthogonal：</p>
+\alpha_i=-\frac{p^T_ie_i}{p^T_ip_i}</script><p>然而，尷尬的是我們沒有辦法求出 $e_i$，因為 $e_i=x_i-x^*$，如果可以求得 $e_i$ 那麼 $x^*$ 就已經算出來了。避免掉這個窘境的方式是改變假設 Search directions 兩兩互為 $A$-orthogonal ($A$-conjugate)，而非 Orthogonal：</p>
 <script type="math/tex; mode=display">
-p^T_iAp_j=0, \quad i\ne j</script><p>這樣假設的原因是因為，如果 $e_i$ 算不出來，只需要對 $e_i$ 乘上 $A$，就會得到 $Ae_i=Ax_i-Ax^<em>=Ax_i-b$，如此就可以避免掉 $x^</em>$ 的問題。又因 $Ae_i=-r_i$，因此同 Steepest descent 求 $\alpha$ 可以得到：</p>
+p^T_iAp_j=0, \quad i\ne j</script><p>這樣假設的原因是因為，如果 $e_i$ 算不出來，只需要對 $e_i$ 乘上 $A$，就會得到 $Ae_i=Ax_i-Ax^*=Ax_i-b$，如此就可以避免掉 $x^*$ 的問題。又因 $Ae_i=-r_i$，因此同 Steepest descent 求 $\alpha$ 可以得到：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 \frac{d}{d\alpha}f(x_{i+1}) &= 0\\
@@ -466,7 +472,7 @@ d^T_iA(e_i+\alpha_ip_i) &= 0
 \end{align}</script><p>以此類推就可以得到一組 Mutually orthogonal vectors $\{p_0,\dots,p_{N-1}\}$，然而我們需要的是 $A$-orthogonal 的 vectors，因此可以定義 Projection 為 $A$ 內積空間的 Projection：</p>
 <script type="math/tex; mode=display">
 \text{proj}_{p_j}(u_i)=\frac{\langle u_i, p_j\rangle_A}{\langle p_j, p_j\rangle_A}p_j = \frac{u_i^TAp_j}{p_jAp_j}p_j \tag{2.1.5}</script><p>至於要如何找到 Linearly independent set $\{u_0, u_1, \dots, u_{N-1}\}$ 一個很直接的方式就是使用現成的 Residual $r$。</p>
-<p>我們知道 Residual 與 Error 的關係式 $r_j=-Ae_j$，而 $e_j=x_j-x^<em>$，$x_j=x_0+\sum_{k=0}^{j-1}\alpha_kp_k$ 且 $x^</em>=x_0+\sum_{k=0}^{N-1}\alpha_kp_k$，全部展開來後得到：</p>
+<p>我們知道 Residual 與 Error 的關係式 $r_j=-Ae_j$，而 $e_j=x_j-x^*$，$x_j=x_0+\sum_{k=0}^{j-1}\alpha_kp_k$ 且 $x^*=x_0+\sum_{k=0}^{N-1}\alpha_kp_k$，全部展開來後得到：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 r_j &= -A\left( (x_0+\sum_{k=0}^{j-1}\alpha_kp_k)-(x_0+\sum_{k=0}^{N-1}\alpha_kp_k) \right)\\
