@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://i.imgur.com/hL1FiZD.png">
 <meta property="og:image" content="https://i.imgur.com/iX7VgCC.png">
 <meta property="article:published_time" content="2020-09-19T14:52:53.000Z">
-<meta property="article:modified_time" content="2020-09-19T16:17:23.336Z">
+<meta property="article:modified_time" content="2020-09-19T16:21:46.094Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Tuto">
@@ -269,7 +269,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-09-20 00:17:23" itemprop="dateModified" datetime="2020-09-20T00:17:23+08:00">2020-09-20</time>
+                <time title="修改時間：2020-09-20 00:21:46" itemprop="dateModified" datetime="2020-09-20T00:21:46+08:00">2020-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -359,11 +359,11 @@
             <p>Prove Eigenvalues 一定為實數：<br>假設 Symmetric (Hermitian) matrix $A$，假設 $\lambda$ 為 $A$ 的 Eigenvalue，以及對應的 Eigenvector $x$，則 $Ax=\lambda x$。取 Conjugate transpose $\bar{x}^TA^\dagger=\bar{x}^T\bar{\lambda}$。由於 $A$ 為 Symmetric (Hermitian) matrix，$A^\dagger=A$，因此 $\bar{x}^TA=\bar{x}^T\bar{\lambda}$。兩邊同乘 $x$ 得到：</p><script type="math/tex; mode=display">\bar{x}^TAx=\bar{x}^T\bar{\lambda}x</script><p>對 $Ax=\lambda x$ 兩邊同乘 $\bar{x}$：</p><script type="math/tex; mode=display">\bar{x}^TAx=\bar{x}^T\lambda x</script><p>得到 $\bar{x}^T\bar{\lambda}x=\bar{x}^T\lambda x$，若 $x\ne \mathbf{0}$，則 $\bar{\lambda}=\lambda$，因此 Eigenvalue 一定為 Real number。</p>
           </div>
 <div class="note info">
-            <p>Prove 一定存在一組 Orthonormal eigenvectors：<br>假設兩個 Symmetric (Hermitian) matrix $A$ 的 Eigenvalue $\lambda_a$ 與 $\lambda_b$，且 $\lambda_a\ne \lambda_b$，以及其分別對應的 Eigenvectors $x_a$, $x_b$，</p><script type="math/tex; mode=display">\begin{aligned}\lambda_a \langle x_a, x_b \rangle     &= \langle \lambda_ax_a, x_b \rangle\\    &= \langle Ax_a, x_b \rangle\\    &= \langle x_a, Ax_b \rangle\\    &= \langle x_a, \lambda_bx_b \rangle\\    &= \lambda_b \langle x_a, x_b \rangle \end{aligned}</script><p>得到 $\lambda_a \langle x_a, x_b \rangle=\lambda_b \langle x_a, x_b \rangle $，移項整理後得到：</p><script type="math/tex; mode=display">(\lambda_a-\lambda_b)\langle x_a, x_b \rangle=0</script><p>由於 $\lambda_a \ne \lambda_b \Leftrightarrow \lambda_a-\lambda_b\ne 0$，因此得到 $\langle x_a, x_b\rangle=0$，表示 $x_a$ 與 $x_b$ 為 Orthogonal。</p>
+            <p>Prove 一定存在一組 Orthonormal eigenvectors：<br>假設兩個 Symmetric (Hermitian) matrix $A$ 的 Eigenvalue $\lambda_a$ 與 $\lambda_b$，且 $\lambda_a\ne \lambda_b$，以及其分別對應的 Eigenvectors $x_a$, $x_b$，</p><script type="math/tex; mode=display">\begin{align*}\lambda_a \langle x_a, x_b \rangle     &= \langle \lambda_ax_a, x_b \rangle\\    &= \langle Ax_a, x_b \rangle\\    &= \langle x_a, Ax_b \rangle\\    &= \langle x_a, \lambda_bx_b \rangle\\    &= \lambda_b \langle x_a, x_b \rangle \end{align*}</script><p>得到 $\lambda_a \langle x_a, x_b \rangle=\lambda_b \langle x_a, x_b \rangle $，移項整理後得到：</p><script type="math/tex; mode=display">(\lambda_a-\lambda_b)\langle x_a, x_b \rangle=0</script><p>由於 $\lambda_a \ne \lambda_b \Leftrightarrow \lambda_a-\lambda_b\ne 0$，因此得到 $\langle x_a, x_b\rangle=0$，表示 $x_a$ 與 $x_b$ 為 Orthogonal。</p>
           </div>
 <p>Symmetric positive definite matrix 有更棒的特性：Eigenvalues 一定都為正數</p>
 <div class="note info">
-            <p>Prove Symmetric (Hermitian) matrix $A$ 的 Eigenvalue 都是正數 $\Leftrightarrow$ Matrix $A$ 為 Symmetric positive definite matrix：<br>$(\Rightarrow)$：假設 $\Lambda$ 為由 $A$ 所有 Eigenvalues 組成的 Diagonal matrix $\Lambda_{ii}=\lambda_i$，且 $\lambda_i \ne \lambda_j, i\ne j$，$Q$ 為各個 Column 由各個 Eigenvalue $\lambda_i$ 所對應的 Eigenvector $x_i$ 組成的 Matrix $\left[\begin{matrix} x_1, \dots, x_N \end{matrix}\right]$。則根據 $Ax=\lambda x$，得到：</p><script type="math/tex; mode=display">\begin{aligned}AQ &= Q\Lambda\\A &= Q\Lambda Q^{-1}\end{aligned}</script><p>由於 $A$ 為 Symmetric matrix，因此由 Eigenvectors 組成的 $Q$ 為 Orthonomal matrix，Orthonomal matrix 有特性 $Q^{-1}=Q^T$，因此得到：</p><script type="math/tex; mode=display">A = Q\Lambda Q^T</script><p>接著假設任意 Vector $x$ 屬於 Vector space，且不為 $\mathbf{0}$，則：</p><script type="math/tex; mode=display">x^TAx=\underbrace{x^TQ}_{y^T}\Lambda \underbrace{Q^Tx}_{y}=y^T\Lambda y=\sum_{i=0}^N \lambda_i {y_i}^2 >0</script><p>由於 $A$ 為 Symmetric matrix，$\lambda_i&gt;0$ 且 $y_i^2&gt;0$ 因此得到 $x^TAx&gt;0$，得證。</p><p>$(\Leftarrow)$ 假設 Symmetric positive definite matrix $A$ 的任意 Eigenvalue $\lambda$，以及對應的 Eigenvector $x\ne \mathbf{0}$，有 $Ax=\lambda x$。兩邊同乘 $x^T$：</p><script type="math/tex; mode=display">\begin{aligned}x^TAx &= \lambda x^Tx\\\lambda &= \frac{x^TAx}{x^Tx} > 0\end{aligned}</script><p>由於 $A$ 為 Symmetric positive definite，因此 $x^TAx&gt;0$。且 $x\ne\mathbf{0}$，因此 ${x^Tx} &gt; 0$。得證。</p>
+            <p>Prove Symmetric (Hermitian) matrix $A$ 的 Eigenvalue 都是正數 $\Leftrightarrow$ Matrix $A$ 為 Symmetric positive definite matrix：<br>$(\Rightarrow)$：假設 $\Lambda$ 為由 $A$ 所有 Eigenvalues 組成的 Diagonal matrix $\Lambda_{ii}=\lambda_i$，且 $\lambda_i \ne \lambda_j, i\ne j$，$Q$ 為各個 Column 由各個 Eigenvalue $\lambda_i$ 所對應的 Eigenvector $x_i$ 組成的 Matrix $\left[\begin{matrix} x_1, \dots, x_N \end{matrix}\right]$。則根據 $Ax=\lambda x$，得到：</p><script type="math/tex; mode=display">\begin{align*}AQ &= Q\Lambda\\A &= Q\Lambda Q^{-1}\end{align*}</script><p>由於 $A$ 為 Symmetric matrix，因此由 Eigenvectors 組成的 $Q$ 為 Orthonomal matrix，Orthonomal matrix 有特性 $Q^{-1}=Q^T$，因此得到：</p><script type="math/tex; mode=display">A = Q\Lambda Q^T</script><p>接著假設任意 Vector $x$ 屬於 Vector space，且不為 $\mathbf{0}$，則：</p><script type="math/tex; mode=display">x^TAx=\underbrace{x^TQ}_{y^T}\Lambda \underbrace{Q^Tx}_{y}=y^T\Lambda y=\sum_{i=0}^N \lambda_i {y_i}^2 >0</script><p>由於 $A$ 為 Symmetric matrix，$\lambda_i&gt;0$ 且 $y_i^2&gt;0$ 因此得到 $x^TAx&gt;0$，得證。</p><p>$(\Leftarrow)$ 假設 Symmetric positive definite matrix $A$ 的任意 Eigenvalue $\lambda$，以及對應的 Eigenvector $x\ne \mathbf{0}$，有 $Ax=\lambda x$。兩邊同乘 $x^T$：</p><script type="math/tex; mode=display">\begin{align*}x^TAx &= \lambda x^Tx\\\lambda &= \frac{x^TAx}{x^Tx} > 0\end{align*}</script><p>由於 $A$ 為 Symmetric positive definite，因此 $x^TAx&gt;0$。且 $x\ne\mathbf{0}$，因此 ${x^Tx} &gt; 0$。得證。</p>
           </div>
 <p>基於這些特性，Symmetric positive definite matrix $A$ 可以定義內積。</p>
 <p>利用 Symmetric positive definite matrix $A$ 定義一個基於 Vector space $\mathbb{R}^N$ 的內積空間 (Inner product space)，內積定義為：</p>
@@ -387,13 +387,13 @@ f'(x)=Ax-b \tag{1.3.2}</script><p>根據一階微分，我們能夠得出 Quadra
 f(x) = \frac{1}{2}x^TAx-b^Tx+c \tag{1.3.3}</script><p>則目標變成：找到 $x$ 使得 $f’(x)=\mathbf{0}$。也就是說，找到 $x$，使得 $f(x)$ 為極值，且若 $A$ 為 Symmetric positive definite matrix，則該極值一定會是最小值。</p>
 <p>證明方法非常簡單，假設 $x^* $ 滿足 $Ax^* = b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^* + e) &gt; f(x^*)$：</p>
 <script type="math/tex; mode=display">
-\begin{aligned}
+\begin{align*}
 f(x^* + e) 
     &= \frac{1}{2}(x^* + e)^TA(x^* + e)-b^T(x^* + e)+c\\
     &= \frac{1}{2}(x^*)^T A x^* + e^T\underbrace{Ax^*}_{=b}+\frac{1}{2}e^TAe-b^Tx^*-b^Te+c\\
     &= \underbrace{\left(\frac{1}{2}(x^*)^TAx^*-b^Tx^* + c\right)}_{=f(x^*)}+e^Tb+\frac{1}{2}e^TAe-b^Te\\
     &= f(x^*)+\frac{1}{2}e^TAe > f(x^*)
-\end{aligned}</script><p>由於 $A$ 是 Positive definite，且 $e\ne \mathbf{0}$，因此最後一項 $\frac{1}{2}e^TAe &gt; 0$，則可以得證當 $Ax^* =b$ 時，$f(x^*)$ 一定為最小值。因此我們將一個 Linear system 的問題變成了 Minimization problem：找到 $x$ 使得 minimize $f(x)$。</p>
+\end{align*}</script><p>由於 $A$ 是 Positive definite，且 $e\ne \mathbf{0}$，因此最後一項 $\frac{1}{2}e^TAe &gt; 0$，則可以得證當 $Ax^* =b$ 時，$f(x^*)$ 一定為最小值。因此我們將一個 Linear system 的問題變成了 Minimization problem：找到 $x$ 使得 minimize $f(x)$。</p>
 <p>接著是要如何解這個 Minimization problem，一種方法就是使用 <strong>Steepest descent method</strong>。</p>
 <div class="note info">
             <p>這邊列出一些常用的 term：</p><ul><li>Error: $e_i=x_i-x^*$，寫成 Iterative form，$e_{i+1}=e_i+\alpha_i r_i$</li><li>Residual: $r_i=b-Ax_i=-f’(x_i)$。</li></ul><p>Residual 與 Error 的關係式 $r_i=b-Ax_i=Ax^*-Ax_i=A(x^*-x_i)=-Ae_i$</p>
@@ -403,7 +403,7 @@ f(x^* + e)
 <script type="math/tex; mode=display">
 \frac{d}{d\alpha}f(x_{i+1})=f'(x_{i+1})^T\frac{d}{d\alpha}x_{i+1}=f'(x_{i+1})^Tr_i=0</script><p>因為 $x_{i+1}=x_i+\alpha_i r_i$。由於 $f’(x_{i+1})=-r_{i+1}$，求得 $\alpha_i$：</p>
 <script type="math/tex; mode=display">
-\begin{aligned}
+\begin{align*}
 r^T_{i+1}r_i&=0\\
 (b-Ax_{i+1})^Tr_i&=0\\
 (b-A(x_i+\alpha_i r_i))^Tr_i&=0\\
@@ -411,7 +411,7 @@ r^T_{i+1}r_i&=0\\
 (b-Ax_i)^Tr_i &= \alpha_i(Ar_i)^Tr_i\\
 r^T_ir_i &= \alpha_i r^T_i(Ar_i)\\
 \alpha_i&=\frac{r^T_ir_i}{r^T_iAr_i}
-\end{aligned}</script><p>最後就可以得到 Steepest descent method：</p>
+\end{align*}</script><p>最後就可以得到 Steepest descent method：</p>
 <script type="math/tex; mode=display">
 \begin{gathered}
 r_i=b-Ax_i\\
@@ -429,10 +429,10 @@ x_{i+1}=x_i+\alpha_i p_{i} \tag{2.1.1}</script><p>且</p>
 <script type="math/tex; mode=display">
 x^*=x_0+\sum_{i=0}^{N-1}\alpha_i p_{i} \tag{2.1.2}</script><p>這樣就能夠確保每個搜索方向只需要搜尋一次就能夠找到最佳。由於每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直，因此：</p>
 <script type="math/tex; mode=display">
-\begin{aligned}
+\begin{align*}
 p^T_ie_{i+1} &= 0\\
 p^T(e_i+\alpha_ip_i) &= 0\\
-\end{aligned}</script><div class="note info">
+\end{align*}</script><div class="note info">
             <p>Prove 每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直：</p><p>因為 $e_{i+1}=x_{i+1}-x^*$ 且 $x^*=x_{i+1}+\sum_{j=i+1}^{N-1}\alpha_jp_j$，因此 $e_{i+1}=-\sum_{j=i+1}^{N-1}\alpha_jp_j$，也就是說，$e_{i+1}$ 是 $\{p_{i+1}, \dots, p_{N-1}\}$ 的 Linear combination，而 $p_{i}$ 與所有$\{p_{i+1}, \dots, p_{N-1}\}$ 互為 Orthogonal，因此可以得證 $p_{i}$ 與 $e_i$ 一定是 Orthogonal。</p>
           </div>
 <p>如上根據 Error 的 Iterative form 展開後，可以算出：</p>
@@ -441,12 +441,12 @@ p^T(e_i+\alpha_ip_i) &= 0\\
 <script type="math/tex; mode=display">
 p^T_iAp_j=0, \quad i\ne j</script><p>這樣假設的原因是因為，如果 $e_i$ 算不出來，只需要對 $e_i$ 乘上 $A$，就會得到 $Ae_i=Ax_i-Ax^*=Ax_i-b$，如此就可以避免掉 $x^*$ 的問題。又因 $Ae_i=-r_i$，因此同 Steepest descent 求 $\alpha$ 可以得到：</p>
 <script type="math/tex; mode=display">
-\begin{aligned}
+\begin{align*}
 \frac{d}{d\alpha}f(x_{i+1}) &= 0\\
 f'(x_{i+1})^T\frac{d}{d\alpha}x_{i+1} &= 0\\
 -r^T_{i+1}p_i &= 0\\
 (Ae_{i+1})^Tp_i=d_i^TAe_{i+1}&=0
-\end{aligned}</script><p>因 $e_{i+1}=e_i+\alpha_ip_i$，因此：</p>
+\end{align*}</script><p>因 $e_{i+1}=e_i+\alpha_ip_i$，因此：</p>
 <script type="math/tex; mode=display">
 d^T_iA(e_i+\alpha_ip_i) = 0</script><p>移項整理後求得 $\alpha_i$：</p>
 <script type="math/tex; mode=display">
@@ -462,12 +462,12 @@ d^T_iA(e_i+\alpha_ip_i) = 0</script><p>移項整理後求得 $\alpha_i$：</p>
 <p><img src="https://i.imgur.com/bjvovNI.png =300x" alt=""></p>
 <p>首先兩個 Linearly independent vectors $u_0, u_1$，先將 $u_1$ Project 到 $u_0$ 上算出投影向量 $\text{proj}_{u_0}(u_1)$，接著再將 $u_1$ 扣掉 $\text{proj}_{u_0}(u_1)$ 得到的就會是與 $u_0$ Orthogonal 的 Vector $u_1-\text{proj}_{u_0}(u_1)$。此時我們只需要令 $p_0=u_0$、$p_1=u_1-\text{proj}_{d_0}(u_1)$ 就可以得到兩個 Mutually orthogonal vectors $p_0, p_1$ 以同樣方式推廣至 $i$：</p>
 <script type="math/tex; mode=display">
-\begin{aligned}
+\begin{align*}
 &p_0=u_0\\
 &p_1=u_1-\text{proj}_{p_0}(u_1)\\
 &p_2=u_2-\text{proj}_{p_0}(u_2)-\text{proj}_{p_1}(u_2)\\
 &p_i=u_i-\sum_{j=0}^{i-1}\text{proj}_{p_j}(u_i) \tag{2.1.4}
-\end{aligned}</script><p>以此類推就可以得到一組 Mutually orthogonal vectors $\{p_0,\dots,p_{N-1}\}$，然而我們需要的是 $A$-orthogonal 的 vectors，因此可以定義 Projection 為 $A$ 內積空間的 Projection：</p>
+\end{align*}</script><p>以此類推就可以得到一組 Mutually orthogonal vectors $\{p_0,\dots,p_{N-1}\}$，然而我們需要的是 $A$-orthogonal 的 vectors，因此可以定義 Projection 為 $A$ 內積空間的 Projection：</p>
 <script type="math/tex; mode=display">
 \text{proj}_{p_j}(u_i)=\frac{\langle u_i, p_j\rangle_A}{\langle p_j, p_j\rangle_A}p_j = \frac{u_i^TAp_j}{p_jAp_j}p_j \tag{2.1.5}</script><p>至於要如何找到 Linearly independent set $\{u_0, u_1, \dots, u_{N-1}\}$ 一個很直接的方式就是使用現成的 Residual $r$。</p>
 <p>我們知道 Residual 與 Error 的關係式 $r_j=-Ae_j$，而 $e_j=x_j-x^*$，$x_j=x_0+\sum_{k=0}^{j-1}\alpha_kp_k$ 且 $x^*=x_0+\sum_{k=0}^{N-1}\alpha_kp_k$，全部展開來後得到：</p>
