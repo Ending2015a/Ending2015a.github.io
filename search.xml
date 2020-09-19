@@ -552,7 +552,7 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
 \langle x,y\rangle_A=x^TAy</script><p>由於 Matrix $A$ 為 Symmetric，我們可以知道這個內積滿足 Inner product 的第一個條件 (Conjugate symmetry)，也就是 $x^TAy=y^TAx$。由於 $x^TAy$ 是線性的，滿足 Inner product 的第二個條件 (Linearity)，由於 $A$ 為 Positive definite，滿足 Inner product 的第三個條件 (Positive-definiteness)。因此，$ \langle \cdot,\cdot\rangle_A $ 是一個合法的內積。</p>
 <p>產生 Symmetric positive definite matrix 非常簡單，設一個 $m\times n, m &lt; n$ Matrix $A$，為 Full row rank，$AA^T$ 就會是 Symmetric positive definite matrix。</p>
 <div class="note info">
-            <p>Prove $AA^T$ 是 Symmetric positive definite matrix：<br>假設 Matrix $M=AA^T$，$AA^T$ 為 Symmetric matrix。假設任意 Vector $x\in \mathbb{R}^m$ 且 $x\ne\mathbf{0}$，則：</p><script type="math/tex; mode=display">x^TMx=x^TAA^Tx=\|A^Tx\|>0</script><p>故得證。</p>
+            <p>Prove $AA^T$ 是 Symmetric positive definite matrix：</p><p>假設 Matrix $M=AA^T$，$AA^T$ 為 Symmetric matrix。假設任意 Vector $x\in \mathbb{R}^m$ 且 $x\ne\mathbf{0}$，則：</p><script type="math/tex; mode=display">x^TMx=x^TAA^Tx=\|A^Tx\|>0</script><p>故得證。</p>
           </div>
 <h3 id="1-3-Steepest-Descent"><a href="#1-3-Steepest-Descent" class="headerlink" title="1-3. Steepest Descent"></a>1-3. Steepest Descent</h3><ul>
 <li><a href="https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf">An Introduction to the Conjugate Gradient Method Without the Agonizing Pain</a></li>
@@ -569,11 +569,11 @@ f(x) = \frac{1}{2}x^TAx-b^Tx+c \tag{1.3.3}</script><p>則目標變成：找到 $
 <p>證明方法非常簡單，假設 $x^* $ 滿足 $Ax^* = b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^* + e) &gt; f(x^*)$：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-f(x^\* + e) 
-    &= \frac{1}{2}(x^\* + e)^TA(x^\* + e)-b^T(x^\* + e)+c\\
-    &= \frac{1}{2}(x^\*)^T A x^\* + e^T\underbrace{Ax^\*}_{=b}+\frac{1}{2}e^TAe-b^Tx^\*-b^Te+c\\
-    &= \underbrace{\left(\frac{1}{2}(x^\*)^TAx^\*-b^Tx^\* + c\right)}_{=f(x^\*)}+e^Tb+\frac{1}{2}e^TAe-b^Te\\
-    &= f(x^\*)+\frac{1}{2}e^TAe > f(x^\*)
+f(x^* + e) 
+    &= \frac{1}{2}(x^* + e)^TA(x^* + e)-b^T(x^* + e)+c\\
+    &= \frac{1}{2}(x^*)^T A x^* + e^T\underbrace{Ax^*}_{=b}+\frac{1}{2}e^TAe-b^Tx^*-b^Te+c\\
+    &= \underbrace{\left(\frac{1}{2}(x^*)^TAx^*-b^Tx^* + c\right)}_{=f(x^*)}+e^Tb+\frac{1}{2}e^TAe-b^Te\\
+    &= f(x^*)+\frac{1}{2}e^TAe > f(x^*)
 \end{aligned}</script><p>由於 $A$ 是 Positive definite，且 $e\ne \mathbf{0}$，因此最後一項 $\frac{1}{2}e^TAe &gt; 0$，則可以得證當 $Ax^* =b$ 時，$f(x^*)$ 一定為最小值。因此我們將一個 Linear system 的問題變成了 Minimization problem：找到 $x$ 使得 minimize $f(x)$。</p>
 <p>接著是要如何解這個 Minimization problem，一種方法就是使用 <strong>Steepest descent method</strong>。</p>
 <div class="note info">
@@ -584,7 +584,7 @@ f(x^\* + e)
 <script type="math/tex; mode=display">
 \frac{d}{d\alpha}f(x_{i+1})=f'(x_{i+1})^T\frac{d}{d\alpha}x_{i+1}=f'(x_{i+1})^Tr_i=0</script><p>因為 $x_{i+1}=x_i+\alpha_i r_i$。由於 $f’(x_{i+1})=-r_{i+1}$，求得 $\alpha_i$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{aligned}
 r^T_{i+1}r_i&=0\\
 (b-Ax_{i+1})^Tr_i&=0\\
 (b-A(x_i+\alpha_i r_i))^Tr_i&=0\\
@@ -592,14 +592,14 @@ r^T_{i+1}r_i&=0\\
 (b-Ax_i)^Tr_i &= \alpha_i(Ar_i)^Tr_i\\
 r^T_ir_i &= \alpha_i r^T_i(Ar_i)\\
 \alpha_i&=\frac{r^T_ir_i}{r^T_iAr_i}
-\end{align}</script><p>最後就可以得到 Steepest descent method：</p>
+\end{aligned}</script><p>最後就可以得到 Steepest descent method：</p>
 <script type="math/tex; mode=display">
-\begin{gather}
+\begin{gathered}
 r_i=b-Ax_i\\
 \alpha_i=\frac{r^T_ir_i}{r^T_iAr_i}\\
 x_{i+1}=x_i+\alpha_ir_i
-\end{gather}</script><div class="note info">
-            <p>Gradient descent：往 Negative gradient 方向前進任意步長 $\alpha$，此步長可以使用固定值，也可以使用估計的方式，例如：SGD 等等。<br>Steepest descent：往 Negative gradient 方向前進適當步長 $\alpha$，此步長必須使得下一個值在這個方向上是最小值。</p>
+\end{gathered}</script><div class="note info">
+            <p>Gradient descent：往 Negative gradient 方向前進任意步長 $\alpha$，此步長可以使用固定值，也可以使用估計的方式，例如：SGD 等等。</p><p>Steepest descent：往 Negative gradient 方向前進適當步長 $\alpha$，此步長必須使得下一個值在這個方向上是最小值。</p>
           </div>
 <h2 id="2-Methodology"><a href="#2-Methodology" class="headerlink" title="2. Methodology"></a>2. Methodology</h2><ul>
 <li><a href="https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf">An Introduction to the Conjugate Gradient Method Without the Agonizing Pain</a></li>
@@ -608,13 +608,13 @@ x_{i+1}=x_i+\alpha_ir_i
 <script type="math/tex; mode=display">
 x_{i+1}=x_i+\alpha_i p_{i} \tag{2.1.1}</script><p>且</p>
 <script type="math/tex; mode=display">
-x^\*=x_0+\sum_{i=0}^{N-1}\alpha_i p_{i} \tag{2.1.2}</script><p>這樣就能夠確保每個搜索方向只需要搜尋一次就能夠找到最佳。由於每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直，因此：</p>
+x^*=x_0+\sum_{i=0}^{N-1}\alpha_i p_{i} \tag{2.1.2}</script><p>這樣就能夠確保每個搜索方向只需要搜尋一次就能夠找到最佳。由於每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直，因此：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{aligned}
 p^T_ie_{i+1} &= 0\\
 p^T(e_i+\alpha_ip_i) &= 0\\
-\end{align}</script><div class="note info">
-            <p>Prove 每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直：<br>因為 $e_{i+1}=x_{i+1}-x^*$ 且 $x^*=x_{i+1}+\sum_{j=i+1}^{N-1}\alpha_jp_j$，因此 $e_{i+1}=-\sum_{j=i+1}^{N-1}\alpha_jp_j$，也就是說，$e_{i+1}$ 是 $\{p_{i+1}, \dots, p_{N-1}\}$ 的 Linear combination，而 $p_{i}$ 與所有$\{p_{i+1}, \dots, p_{N-1}\}$ 互為 Orthogonal，因此可以得證 $p_{i}$ 與 $e_i$ 一定是 Orthogonal。</p>
+\end{aligned}</script><div class="note info">
+            <p>Prove 每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直：</p><p>因為 $e_{i+1}=x_{i+1}-x^*$ 且 $x^*=x_{i+1}+\sum_{j=i+1}^{N-1}\alpha_jp_j$，因此 $e_{i+1}=-\sum_{j=i+1}^{N-1}\alpha_jp_j$，也就是說，$e_{i+1}$ 是 $\{p_{i+1}, \dots, p_{N-1}\}$ 的 Linear combination，而 $p_{i}$ 與所有$\{p_{i+1}, \dots, p_{N-1}\}$ 互為 Orthogonal，因此可以得證 $p_{i}$ 與 $e_i$ 一定是 Orthogonal。</p>
           </div>
 <p>如上根據 Error 的 Iterative form 展開後，可以算出：</p>
 <script type="math/tex; mode=display">
@@ -622,21 +622,19 @@ p^T(e_i+\alpha_ip_i) &= 0\\
 <script type="math/tex; mode=display">
 p^T_iAp_j=0, \quad i\ne j</script><p>這樣假設的原因是因為，如果 $e_i$ 算不出來，只需要對 $e_i$ 乘上 $A$，就會得到 $Ae_i=Ax_i-Ax^*=Ax_i-b$，如此就可以避免掉 $x^*$ 的問題。又因 $Ae_i=-r_i$，因此同 Steepest descent 求 $\alpha$ 可以得到：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{aligned}
 \frac{d}{d\alpha}f(x_{i+1}) &= 0\\
 f'(x_{i+1})^T\frac{d}{d\alpha}x_{i+1} &= 0\\
 -r^T_{i+1}p_i &= 0\\
 (Ae_{i+1})^Tp_i=d_i^TAe_{i+1}&=0
-\end{align}</script><p>因 $e_{i+1}=e_i+\alpha_ip_i$，因此：</p>
+\end{aligned}</script><p>因 $e_{i+1}=e_i+\alpha_ip_i$，因此：</p>
 <script type="math/tex; mode=display">
-\begin{align}
-d^T_iA(e_i+\alpha_ip_i) &= 0
-\end{align}</script><p>移項整理後求得 $\alpha_i$：</p>
+d^T_iA(e_i+\alpha_ip_i) = 0</script><p>移項整理後求得 $\alpha_i$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{aligned}
 \alpha_i &= -\frac{p^T_iAe_i}{p^T_iAp_i}\\
 &=\frac{p^T_ir_i}{p^T_iAp_i} \tag{2.1.3}
-\end{align}</script><p>(能夠想到這種方法的人肯定腦力發揮 100%)</p>
+\end{aligned}</script><p>(能夠想到這種方法的人肯定腦力發揮 100%)</p>
 <p>接下來的問題在於，要如何產生 Mutually $A$-orthogonal vectors $\{p_0,\dots,p_{N-1}\}$，可以使用 Gram-Schmidt process，來 Iteratively 產生互相 Orthogonal 的向量。</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process">Gram–Schmidt process - wiki</a></li>
@@ -645,12 +643,12 @@ d^T_iA(e_i+\alpha_ip_i) &= 0
 <p><img src="https://i.imgur.com/bjvovNI.png =300x" alt=""></p>
 <p>首先兩個 Linearly independent vectors $u_0, u_1$，先將 $u_1$ Project 到 $u_0$ 上算出投影向量 $\text{proj}_{u_0}(u_1)$，接著再將 $u_1$ 扣掉 $\text{proj}_{u_0}(u_1)$ 得到的就會是與 $u_0$ Orthogonal 的 Vector $u_1-\text{proj}_{u_0}(u_1)$。此時我們只需要令 $p_0=u_0$、$p_1=u_1-\text{proj}_{d_0}(u_1)$ 就可以得到兩個 Mutually orthogonal vectors $p_0, p_1$ 以同樣方式推廣至 $i$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{aligned}
 &p_0=u_0\\
 &p_1=u_1-\text{proj}_{p_0}(u_1)\\
 &p_2=u_2-\text{proj}_{p_0}(u_2)-\text{proj}_{p_1}(u_2)\\
 &p_i=u_i-\sum_{j=0}^{i-1}\text{proj}_{p_j}(u_i) \tag{2.1.4}
-\end{align}</script><p>以此類推就可以得到一組 Mutually orthogonal vectors $\{p_0,\dots,p_{N-1}\}$，然而我們需要的是 $A$-orthogonal 的 vectors，因此可以定義 Projection 為 $A$ 內積空間的 Projection：</p>
+\end{aligned}</script><p>以此類推就可以得到一組 Mutually orthogonal vectors $\{p_0,\dots,p_{N-1}\}$，然而我們需要的是 $A$-orthogonal 的 vectors，因此可以定義 Projection 為 $A$ 內積空間的 Projection：</p>
 <script type="math/tex; mode=display">
 \text{proj}_{p_j}(u_i)=\frac{\langle u_i, p_j\rangle_A}{\langle p_j, p_j\rangle_A}p_j = \frac{u_i^TAp_j}{p_jAp_j}p_j \tag{2.1.5}</script><p>至於要如何找到 Linearly independent set $\{u_0, u_1, \dots, u_{N-1}\}$ 一個很直接的方式就是使用現成的 Residual $r$。</p>
 <p>我們知道 Residual 與 Error 的關係式 $r_j=-Ae_j$，而 $e_j=x_j-x^*$，$x_j=x_0+\sum_{k=0}^{j-1}\alpha_kp_k$ 且 $x^*=x_0+\sum_{k=0}^{N-1}\alpha_kp_k$，全部展開來後得到：</p>
