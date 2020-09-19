@@ -653,11 +653,11 @@ d^T_iA(e_i+\alpha_ip_i) = 0</script><p>移項整理後求得 $\alpha_i$：</p>
 \text{proj}_{p_j}(u_i)=\frac{\langle u_i, p_j\rangle_A}{\langle p_j, p_j\rangle_A}p_j = \frac{u_i^TAp_j}{p_jAp_j}p_j \tag{2.1.5}</script><p>至於要如何找到 Linearly independent set $\{u_0, u_1, \dots, u_{N-1}\}$ 一個很直接的方式就是使用現成的 Residual $r$。</p>
 <p>我們知道 Residual 與 Error 的關係式 $r_j=-Ae_j$，而 $e_j=x_j-x^*$，$x_j=x_0+\sum_{k=0}^{j-1}\alpha_kp_k$ 且 $x^*=x_0+\sum_{k=0}^{N-1}\alpha_kp_k$，全部展開來後得到：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 r_j &= -A\left( (x_0+\sum_{k=0}^{j-1}\alpha_kp_k)-(x_0+\sum_{k=0}^{N-1}\alpha_kp_k) \right)\\
     &= -A(-\sum_{k=j}^{N-1}\alpha_kp_k)\\
     &= \sum_{k=j}^{N-1}\alpha_kAp_k
-\end{align}</script><p>由此可以看出，Residual $r_i$ 是由 $\{Ap_{i+1}, \dots, Ap_{N-1}\}$ 組成的 Linear combination，而 $\{Ap_{i+1}, \dots, Ap_{N-1}\}$ 是 Linearly independent set，因此可以知道 $\{r_0, \dots, r_{N-1}\}$ 也一定會是 Linearly independent set。</p>
+\end{align*}</script><p>由此可以看出，Residual $r_i$ 是由 $\{Ap_{i+1}, \dots, Ap_{N-1}\}$ 組成的 Linear combination，而 $\{Ap_{i+1}, \dots, Ap_{N-1}\}$ 是 Linearly independent set，因此可以知道 $\{r_0, \dots, r_{N-1}\}$ 也一定會是 Linearly independent set。</p>
 <p>此外，這邊如果對兩邊同時乘上 $p_i$ 就會發生一件很有趣的事情，其中 $i&lt;j$ ，由於 $p_i$ 與其他 $p_j, \dots, p_{N-1}$ 為 $A$-orthogonal，因此得到：</p>
 <script type="math/tex; mode=display">
 p_i^Tr_j=\sum_{k=j}^{N-1}\alpha_kp_i^TAp_k=0, \quad i<j \tag{2.1.6}</script><p>使用 Residual $r$ 代替 $u$ 後，令 $\beta$ 為 Projection 的 Coefficient 項：</p>
@@ -675,11 +675,11 @@ p^T_ir_i=r_i^Tr_i</script><p>代入到 [式 2.1.3] 的 $\alpha_i$，得到新的
 <script type="math/tex; mode=display">
 \alpha_i = \frac{p^T_ir_i}{p^T_iAp_i} = \frac{r^T_ir_i}{p^T_iAp_i} \tag{2.1.9}</script><p>已知 $r_{j+1}=r_j-\alpha_jAp_j$，對等號兩邊乘上 $r_i$，整理後同除 $\alpha_j$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 r^T_i r_{j+1} &= r^T_ir_j-\alpha_jr^T_iAp_j\\
 \alpha_jr^T_iAp_j &= r^T_ir_j - r^T_i r_{j+1}\\
 r^T_iAp_j &= \frac{1}{\alpha_j}(r^T_ir_j - r^T_i r_{j+1})
-\end{align}</script><p>根據 [式 2.1.8]，可以得到，只有兩個狀況下 $r^T_iAp_j$ 會有值：</p>
+\end{align*}</script><p>根據 [式 2.1.8]，可以得到，只有兩個狀況下 $r^T_iAp_j$ 會有值：</p>
 <script type="math/tex; mode=display">
 r^T_iAp_j=\begin{cases}
 \frac{1}{\alpha_i}r^T_ir_j, \quad& i=j\\
@@ -692,22 +692,22 @@ r^T_iAp_j=\begin{cases}
 0, \quad&\text{otherwise}
 \end{cases}</script><p>將 [式 2.1.9] 的 $\alpha_{i-1}$ 代入，最後得到新的 $\beta$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 \beta_i &= \frac{p^T_{i-1}Ap_{i-1}}{r^T_{i-1}r_{i-1}}\frac{r^T_ir_i}{p_{i-1}^TAp_{i-1}}\\
     &= \frac{r^T_ir_i}{r^T_{i-1}r_{i-1}} \tag{2.1.10}
-\end{align}</script><p>結果 $p_i$ 一整個不見了，全部變成 Residual $r$。完全出乎意料。<br>寫到這邊為止的我：</p>
+\end{align*}</script><p>結果 $p_i$ 一整個不見了，全部變成 Residual $r$。完全出乎意料。<br>寫到這邊為止的我：</p>
 <p><img src="https://i.imgur.com/29vI4jy.png =500x" alt=""></p>
 <p>最後將全部放在一起得到完整的 Conjugate Gradient：</p>
 <script type="math/tex; mode=display">
-\begin{gather}
+\begin{gathered}
 p_0=r_0=b-Ax_0\\
 \alpha_i = \frac{r^T_ir_i}{p^T_iAp_i}\\
 x_{i+1}=x_i+\alpha_ip_i\\
 r_{i+1}=r_i-\alpha_iAp_i\\
 \beta_{i+1}=\frac{r^T_{i+1}r_{i+1}}{r^T_ir_i}\\
 p_{i+1}=r_{i+1}+\beta_{i+1}p_i
-\end{gather}</script><p>第一行 $p_0=r_0=b-Ax_0$ 是 Initial condition，之後就是持續 Iterate 直到 Residual $|r_{i+1}|\to 0$ 就結束 Iteration。通常可以另外設定一個 Tolerance 參數 $\epsilon \to 0$，當 $|r_{i+1}| &lt; \epsilon$ 時結束 Conjugate gradient。</p>
-<p>接下來就是 Convergence Analysis 與 Complexity 分析的部分，雖然這部分才是真正 Numerical Analysis 要做的事情，但礙於篇幅且不是很重要，在這邊就直接忽略，有興趣的可以自行研究 <a href="https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf">Ch. 9 Convergence Analysis / Ch. 10 Complexity</a>。這本書真的寫得很棒，有機會一定要看完！(我在說我，等我學會了 Numerical Analysis 再來補充)</p>
+\end{gathered}</script><p>第一行 $p_0=r_0=b-Ax_0$ 是 Initial condition，之後就是持續 Iterate 直到 Residual $|r_{i+1}|\to 0$ 就結束 Iteration。通常可以另外設定一個 Tolerance 參數 $\epsilon \to 0$，當 $|r_{i+1}| &lt; \epsilon$ 時結束 Conjugate gradient。</p>
+<p>接下來就是 Convergence Analysis 與 Complexity 分析的部分，雖然這部分才是真正 Numerical Analysis 要做的事情，但礙於篇幅且不是很重要，在這邊就直接忽略，有興趣的可以自行研究 <a href="https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf">Ch. 9 Convergence Analysis / Ch. 10 Complexity</a>。這本書真的寫得很棒，有機會一定要看完！(我在說我)</p>
 <h3 id="2-2-Preconditioned-Conjugate-Gradient"><a href="#2-2-Preconditioned-Conjugate-Gradient" class="headerlink" title="2-2. Preconditioned Conjugate Gradient"></a>2-2. Preconditioned Conjugate Gradient</h3><p>如果有看 <a href="https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf">Ch. 9 Convergence Analysis / Ch. 10 Complexity</a> 的話應該就會知道，Conjugate gradient 的收歛性取決於 Matrix $A$ 的 Condition number $\kappa(A)$ (Iteration 與 $\sqrt{\kappa(A)}$ 成正比)，$\kappa(A)$ 小則容易收斂，$\kappa(A)$ 大則不容易收斂。而 Condition number 定義為 $\kappa(A)=\frac{\lambda_\text{max}}{\lambda_\text{min}}\ge 1$，其中 $\lambda$ 為 $A$ 的 Eigenvalue。(等我學會了 Numerical Analysis 再來補充)</p>
 <p>在某些情況下，我們會希望 Conjugate Gradient 能夠再收斂的更快，例如：對於 $N$ 為 Million 等級的 Matrix $A$，我們不希望 Conjugate Gradient 執行 100 萬次才收斂到解答，而是希望在 1000 次內就可以得到近似解。這種情況下我們就會需要對原本的 Linear system 進行 Preconditioning，使得新的 Linear system 能夠更快收斂。</p>
 <p>假設 Linear system 不容易收斂 (也有人稱做 ill-conditioned system) $Ax=b$，我們希望可以找到新的 Linear system $\hat{A}\hat{x}=\hat{b}$，且新的 Linear system 能夠收斂的更快。換句話說，希望可以找到一個 $\hat{A}$，滿足 $\kappa(\hat{A})\ll \kappa(A)$。一種方法就是選擇一個 Non-singular matrix $M$，並套用到 Linear system：</p>
@@ -726,70 +726,70 @@ M^{-1}Ax=M^{-1}b</script><p>使得 $\kappa(M^{-1}A)\ll \kappa(A)$，同時 $M^{-
 </ul>
 <p>接著就是如何求解新的 Linear system，一種方式是直接計算出 $M^{-1}$ 後，將新的 $\hat{A}=M^{-1}A$，$\hat{b}=M^{-1}b$ 直接帶入 Conjugate gradient。另一種方式是將 $M$ 分解 $M=EE^T$ 且 $E$ 可能是比 $M$ 還要更容易計算 Inverse 的 Matrix (例如: Triangular matrix)。如果使用第二種 Case 的話，可以將 Linear system 拆解並轉換成新的 Linear system $\hat{A}\hat{x} = \hat{b}$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 M^{-1}Ax &= M^{-1}b\\
 E^{-1}AE^{-T}x &= E^{-1}E^{-T}b\\
 (E^{-1}AE^{-T})(E^Tx) &= (E^{-T}E^T)(E^{-1}b)\\
 \hat{A}\hat{x} &= \hat{b}
-\end{align}</script><p>其中 $\hat{A}=E^{-1}AE^{-T}$，$\hat{x}=E^Tx$，$\hat{b}=E^{-1}b$。帶入 Conjugate gradient 後得到新的 Conjugate gradient (其實就是全部加上 Hat)：</p>
+\end{align*}</script><p>其中 $\hat{A}=E^{-1}AE^{-T}$，$\hat{x}=E^Tx$，$\hat{b}=E^{-1}b$。帶入 Conjugate gradient 後得到新的 Conjugate gradient (其實就是全部加上 Hat)：</p>
 <script type="math/tex; mode=display">
-\begin{gather}
+\begin{gathered}
 \hat{p}_0=\hat{r}_0=\hat{b}-\hat{A}\hat{x}_0\\
 \hat{\alpha}_i = \frac{\hat{r}^T_i\hat{r}_i}{\hat{p}^T_i\hat{A}\hat{p}_i}\\
 \hat{x}_{i+1}=\hat{x}_i+\hat{\alpha}_i\hat{p}_i\\
 \hat{r}_{i+1}=\hat{r}_i-\hat{\alpha}_i\hat{A}\hat{p}_i\\
 \hat{\beta}_{i+1}=\frac{\hat{r}^T_{i+1}\hat{r}_{i+1}}{\hat{r}^T_i\hat{r}_i}\\
 \hat{p}_{i+1}=\hat{r}_{i+1}+\hat{\beta}_{i+1}\hat{p}_i
-\end{gather}</script><p>接下來就是將 Hat 都展開來。計算出新的 Residual $\hat{r}_i$ 與舊 Residual $r_i$ 的關係：</p>
+\end{gathered}</script><p>接下來就是將 Hat 都展開來。計算出新的 Residual $\hat{r}_i$ 與舊 Residual $r_i$ 的關係：</p>
 <script type="math/tex; mode=display">
 \hat{r}_i= \hat{b}-\hat{A}\hat{x}_i=E^{-1}b-(E^{-1}AE^{-T})(E^Tx)=E^{-1}r_i</script><p>再由 [式 2.1.2] 可以得到：</p>
 <script type="math/tex; mode=display">
 \hat{x}=E^Tx=E^T(x_0+\sum_{i=0}^{N-1}\alpha_ip_i)=E^Tx_0+\sum_{i=0}^{N-1}\alpha_iE^Tp_i</script><p>因此定義 $\hat{p}_i=E^Tp_i$，則 $\hat{\alpha}_i$ 可以展開：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 \hat{\alpha}_i &= \frac{\hat{r}^T_i\hat{r}_i}{\hat{p}^T_i\hat{A}\hat{p}_i}\\
     &= \frac{(E^{-1}r_i)^T(E^{-1}r_i)}{(E^Tp_i)^T(E^{-1}AE^{-T})(E^Tp_i)}\\
     &= \frac{r_i^T(E^{-T}E^{-1})r_i}{p_i^T(EE^{-1})A(E^{-T}E^T)p_i}\\
     &= \frac{r_i^TM^{-1}r_i}{p_i^TAp_i}
-\end{align}</script><p>接下來將 $\hat{x}_{i+1} = \hat{x}_i+\hat{\alpha}_i\hat{p}_i$ 展開得到：</p>
+\end{align*}</script><p>接下來將 $\hat{x}_{i+1} = \hat{x}_i+\hat{\alpha}_i\hat{p}_i$ 展開得到：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 \hat{x}_{i+1} &= \hat{x}_i+\hat{\alpha}_i\hat{p}_i\\
 E^Tx_{i+1} &= E^Tx_i + \hat{\alpha}_iE^Tp_i\\
 E^Tx_{i+1} &= E^T(x_i + \hat{\alpha}_ip_i)\\
 x_{i+1} &= x_i + \hat{\alpha}_ip_i
-\end{align}</script><p>接下來 $\hat{r}_{i+1}=\hat{r}_i-\hat{\alpha}_i\hat{A}\hat{p}_i$ 也展開：</p>
+\end{align*}</script><p>接下來 $\hat{r}_{i+1}=\hat{r}_i-\hat{\alpha}_i\hat{A}\hat{p}_i$ 也展開：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 \hat{r}_{i+1} &= \hat{r}_i-\hat{\alpha}_i\hat{A}\hat{p}_i\\
 E^{-1}r_{i+1} &= E^{-1}r_i-\hat{\alpha}_i(E^{-1}AE^{-T})(E^Tp_i)\\
 E^{-1}r_{i+1} &= E^{-1}r_i-\hat{\alpha}_iE^{-1}A(E^{-T}E^T)p_i\\
 E^{-1}r_{i+1} &= E^{-1}(r_i-\hat{\alpha}_iAp_i)\\
 r_{i+1} &= r_i-\hat{\alpha}_iAp_i
-\end{align}</script><p>接下來展開 $\hat{\beta}_{i+1}$：</p>
+\end{align*}</script><p>接下來展開 $\hat{\beta}_{i+1}$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 \hat{\beta}_{i+1} &= \frac{\hat{r}^T_{i+1}\hat{r}_{i+1}}{\hat{r}^T_i\hat{r}_i}\\
     &= \frac{(E^{-1}r_{i+1})^T(E^{-1}r_{i+1})}{(E^{-1}r_i)^T(E^{-1}r_i)}\\
     &= \frac{r^T_{i+1}(E^{-T}E^{-1})r_{i+1}}{r^T_{i}(E^{-T}E^{-1})r_{i}}\\
     &= \frac{r^T_{i+1}M^{-1}r_{i+1}}{r^T_{i}M^{-1}r_{i}}
-\end{align}</script><p>接下來展開 $\hat{p}_{i+1}=\hat{r}_{i+1}+\hat{\beta}_{i+1}\hat{p}_i$：</p>
+\end{align*}</script><p>接下來展開 $\hat{p}_{i+1}=\hat{r}_{i+1}+\hat{\beta}_{i+1}\hat{p}_i$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 \hat{p}_{i+1} &= \hat{r}_{i+1}+\hat{\beta}_{i+1}\hat{p}_i\\
 E^Tp_{i+1} &= E^{-1}r_{i+1}+\hat{\beta}_{i+1}E^Tp_i\\
 E^{-T}E^Tp_{i+1} &= (E^{-T}E^{-1})r_{i+1} + \hat{\beta}_{i+1}E^{-T}E^Tp_i\\
 p_{i+1} &= M^{-1}r_{i+1} + \hat{\beta}_{i+1}p_i
-\end{align}</script><p>最後一件最重要的事情就是展開 $\hat{p}_0=\hat{r}_0$：</p>
+\end{align*}</script><p>最後一件最重要的事情就是展開 $\hat{p}_0=\hat{r}_0$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 \hat{p}_0 &= \hat{r}_0\\
 E^Tp_0 &= E^{-1} r_0\\
 p_0 &= E^{-T}E^{-1} r_0\\
 p_0 &= M^{-1}r_0
-\end{align}</script><p>全部整理起來得到：</p>
+\end{align*}</script><p>全部整理起來得到：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 r_0&=b-Ax_0\\
 p_0 &= M^{-1}r_0\\
 \alpha_i &= \frac{r_i^TM^{-1}r_i}{p_i^TAp_i}\\
@@ -797,9 +797,9 @@ x_{i+1} &= x_i + \alpha_ip_i\\
 r_{i+1} &= r_i-\alpha_iAp_i\\
 \beta_{i+1} &= \frac{r^T_{i+1}M^{-1}r_{i+1}}{r^T_{i}M^{-1}r_{i}}\\
 p_{i+1} &= M^{-1}r_{i+1} + \hat{\beta}_{i+1}p_i
-\end{align}</script><p>接著令 $z_i=M^{-1}r_i$ 得到 Preconditioned conjugate gradient：</p>
+\end{align*}</script><p>接著令 $z_i=M^{-1}r_i$ 得到 Preconditioned conjugate gradient：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 r_0 &= b-Ax_0\\
 z_0 &= M^{-1}r_0\\
 p_0 &= z_0\\
@@ -809,7 +809,7 @@ r_{i+1} &= r_i-\alpha_iAp_i\\
 z_{i+1} &= M^{-1}r_{i+1}\\
 \beta_{i+1} &= \frac{r^T_{i+1}z_{i+1}}{r^T_{i}z_{i}}\\
 p_{i+1} &= z_{i+1} + \hat{\beta}_{i+1}p_i
-\end{align}</script><p>結果發現其實根本需要 $E$ 的我：<br><img src="https://i.imgur.com/db33QIH.png =300x" alt=""></p>
+\end{align*}</script><p>結果發現其實根本需要 $E$ 的我：<br><img src="https://i.imgur.com/db33QIH.png =300x" alt=""></p>
 <h3 id="2-3-Incomplete-Cholesky-Preconditioned-Conjugate-Gradient-ICCG"><a href="#2-3-Incomplete-Cholesky-Preconditioned-Conjugate-Gradient-ICCG" class="headerlink" title="2-3. Incomplete-Cholesky Preconditioned Conjugate Gradient (ICCG)"></a>2-3. Incomplete-Cholesky Preconditioned Conjugate Gradient (ICCG)</h3><ul>
 <li><a href="https://en.wikipedia.org/wiki/Cholesky_decomposition#Positive_semidefinite_matrices">Cholesky decomposition - wiki</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Incomplete_Cholesky_factorization">Incomplete Cholesky factorization - wiki</a></li>
@@ -823,18 +823,18 @@ p_{i+1} &= z_{i+1} + \hat{\beta}_{i+1}p_i
 </ul>
 <p>但根據 Preconditioned conjugate gradient 計算 $z_{i+1}=M^{-1}r_{i+1}$，其實可以發現不一定要計算出 $M^{-1}$。假若 $M$ 可以被分解為 $M=EE^T$，帶入公式後得到</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 z_{i+1}&=(EE^T)^{-1}r_{i+1}\\
 z_{i+1}&= E^{-1}\underbrace{(E^{-T} r_{i+1})}_y\\
 z_{i+1}&= E^{-1}y
-\end{align}</script><p>令 $y=E^{-T}r_{i+1}$，原本需要計算出 Inverse matrix $M^{-1}$ 變成只須計算 $E^{-1}$ 並分別求解 $y=E^{-T}r_{i+1}$ 與 $z_{i+1} = E^{-1}y$，就能能夠計算出 $z_{i+1}$。因此若有辦法將 $M$ 分解成更容易計算 Inverse 的 Matrix $E$ 那將會一大福音。正好，Cholesky 認為任何 Symmetric (Hermitian) positive definite matrix $M$ 都能夠分解為 Lower triangular matrix $L$ 及其 Transpose $L^T$ (若非 Real matrix 則為 Conjugate transpose)，也就是 $M=LL^T$，這個方法稱作 Cholesky factorization。而剛好 Triangular matrix 非常好求 Inverse。</p>
+\end{align*}</script><p>令 $y=E^{-T}r_{i+1}$，原本需要計算出 Inverse matrix $M^{-1}$ 變成只須計算 $E^{-1}$ 並分別求解 $y=E^{-T}r_{i+1}$ 與 $z_{i+1} = E^{-1}y$，就能能夠計算出 $z_{i+1}$。因此若有辦法將 $M$ 分解成更容易計算 Inverse 的 Matrix $E$ 那將會一大福音。正好，Cholesky 認為任何 Symmetric (Hermitian) positive definite matrix $M$ 都能夠分解為 Lower triangular matrix $L$ 及其 Transpose $L^T$ (若非 Real matrix 則為 Conjugate transpose)，也就是 $M=LL^T$，這個方法稱作 Cholesky factorization。而剛好 Triangular matrix 非常好求 Inverse。</p>
 <div class="note info">
             <p>Prove: 若 $M$ 為 Symmetric positive definite matrix，則存在唯一的 Cholesky factorization $LL^T$，其中 $L$ 是 Lower triangular matrix，且 Diagonal element 皆為正。</p><p>(等我想到再補充)</p>
           </div>
 <p>然而，為了滿足 $M\approx A$ 而直接取 $M=A$ 計算 Cholesky factorization 還是會遇到同樣 $A^{-1}$ 的問題，除此之外，對於 Sparse matrix ($n\ll N\times N$，其中 $n$ 為非零項的數量) 而言， Cholesky factorization 是一大問題：經過分解後會爆出一堆非零項，使得 Sparse matrix 變得不是 Sparse。因此，解決方法就是使用 Incomplete-Cholesky factorization，來維持 Matrix 的 Sparsity。Incomplete-Cholesky factorization 在對 $A$ 計算 Cholesky factorization 的時候會將原本 $A$ 為 $0$ 的項維持為 $0$，只針對非零項計算，因此最後的結果會與原先的 Matrix 擁有相同的 Sparsity，同時可以得到一個很好的 Approximation $M=LL^T\approx A$。</p>
 <h3 id="2-4-ICCG-Algorithm"><a href="#2-4-ICCG-Algorithm" class="headerlink" title="2-4. ICCG Algorithm"></a>2-4. ICCG Algorithm</h3><p>Recall 前幾節的結果，Incomplete-Cholesky preconditioned conjugate gradient：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 r_0 &= b-Ax_0\\
 L &= \text{Preconditioning}(A)\\
 z_0 &= L^{-1}L^{-T}r_0\\
@@ -845,12 +845,12 @@ r_{i+1} &= r_i-\alpha_iAp_i\\
 z_{i+1} &= L^{-1}L^{-T}r_{i+1}\\
 \beta_{i+1} &= \frac{r^T_{i+1}z_{i+1}}{r^T_{i}z_{i}}\\
 p_{i+1} &= z_{i+1} + \hat{\beta}_{i+1}p_i
-\end{align}</script><p>假設 Initial guess $x_0=\mathbf{0}$，可以得到：</p>
+\end{align*}</script><p>假設 Initial guess $x_0=\mathbf{0}$，可以得到：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 x_0 &= 0\\
 r_0 &= b
-\end{align}</script><p>轉換成演算法：</p>
+\end{align*}</script><p>轉換成演算法：</p>
 <p><img src="https://i.imgur.com/alrj8hn.png" alt=""></p>
 <p>基本上這個演算法是一步一步根據推出來的公式計算，最標準的流程。維基百科也是使用這個順序。但為了後續方便使用 cuBLAS/cuSPARSE 實做，我比較習慣稍微調動一些順序變成下圖：</p>
 <p><img src="https://i.imgur.com/hL1FiZD.png" alt=""></p>
@@ -896,7 +896,30 @@ r_0 &= b
 <li>Level-2：Matrix-vector operations。例如，Matrix-vector multiplication 等等。</li>
 <li>Level-3：Matrix-matrix operations。例如，Matrix-matrix multiplication 等等。</li>
 </ul>
-<p>根據不同的資料型態，API 的名稱也會不一樣：<br>|Type|Notation <code>&lt;t&gt;</code> | Meaning|<br>|-|-|-|<br>|<code>float</code>| ‘s’ or ‘S’ | Real single-precision |<br>|<code>double</code>| ‘d’ or ‘D’ | Real double-precision |<br>|<code>cuComplex</code>| ‘c’ or ‘C’ | Complex single-precision|<br>|<code>cuDoubleComplex</code>|’z’ or ‘Z’|Complex double-precision|</p>
+<p>根據不同的資料型態，API 的名稱也會不一樣：<br>| Type | Notation <code>&lt;t&gt;</code> | Meaning |<br>|——|——|——-|<br>| <code>float</code> | ‘s’ or ‘S’ | Real single-precision |<br>| <code>double</code> | ‘d’ or ‘D’ | Real double-precision |<br>| <code>cuComplex</code> | ‘c’ or ‘C’ | Complex single-precision |<br>| <code>cuDoubleComplex</code> | ‘z’ or ‘Z’ | Complex double-precision |</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>标题1</th>
+<th>标题2</th>
+<th>标题3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文本好短</td>
+<td>文本不短也不长</td>
+<td>文本好长文本好长文本好长</td>
+</tr>
+<tr>
+<td>文本好长文本好长文本好长</td>
+<td>文本好短</td>
+<td>文本不短也不长</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>舉例來說， Level-1 的 Function <code>cublas&lt;t&gt;axpy</code>，計算 Vector $x$ 與 Vector $y$ 的加法，$y\gets\alpha x+y$</p>
 <p><img src="https://i.imgur.com/QKCou7y.png" alt=""></p>
 <p>Level-2 的 Function <code>cublas&lt;t&gt;gemv</code>，計算 Matrix $A$ 與 Vector $x$ 的乘法，$y\gets\alpha \text{OP}(A)x+\beta y$</p>
