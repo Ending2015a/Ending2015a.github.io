@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://i.imgur.com/hL1FiZD.png">
 <meta property="og:image" content="https://i.imgur.com/iX7VgCC.png">
 <meta property="article:published_time" content="2020-09-19T14:52:53.000Z">
-<meta property="article:modified_time" content="2020-09-19T15:49:39.142Z">
+<meta property="article:modified_time" content="2020-09-19T15:53:42.924Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Tuto">
@@ -263,7 +263,7 @@
               <span class="post-meta-item-text">發表於</span>
               
 
-              <time title="創建時間：2020-09-19 22:52:53 / 修改時間：23:49:39" itemprop="dateCreated datePublished" datetime="2020-09-19T22:52:53+08:00">2020-09-19</time>
+              <time title="創建時間：2020-09-19 22:52:53 / 修改時間：23:53:42" itemprop="dateCreated datePublished" datetime="2020-09-19T22:52:53+08:00">2020-09-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -353,11 +353,11 @@
             <p>Prove Eigenvalues 一定為實數：<br>假設 Symmetric (Hermitian) matrix $A$，假設 $\lambda$ 為 $A$ 的 Eigenvalue，以及對應的 Eigenvector $x$，則 $Ax=\lambda x$。取 Conjugate transpose $\bar{x}^TA^\dagger=\bar{x}^T\bar{\lambda}$。由於 $A$ 為 Symmetric (Hermitian) matrix，$A^\dagger=A$，因此 $\bar{x}^TA=\bar{x}^T\bar{\lambda}$。兩邊同乘 $x$ 得到：</p><script type="math/tex; mode=display">\bar{x}^TAx=\bar{x}^T\bar{\lambda}x</script><p>對 $Ax=\lambda x$ 兩邊同乘 $\bar{x}$：</p><script type="math/tex; mode=display">\bar{x}^TAx=\bar{x}^T\lambda x</script><p>得到 $\bar{x}^T\bar{\lambda}x=\bar{x}^T\lambda x$，若 $x\ne \mathbf{0}$，則 $\bar{\lambda}=\lambda$，因此 Eigenvalue 一定為 Real number。</p>
           </div>
 <div class="note info">
-            <p>Prove 一定存在一組 Orthonormal eigenvectors：<br>假設兩個 Symmetric (Hermitian) matrix $A$ 的 Eigenvalue $\lambda_a$ 與 $\lambda_b$，且 $\lambda_a\ne \lambda_b$，以及其分別對應的 Eigenvectors $x_a$, $x_b$，</p><script type="math/tex; mode=display">\begin{align}\lambda_a \langle x_a, x_b \rangle     &= \langle \lambda_ax_a, x_b \rangle\\    &= \langle Ax_a, x_b \rangle\\    &= \langle x_a, Ax_b \rangle\\    &= \langle x_a, \lambda_bx_b \rangle\\    &= \lambda_b \langle x_a, x_b \rangle \end{align}</script><p>得到 $\lambda_a \langle x_a, x_b \rangle=\lambda_b \langle x_a, x_b \rangle $，移項整理後得到：</p><script type="math/tex; mode=display">(\lambda_a-\lambda_b)\langle x_a, x_b \rangle=0</script><p>由於 $\lambda_a \ne \lambda_b \Leftrightarrow \lambda_a-\lambda_b\ne 0$，因此得到 $\langle x_a, x_b\rangle=0$，表示 $x_a$ 與 $x_b$ 為 Orthogonal。</p>
+            <p>Prove 一定存在一組 Orthonormal eigenvectors：<br>假設兩個 Symmetric (Hermitian) matrix $A$ 的 Eigenvalue $\lambda_a$ 與 $\lambda_b$，且 $\lambda_a\ne \lambda_b$，以及其分別對應的 Eigenvectors $x_a$, $x_b$，</p><script type="math/tex; mode=display">\begin{aligned}\lambda_a \langle x_a, x_b \rangle     &= \langle \lambda_ax_a, x_b \rangle\\    &= \langle Ax_a, x_b \rangle\\    &= \langle x_a, Ax_b \rangle\\    &= \langle x_a, \lambda_bx_b \rangle\\    &= \lambda_b \langle x_a, x_b \rangle \end{aligned}</script><p>得到 $\lambda_a \langle x_a, x_b \rangle=\lambda_b \langle x_a, x_b \rangle $，移項整理後得到：</p><script type="math/tex; mode=display">(\lambda_a-\lambda_b)\langle x_a, x_b \rangle=0</script><p>由於 $\lambda_a \ne \lambda_b \Leftrightarrow \lambda_a-\lambda_b\ne 0$，因此得到 $\langle x_a, x_b\rangle=0$，表示 $x_a$ 與 $x_b$ 為 Orthogonal。</p>
           </div>
 <p>Symmetric positive definite matrix 有更棒的特性：Eigenvalues 一定都為正數</p>
 <div class="note info">
-            <p>Prove Symmetric (Hermitian) matrix $A$ 的 Eigenvalue 都是正數 $\Leftrightarrow$ Matrix $A$ 為 Symmetric positive definite matrix：<br>$(\Rightarrow)$：假設 $\Lambda$ 為由 $A$ 所有 Eigenvalues 組成的 Diagonal matrix $\Lambda_{ii}=\lambda_i$，且 $\lambda_i \ne \lambda_j, i\ne j$，$Q$ 為各個 Column 由各個 Eigenvalue $\lambda_i$ 所對應的 Eigenvector $x_i$ 組成的 Matrix $\left[\begin{matrix} x_1, \dots, x_N \end{matrix}\right]$。則根據 $Ax=\lambda x$，得到：</p><script type="math/tex; mode=display">\begin{align}AQ &= Q\Lambda\\A &= Q\Lambda Q^{-1}\end{align}</script><p>由於 $A$ 為 Symmetric matrix，因此由 Eigenvectors 組成的 $Q$ 為 Orthonomal matrix，Orthonomal matrix 有特性 $Q^{-1}=Q^T$，因此得到：</p><script type="math/tex; mode=display">A = Q\Lambda Q^T</script><p>接著假設任意 Vector $x$ 屬於 Vector space，且不為 $\mathbf{0}$，則：</p><script type="math/tex; mode=display">x^TAx=\underbrace{x^TQ}_{y^T}\Lambda \underbrace{Q^Tx}_{y}=y^T\Lambda y=\sum_{i=0}^N \lambda_i {y_i}^2 >0</script><p>由於 $A$ 為 Symmetric matrix，$\lambda_i&gt;0$ 且 $y_i^2&gt;0$ 因此得到 $x^TAx&gt;0$，得證。</p><p>$(\Leftarrow)$ 假設 Symmetric positive definite matrix $A$ 的任意 Eigenvalue $\lambda$，以及對應的 Eigenvector $x\ne \mathbf{0}$，有 $Ax=\lambda x$。兩邊同乘 $x^T$：</p><script type="math/tex; mode=display">\begin{align}x^TAx &= \lambda x^Tx\\\lambda &= \frac{x^TAx}{x^Tx} > 0\end{align}</script><p>由於 $A$ 為 Symmetric positive definite，因此 $x^TAx&gt;0$。且 $x\ne\mathbf{0}$，因此 ${x^Tx} &gt; 0$。得證。</p>
+            <p>Prove Symmetric (Hermitian) matrix $A$ 的 Eigenvalue 都是正數 $\Leftrightarrow$ Matrix $A$ 為 Symmetric positive definite matrix：<br>$(\Rightarrow)$：假設 $\Lambda$ 為由 $A$ 所有 Eigenvalues 組成的 Diagonal matrix $\Lambda_{ii}=\lambda_i$，且 $\lambda_i \ne \lambda_j, i\ne j$，$Q$ 為各個 Column 由各個 Eigenvalue $\lambda_i$ 所對應的 Eigenvector $x_i$ 組成的 Matrix $\left[\begin{matrix} x_1, \dots, x_N \end{matrix}\right]$。則根據 $Ax=\lambda x$，得到：</p><script type="math/tex; mode=display">\begin{aligned}AQ &= Q\Lambda\\A &= Q\Lambda Q^{-1}\end{aligned}</script><p>由於 $A$ 為 Symmetric matrix，因此由 Eigenvectors 組成的 $Q$ 為 Orthonomal matrix，Orthonomal matrix 有特性 $Q^{-1}=Q^T$，因此得到：</p><script type="math/tex; mode=display">A = Q\Lambda Q^T</script><p>接著假設任意 Vector $x$ 屬於 Vector space，且不為 $\mathbf{0}$，則：</p><script type="math/tex; mode=display">x^TAx=\underbrace{x^TQ}_{y^T}\Lambda \underbrace{Q^Tx}_{y}=y^T\Lambda y=\sum_{i=0}^N \lambda_i {y_i}^2 >0</script><p>由於 $A$ 為 Symmetric matrix，$\lambda_i&gt;0$ 且 $y_i^2&gt;0$ 因此得到 $x^TAx&gt;0$，得證。</p><p>$(\Leftarrow)$ 假設 Symmetric positive definite matrix $A$ 的任意 Eigenvalue $\lambda$，以及對應的 Eigenvector $x\ne \mathbf{0}$，有 $Ax=\lambda x$。兩邊同乘 $x^T$：</p><script type="math/tex; mode=display">\begin{aligned}x^TAx &= \lambda x^Tx\\\lambda &= \frac{x^TAx}{x^Tx} > 0\end{aligned}</script><p>由於 $A$ 為 Symmetric positive definite，因此 $x^TAx&gt;0$。且 $x\ne\mathbf{0}$，因此 ${x^Tx} &gt; 0$。得證。</p>
           </div>
 <p>基於這些特性，Symmetric positive definite matrix $A$ 可以定義內積。</p>
 <p>利用 Symmetric positive definite matrix $A$ 定義一個基於 Vector space $\mathbb{R}^N$ 的內積空間 (Inner product space)，內積定義為：</p>
@@ -379,7 +379,7 @@ x=A^{-1}b</script><p>然而，對於 Large-scale sparse matrix 而言 ($N$ 非�
 f'(x)=Ax-b \tag{1.3.2}</script><p>根據一階微分，我們能夠得出 Quadratic form：</p>
 <script type="math/tex; mode=display">
 f(x) = \frac{1}{2}x^TAx-b^Tx+c \tag{1.3.3}</script><p>則目標變成：找到 $x$ 使得 $f’(x)=\mathbf{0}$。也就是說，找到 $x$，使得 $f(x)$ 為極值，且若 $A$ 為 Symmetric positive definite matrix，則該極值一定會是最小值。</p>
-<p>證明方法非常簡單，假設 $x^<em> $ 滿足 $Ax^</em> = b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^<em> + e) &gt; f(x^</em>)$：</p>
+<p>證明方法非常簡單，假設 $x^<em> $ 滿足 $A{x</em>} = b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^<em> + e) &gt; f(x^</em>)$：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 f(x^* + e) 
@@ -1258,7 +1258,7 @@ y\gets \alpha \text{OP}(A)x+\beta y</script><p><img src="https://i.imgur.com/zxs
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="所需總閱讀時間">2:56</span>
+    <span title="所需總閱讀時間">2:57</span>
 </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
 
 
