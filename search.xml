@@ -491,4 +491,779 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
         <tag>Metaprogramming</tag>
       </tags>
   </entry>
+  <entry>
+    <title>[Tuto] 夢魘のCUDA: 使用 Preconditioned Conjugate Gradient 輕鬆解決大型稀疏線性方程組</title>
+    <url>/2020/09/02/preconditioned-conjugate-gradient/</url>
+    <content><![CDATA[<div class="note info">
+            <p>推薦難度：</p><ul><li>線性代數：✦✦✧✧✧ (高手)</li><li>程式設計：✦✦✧✧✧ (高手)</li></ul>
+          </div>
+<p>特別感謝 <em>冠大大</em>、<em>王大大</em>。</p>
+<p>《夢魘のCUDA》是 CUDA Programming 系列，<strong>此系列不會介紹任何 CUDA 的基礎知識</strong>，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cuBLAS / cuSPARSE；除此之外，本篇也會講解如何使用這兩套 Library 實作出經典應用 —- Preconditioned Conjugate Gradient。之所以說是經典應用的原因是因為，cuSPARSE 幾乎是為了這個應用而誕生的。</p>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><ul>
+<li><a href="https://en.wikipedia.org/wiki/Conjugate_gradient_method">Conjugate gradient method - wiki</a></li>
+</ul>
+<p>Conjugate gradient method 是一種數值分析 (Numerical analysis) 方法，用來解決大型稀疏線性方程組 (Large-scale sparse linear systems)。其中，線性方程組的矩陣必須是對稱正定矩陣 (Symmetric positive definite matrix)。</p>
+<h3 id="1-1-Inner-Product-Space"><a href="#1-1-Inner-Product-Space" class="headerlink" title="1-1. Inner Product Space"></a>1-1. Inner Product Space</h3><ul>
+<li><a href="https://en.wikipedia.org/wiki/Inner_product_space">Inner product space - wiki</a></li>
+</ul>
+<p>首先必須知道內積 (inner product) 的定義，對一個 map function $\langle\cdot,\cdot\rangle: V\times V \to F$，其中 vector space $V$，  field $F$，若滿足以下三個條件則稱這個 map function 是 inner product，其中 $x,y,z\in V$：</p>
+<ul>
+<li>Conjugate symmetry：<script type="math/tex; mode=display">
+\langle x, y \rangle=\overline{\langle y, x \rangle}</script><div class="note info">
+            <p>這通常是定義給複數的 Vector space，對於實數的 Vector space 只需滿足 $\langle x, y \rangle=\langle y, x \rangle$</p>
+          </div></li>
+<li>Linearity:<script type="math/tex; mode=display">
+\begin{gather}
+\langle ax, y \rangle=a\langle x,y\rangle\\
+\langle x+y,z\rangle = \langle x,z\rangle + \langle y,z \rangle
+\end{gather}</script><div class="note info">
+            <p>這應該不需多做解釋</p>
+          </div></li>
+<li>Positive-definiteness:<script type="math/tex; mode=display">
+\langle x,x\rangle > 0, \quad x\in V \setminus\{\mathbf{0}\}</script><div class="note info">
+            <p>注意 $\mathbf{0}$ 代表 Vector space $V$ 的零向量。<br>此外，這個性質也 imply 若 $\langle x,x\rangle=0$ 則 $x=\mathbf{0}$。</p>
+          </div>
+</li>
+</ul>
+<h3 id="1-2-Symmetric-Positive-Definite-Matrix"><a href="#1-2-Symmetric-Positive-Definite-Matrix" class="headerlink" title="1-2. Symmetric Positive Definite Matrix"></a>1-2. Symmetric Positive Definite Matrix</h3><p>若一個 $N\times N$ 的 Real matrix $A$ 滿足以下條件，則稱 $A$ 為 Symmetric positive definite matrix：</p>
+<ul>
+<li>Symmetric：$A=A^T$</li>
+<li>Positive definite：對於任意非 $0$ 向量 $x\in\mathbb{R}^N$，滿足 $x^TAx&gt;0$</li>
+</ul>
+<p>Symmetric matrix (複數則是 Hermitian matrix) 具有以下特性：</p>
+<ul>
+<li>Eigenvalues 一定為實數</li>
+<li>一定存在一組 Orthonormal eigenvectors</li>
+</ul>
+<div class="note info">
+            <p>Prove Eigenvalues 一定為實數：<br>假設 Symmetric (Hermitian) matrix $A$，假設 $\lambda$ 為 $A$ 的 Eigenvalue，以及對應的 Eigenvector $x$，則 $Ax=\lambda x$。取 Conjugate transpose $\bar{x}^TA^\dagger=\bar{x}^T\bar{\lambda}$。由於 $A$ 為 Symmetric (Hermitian) matrix，$A^\dagger=A$，因此 $\bar{x}^TA=\bar{x}^T\bar{\lambda}$。兩邊同乘 $x$ 得到：</p><script type="math/tex; mode=display">\bar{x}^TAx=\bar{x}^T\bar{\lambda}x</script><p>對 $Ax=\lambda x$ 兩邊同乘 $\bar{x}$：</p><script type="math/tex; mode=display">\bar{x}^TAx=\bar{x}^T\lambda x</script><p>得到 $\bar{x}^T\bar{\lambda}x=\bar{x}^T\lambda x$，若 $x\ne \mathbf{0}$，則 $\bar{\lambda}=\lambda$，因此 Eigenvalue 一定為 Real number。</p>
+          </div>
+<div class="note info">
+            <p>Prove 一定存在一組 Orthonormal eigenvectors：<br>假設兩個 Symmetric (Hermitian) matrix $A$ 的 Eigenvalue $\lambda_a$ 與 $\lambda_b$，且 $\lambda_a\ne \lambda_b$，以及其分別對應的 Eigenvectors $x_a$, $x_b$，</p><script type="math/tex; mode=display">\begin{align}\lambda_a \langle x_a, x_b \rangle     &= \langle \lambda_ax_a, x_b \rangle\\    &= \langle Ax_a, x_b \rangle\\    &= \langle x_a, Ax_b \rangle\\    &= \langle x_a, \lambda_bx_b \rangle\\    &= \lambda_b \langle x_a, x_b \rangle \end{align}</script><p>得到 $\lambda_a \langle x_a, x_b \rangle=\lambda_b \langle x_a, x_b \rangle $，移項整理後得到：</p><script type="math/tex; mode=display">(\lambda_a-\lambda_b)\langle x_a, x_b \rangle=0</script><p>由於 $\lambda_a \ne \lambda_b \Leftrightarrow \lambda_a-\lambda_b\ne 0$，因此得到 $\langle x_a, x_b\rangle=0$，表示 $x_a$ 與 $x_b$ 為 Orthogonal。</p>
+          </div>
+<p>Symmetric positive definite matrix 有更棒的特性：Eigenvalues 一定都為正數</p>
+<div class="note info">
+            <p>Prove Symmetric (Hermitian) matrix $A$ 的 Eigenvalue 都是正數 $\Leftrightarrow$ Matrix $A$ 為 Symmetric positive definite matrix：<br>$(\Rightarrow)$：假設 $\Lambda$ 為由 $A$ 所有 Eigenvalues 組成的 Diagonal matrix $\Lambda_{ii}=\lambda_i$，且 $\lambda_i \ne \lambda_j, i\ne j$，$Q$ 為各個 Column 由各個 Eigenvalue $\lambda_i$ 所對應的 Eigenvector $x_i$ 組成的 Matrix $\left[\begin{matrix} x_1, \dots, x_N \end{matrix}\right]$。則根據 $Ax=\lambda x$，得到：</p><script type="math/tex; mode=display">\begin{align}AQ &= Q\Lambda\\A &= Q\Lambda Q^{-1}\end{align}</script><p>由於 $A$ 為 Symmetric matrix，因此由 Eigenvectors 組成的 $Q$ 為 Orthonomal matrix，Orthonomal matrix 有特性 $Q^{-1}=Q^T$，因此得到：</p><script type="math/tex; mode=display">A = Q\Lambda Q^T</script><p>接著假設任意 Vector $x$ 屬於 Vector space，且不為 $\mathbf{0}$，則：</p><script type="math/tex; mode=display">x^TAx=\underbrace{x^TQ}_{y^T}\Lambda \underbrace{Q^Tx}_{y}=y^T\Lambda y=\sum_{i=0}^N \lambda_i {y_i}^2 >0</script><p>由於 $A$ 為 Symmetric matrix，$\lambda_i&gt;0$ 且 $y_i^2&gt;0$ 因此得到 $x^TAx&gt;0$，得證。</p><p>$(\Leftarrow)$ 假設 Symmetric positive definite matrix $A$ 的任意 Eigenvalue $\lambda$，以及對應的 Eigenvector $x\ne \mathbf{0}$，有 $Ax=\lambda x$。兩邊同乘 $x^T$：</p><script type="math/tex; mode=display">\begin{align}x^TAx &= \lambda x^Tx\\\lambda &= \frac{x^TAx}{x^Tx} > 0\end{align}</script><p>由於 $A$ 為 Symmetric positive definite，因此 $x^TAx&gt;0$。且 $x\ne\mathbf{0}$，因此 ${x^Tx} &gt; 0$。得證。</p>
+          </div>
+<p>基於這些特性，Symmetric positive definite matrix $A$ 可以定義內積。</p>
+<p>利用 Symmetric positive definite matrix $A$ 定義一個基於 Vector space $\mathbb{R}^N$ 的內積空間 (Inner product space)，內積定義為：</p>
+<script type="math/tex; mode=display">
+\langle x,y\rangle_A=x^TAy</script><p>由於 Matrix $A$ 為 Symmetric，我們可以知道這個內積滿足 Inner product 的第一個條件 (Conjugate symmetry)，也就是 $x^TAy=y^TAx$。由於 $x^TAy$ 是線性的，滿足 Inner product 的第二個條件 (Linearity)，由於 $A$ 為 Positive definite，滿足 Inner product 的第三個條件 (Positive-definiteness)。因此，$\langle \cdot,\cdot\rangle_A$ 是一個合法的內積。</p>
+<p>產生 Symmetric positive definite matrix 非常簡單，設一個 $m\times n, m<n$ Matrix $A$，為 Full row rank，$AA^T$ 就會是 Symmetric positive definite matrix。
+<div class="note info">
+            <p>Prove $AA^T$ 是 Symmetric positive definite matrix：<br>假設 Matrix $M=AA^T$，$AA^T$ 為 Symmetric matrix。假設任意 Vector $x\in \mathbb{R}^m$ 且 $x\ne\mathbf{0}$，則：</p><script type="math/tex; mode=display">x^TMx=x^TAA^Tx=\|A^Tx\|>0</script><p>故得證。</p>
+          </div></p>
+<h3 id="1-3-Steepest-Descent"><a href="#1-3-Steepest-Descent" class="headerlink" title="1-3. Steepest Descent"></a>1-3. Steepest Descent</h3><ul>
+<li><a href="https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf">An Introduction to the Conjugate Gradient Method Without the Agonizing Pain</a></li>
+</ul>
+<p>設 Linear system</p>
+<script type="math/tex; mode=display">
+Ax=b \tag{1.3.1}</script><p>其中 $A\in\mathbb{R}^{N\times N}$ 為 Symmetric positive definite matrix， $b\in \mathbb{R}^N$ 為已知的 Vector。若要求解 vector $x$，根據傳統的解法 (高中、大學教的方法)是，首先先移項 $A$，使用高斯法求出 $A$ 的 Inverse matrix $A^{-1}$ 後，求出 $x$：</p>
+<script type="math/tex; mode=display">
+x=A^{-1}b</script><p>然而，對於 Large-scale sparse matrix 而言 ($N$ 非常巨大)，求 Inverse matrix 是非常困難的，因此另一種解法就是使用 Numerical method，將問題變成能夠使用 Iterative 趨近的方式來求出近似解。首先將 [式 1.3.1] 移項 $Ax-b=\mathbf{0}$，接著假設 Function $f(x)$，並令其一階微分：</p>
+<script type="math/tex; mode=display">
+f'(x)=Ax-b \tag{1.3.2}</script><p>根據一階微分，我們能夠得出 Quadratic form：</p>
+<script type="math/tex; mode=display">
+f(x) = \frac{1}{2}x^TAx-b^Tx+c \tag{1.3.3}</script><p>則目標變成：找到 $x$ 使得 $f’(x)=\mathbf{0}$。也就是說，找到 $x$，使得 $f(x)$ 為極值，且若 $A$ 為 Symmetric positive definite matrix，則該極值一定會是最小值。</p>
+<p>證明方法非常簡單，假設 $x^<em>$ 滿足 $Ax^</em>=b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^<em>+e) &gt; f(x^</em>)$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+f(x^*+e) 
+    &= \frac{1}{2}(x^*+e)^TA(x^*+e)-b^T(x^*+e)+c\\
+    &= \frac{1}{2}(x^*)^TAx^*+e^T\underbrace{Ax^*}_{=b}+\frac{1}{2}e^TAe-b^Tx^*-b^Te+c\\
+    &= \underbrace{\left(\frac{1}{2}(x^*)^TAx^*-b^Tx^*+c\right)}_{=f(x^*)}+e^Tb+\frac{1}{2}e^TAe-b^Te\\
+    &= f(x^*)+\frac{1}{2}e^TAe > f(x^*)
+\end{align}</script><p>由於 $A$ 是 Positive definite，且 $e\ne \mathbf{0}$，因此最後一項 $\frac{1}{2}e^TAe &gt; 0$，則可以得證當 $Ax^<em>=b$ 時，$f(x^</em>)$ 一定為最小值。因此我們將一個 Linear system 的問題變成了 Minimization problem：找到 $x$ 使得 minimize $f(x)$。</p>
+<p>接著是要如何解這個 Minimization problem，一種方法就是使用 <strong>Steepest descent method</strong>。</p>
+<div class="note info">
+            <p>這邊列出一些常用的 term：</p><ul><li>Error: $e_i=x_i-x^*$，寫成 Iterative form，$e_{i+1}=e_i+\alpha_i r_i$</li><li>Residual: $r_i=b-Ax_i=-f’(x_i)$。</li></ul><p>Residual 與 Error 的關係式 $r_i=b-Ax_i=Ax^<em>-Ax_i=A(x^</em>-x_i)=-Ae_i$</p>
+          </div>
+<p>首先從任意一點 $x_0$ 開始，選擇負梯度方向 $-f’(x_0)=r_0$ 前進適當步長 $\alpha_0$，這個步長必須能夠在負梯度方向上最小化下一個 Step 的值 $f(x_1)$，也就是 $\alpha_0=\arg\min f(x_1)=\arg\min f(x_{0}+\alpha_0 r_0)$，通常會使用 Line search 的方式求得。求得步長後，移動到下一個位置 $x_1=x_0 + \alpha_0 r_0$，求出下一個步長 $\alpha_1$，再移動到下一個位置 $x_2=x_1+\alpha_1 r_1$ …，重複動作直到找到最佳解為止。<br><img src="https://i.imgur.com/OK3pGcQ.png" alt=""></p>
+<p>至於求解步長 $\alpha_i$ 可以使用求極值 (導數為 $0$) 的方式求得：</p>
+<script type="math/tex; mode=display">
+\frac{d}{d\alpha}f(x_{i+1})=f'(x_{i+1})^T\frac{d}{d\alpha}x_{i+1}=f'(x_{i+1})^Tr_i=0</script><p>因為 $x_{i+1}=x_i+\alpha_i r_i$。由於 $f’(x_{i+1})=-r_{i+1}$，求得 $\alpha_i$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+r^T_{i+1}r_i&=0\\
+(b-Ax_{i+1})^Tr_i&=0\\
+(b-A(x_i+\alpha_i r_i))^Tr_i&=0\\
+(b-Ax_i)^Tr_i-\alpha_i(Ar_i)^Tr_i &= 0\\
+(b-Ax_i)^Tr_i &= \alpha_i(Ar_i)^Tr_i\\
+r^T_ir_i &= \alpha_i r^T_i(Ar_i)\\
+\alpha_i&=\frac{r^T_ir_i}{r^T_iAr_i}
+\end{align}</script><p>最後就可以得到 Steepest descent method：</p>
+<script type="math/tex; mode=display">
+\begin{gather}
+r_i=b-Ax_i\\
+\alpha_i=\frac{r^T_ir_i}{r^T_iAr_i}\\
+x_{i+1}=x_i+\alpha_ir_i
+\end{gather}</script><div class="note info">
+            <p>Gradient descent：往 Negative gradient 方向前進任意步長 $\alpha$，此步長可以使用固定值，也可以使用估計的方式，例如：SGD 等等。<br>Steepest descent：往 Negative gradient 方向前進適當步長 $\alpha$，此步長必須使得下一個值在這個方向上是最小值。</p>
+          </div>
+<h2 id="2-Methodology"><a href="#2-Methodology" class="headerlink" title="2. Methodology"></a>2. Methodology</h2><ul>
+<li><a href="https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf">An Introduction to the Conjugate Gradient Method Without the Agonizing Pain</a></li>
+</ul>
+<h3 id="2-1-Conjugate-Gradient"><a href="#2-1-Conjugate-Gradient" class="headerlink" title="2-1. Conjugate Gradient"></a>2-1. Conjugate Gradient</h3><p>Steepest descent 有個缺點在於，經常發生重複搜索同一方向 (如 Figure 8) 的情況，導致收斂速度變慢，為了解決這項問題，有人提出了 Conjugate gradient。首先假設一個 Vector set $\{p_0,p_1,\dots,p_{N-1}\}$ 代表 Search directions，且這些 Vector 兩兩互相垂直 (Orthoginal)。因此可以將每個 Step 的 $x$ 列為：</p>
+<script type="math/tex; mode=display">
+x_{i+1}=x_i+\alpha_i p_{i} \tag{2.1.1}</script><p>且</p>
+<script type="math/tex; mode=display">
+x^*=x_0+\sum_{i=0}^{N-1}\alpha_i p_{i} \tag{2.1.2}</script><p>這樣就能夠確保每個搜索方向只需要搜尋一次就能夠找到最佳。由於每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直，因此：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+p^T_ie_{i+1} &= 0\\
+p^T(e_i+\alpha_ip_i) &= 0\\
+\end{align}</script><div class="note info">
+            <p>Prove 每個 Step $i$ 的 Search direction $p_i$ 一定會與 Error $e_{i+1}$ 垂直：<br>因為 $e_{i+1}=x_{i+1}-x^<em>$ 且 $x^</em>=x_{i+1}+\sum_{j=i+1}^{N-1}\alpha_jp_j$，因此 $e_{i+1}=-\sum_{j=i+1}^{N-1}\alpha_jp_j$，也就是說，$e_{i+1}$ 是 $\{p_{i+1}, \dots, p_{N-1}\}$ 的 Linear combination，而 $p_{i}$ 與所有$\{p_{i+1}, \dots, p_{N-1}\}$ 互為 Orthogonal，因此可以得證 $p_{i}$ 與 $e_i$ 一定是 Orthogonal。</p>
+          </div>
+<p>如上根據 Error 的 Iterative form 展開後，可以算出：</p>
+<script type="math/tex; mode=display">
+\alpha_i=-\frac{p^T_ie_i}{p^T_ip_i}</script><p>然而，尷尬的是我們沒有辦法求出 $e_i$，因為 $e_i=x_i-x^<em>$，如果可以求得 $e_i$ 那麼 $x^</em>$ 就已經算出來了。避免掉這個窘境的方式是改變假設 Search directions 兩兩互為 $A$-orthogonal ($A$-conjugate)，而非 Orthogonal：</p>
+<script type="math/tex; mode=display">
+p^T_iAp_j=0, \quad i\ne j</script><p>這樣假設的原因是因為，如果 $e_i$ 算不出來，只需要對 $e_i$ 乘上 $A$，就會得到 $Ae_i=Ax_i-Ax^<em>=Ax_i-b$，如此就可以避免掉 $x^</em>$ 的問題。又因 $Ae_i=-r_i$，因此同 Steepest descent 求 $\alpha$ 可以得到：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{d}{d\alpha}f(x_{i+1}) &= 0\\
+f'(x_{i+1})^T\frac{d}{d\alpha}x_{i+1} &= 0\\
+-r^T_{i+1}p_i &= 0\\
+(Ae_{i+1})^Tp_i=d_i^TAe_{i+1}&=0
+\end{align}</script><p>因 $e_{i+1}=e_i+\alpha_ip_i$，因此：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+d^T_iA(e_i+\alpha_ip_i) &= 0
+\end{align}</script><p>移項整理後求得 $\alpha_i$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\alpha_i &= -\frac{p^T_iAe_i}{p^T_iAp_i}\\
+&=\frac{p^T_ir_i}{p^T_iAp_i} \tag{2.1.3}
+\end{align}</script><p>(能夠想到這種方法的人肯定腦力發揮 100%)</p>
+<p>接下來的問題在於，要如何產生 Mutually $A$-orthogonal vectors $\{p_0,\dots,p_{N-1}\}$，可以使用 Gram-Schmidt process，來 Iteratively 產生互相 Orthogonal 的向量。</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process">Gram–Schmidt process - wiki</a></li>
+</ul>
+<p>假設一組 Linearly independent set $\{u_0, \dots, u_{N-1}\}$，Gram-Schmidt process 利用 Projection 的方式來製造出兩兩互相 Orthogonal 的 Vectors，原理非常簡單：</p>
+<p><img src="https://i.imgur.com/bjvovNI.png =300x" alt=""></p>
+<p>首先兩個 Linearly independent vectors $u_0, u_1$，先將 $u_1$ Project 到 $u_0$ 上算出投影向量 $\text{proj}_{u_0}(u_1)$，接著再將 $u_1$ 扣掉 $\text{proj}_{u_0}(u_1)$ 得到的就會是與 $u_0$ Orthogonal 的 Vector $u_1-\text{proj}_{u_0}(u_1)$。此時我們只需要令 $p_0=u_0$、$p_1=u_1-\text{proj}_{d_0}(u_1)$ 就可以得到兩個 Mutually orthogonal vectors $p_0, p_1$ 以同樣方式推廣至 $i$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&p_0=u_0\\
+&p_1=u_1-\text{proj}_{p_0}(u_1)\\
+&p_2=u_2-\text{proj}_{p_0}(u_2)-\text{proj}_{p_1}(u_2)\\
+&p_i=u_i-\sum_{j=0}^{i-1}\text{proj}_{p_j}(u_i) \tag{2.1.4}
+\end{align}</script><p>以此類推就可以得到一組 Mutually orthogonal vectors $\{p_0,\dots,p_{N-1}\}$，然而我們需要的是 $A$-orthogonal 的 vectors，因此可以定義 Projection 為 $A$ 內積空間的 Projection：</p>
+<script type="math/tex; mode=display">
+\text{proj}_{p_j}(u_i)=\frac{\langle u_i, p_j\rangle_A}{\langle p_j, p_j\rangle_A}p_j = \frac{u_i^TAp_j}{p_jAp_j}p_j \tag{2.1.5}</script><p>至於要如何找到 Linearly independent set $\{u_0, u_1, \dots, u_{N-1}\}$ 一個很直接的方式就是使用現成的 Residual $r$。</p>
+<p>我們知道 Residual 與 Error 的關係式 $r_j=-Ae_j$，而 $e_j=x_j-x^<em>$，$x_j=x_0+\sum_{k=0}^{j-1}\alpha_kp_k$ 且 $x^</em>=x_0+\sum_{k=0}^{N-1}\alpha_kp_k$，全部展開來後得到：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+r_j &= -A\left( (x_0+\sum_{k=0}^{j-1}\alpha_kp_k)-(x_0+\sum_{k=0}^{N-1}\alpha_kp_k) \right)\\
+    &= -A(-\sum_{k=j}^{N-1}\alpha_kp_k)\\
+    &= \sum_{k=j}^{N-1}\alpha_kAp_k
+\end{align}</script><p>由此可以看出，Residual $r_i$ 是由 $\{Ap_{i+1}, \dots, Ap_{N-1}\}$ 組成的 Linear combination，而 $\{Ap_{i+1}, \dots, Ap_{N-1}\}$ 是 Linearly independent set，因此可以知道 $\{r_0, \dots, r_{N-1}\}$ 也一定會是 Linearly independent set。</p>
+<p>此外，這邊如果對兩邊同時乘上 $p_i$ 就會發生一件很有趣的事情，其中 $i&lt;j$ ，由於 $p_i$ 與其他 $p_j, \dots, p_{N-1}$ 為 $A$-orthogonal，因此得到：</p>
+<script type="math/tex; mode=display">
+p_i^Tr_j=\sum_{k=j}^{N-1}\alpha_kp_i^TAp_k=0, \quad i<j \tag{2.1.6}</script><p>使用 Residual $r$ 代替 $u$ 後，令 $\beta$ 為 Projection 的 Coefficient 項：</p>
+<script type="math/tex; mode=display">
+\beta_{ij}=-\frac{r^T_iAp_j}{p^T_jAp_j}</script><p>因此 [式 2.1.4] 變成：</p>
+<script type="math/tex; mode=display">
+p_i=r_i+\sum_{j=0}^{i-1}\beta_{ij}p_j \tag{2.1.7}</script><p>將 [式 2.1.7] 兩邊同乘 $r_j$，得到：</p>
+<script type="math/tex; mode=display">
+p^T_ir_j=r_i^Tr_j+\sum_{k=0}^{i-1}\beta_{ik}p_k^Tr_j</script><p>由 [式 2.1.6] 可以知道當 $i&lt;j$ 時 $p^T_ir_j=0$ 且 $p_k^Tr_j=0$ 因為 $k\le i-1&lt;i&lt;j$，因此：</p>
+<script type="math/tex; mode=display">
+r_i^Tr_j=0, \quad i\ne j \tag{2.1.8}</script><p>可以得出一個結論：Residual $r$ 兩兩互為 Orthogonal。</p>
+<p>除此之外，若 $i=j$ 時，$p^T_ir_i \ne 0$ 但 $p_k^Tr_i=0$ 因為 $k\le i-1&lt;i$，因此得到：</p>
+<script type="math/tex; mode=display">
+p^T_ir_i=r_i^Tr_i</script><p>代入到 [式 2.1.3] 的 $\alpha_i$，得到新的 $\alpha_i$：</p>
+<script type="math/tex; mode=display">
+\alpha_i = \frac{p^T_ir_i}{p^T_iAp_i} = \frac{r^T_ir_i}{p^T_iAp_i} \tag{2.1.9}</script><p>已知 $r_{j+1}=r_j-\alpha_jAp_j$，對等號兩邊乘上 $r_i$，整理後同除 $\alpha_j$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+r^T_i r_{j+1} &= r^T_ir_j-\alpha_jr^T_iAp_j\\
+\alpha_jr^T_iAp_j &= r^T_ir_j - r^T_i r_{j+1}\\
+r^T_iAp_j &= \frac{1}{\alpha_j}(r^T_ir_j - r^T_i r_{j+1})
+\end{align}</script><p>根據 [式 2.1.8]，可以得到，只有兩個狀況下 $r^T_iAp_j$ 會有值：</p>
+<script type="math/tex; mode=display">
+r^T_iAp_j=\begin{cases}
+\frac{1}{\alpha_i}r^T_ir_j, \quad& i=j\\
+-\frac{1}{\alpha_{i-1}}r^T_i r_{i}, \quad& i=j+1\\
+0, \quad&\text{otherwise}
+\end{cases}</script><p>將兩邊同除以 $-p_j^TAp_j$，得到 $\beta_{ij}$，由於在 Gram-Schmidt process 中 $\beta_{ij}$ 只存在 $i&lt;j$ 這個 Case，不存在 $i=j$ 的 Case，因此只剩下一種 Case $i=j+1$，剩下其他 Case 都為 $0$：</p>
+<script type="math/tex; mode=display">
+\beta_{ij}=-\frac{r^T_iAp_j}{p_j^TAp_j}=\begin{cases}
+\frac{1}{\alpha_{i-1}}\frac{r^T_ir_i}{p_{i-1}^TAp_{i-1}}, \quad &i=j+1\\
+0, \quad&\text{otherwise}
+\end{cases}</script><p>將 [式 2.1.9] 的 $\alpha_{i-1}$ 代入，最後得到新的 $\beta$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\beta_i &= \frac{p^T_{i-1}Ap_{i-1}}{r^T_{i-1}r_{i-1}}\frac{r^T_ir_i}{p_{i-1}^TAp_{i-1}}\\
+    &= \frac{r^T_ir_i}{r^T_{i-1}r_{i-1}} \tag{2.1.10}
+\end{align}</script><p>結果 $p_i$ 一整個不見了，全部變成 Residual $r$。完全出乎意料。<br>寫到這邊為止的我：</p>
+<p><img src="https://i.imgur.com/29vI4jy.png =500x" alt=""></p>
+<p>最後將全部放在一起得到完整的 Conjugate Gradient：</p>
+<script type="math/tex; mode=display">
+\begin{gather}
+p_0=r_0=b-Ax_0\\
+\alpha_i = \frac{r^T_ir_i}{p^T_iAp_i}\\
+x_{i+1}=x_i+\alpha_ip_i\\
+r_{i+1}=r_i-\alpha_iAp_i\\
+\beta_{i+1}=\frac{r^T_{i+1}r_{i+1}}{r^T_ir_i}\\
+p_{i+1}=r_{i+1}+\beta_{i+1}p_i
+\end{gather}</script><p>第一行 $p_0=r_0=b-Ax_0$ 是 Initial condition，之後就是持續 Iterate 直到 Residual $|r_{i+1}|\to 0$ 就結束 Iteration。通常可以另外設定一個 Tolerance 參數 $\epsilon \to 0$，當 $|r_{i+1}| &lt; \epsilon$ 時結束 Conjugate gradient。</p>
+<p>接下來就是 Convergence Analysis 與 Complexity 分析的部分，雖然這部分才是真正 Numerical Analysis 要做的事情，但礙於篇幅且不是很重要，在這邊就直接忽略，有興趣的可以自行研究 <a href="https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf">Ch. 9 Convergence Analysis / Ch. 10 Complexity</a>。這本書真的寫得很棒，有機會一定要看完！(我在說我，等我學會了 Numerical Analysis 再來補充)</p>
+<h3 id="2-2-Preconditioned-Conjugate-Gradient"><a href="#2-2-Preconditioned-Conjugate-Gradient" class="headerlink" title="2-2. Preconditioned Conjugate Gradient"></a>2-2. Preconditioned Conjugate Gradient</h3><p>如果有看 <a href="https://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf">Ch. 9 Convergence Analysis / Ch. 10 Complexity</a> 的話應該就會知道，Conjugate gradient 的收歛性取決於 Matrix $A$ 的 Condition number $\kappa(A)$ (Iteration 與 $\sqrt{\kappa(A)}$ 成正比)，$\kappa(A)$ 小則容易收斂，$\kappa(A)$ 大則不容易收斂。而 Condition number 定義為 $\kappa(A)=\frac{\lambda_\text{max}}{\lambda_\text{min}}\ge 1$，其中 $\lambda$ 為 $A$ 的 Eigenvalue。(等我學會了 Numerical Analysis 再來補充)</p>
+<p>在某些情況下，我們會希望 Conjugate Gradient 能夠再收斂的更快，例如：對於 $N$ 為 Million 等級的 Matrix $A$，我們不希望 Conjugate Gradient 執行 100 萬次才收斂到解答，而是希望在 1000 次內就可以得到近似解。這種情況下我們就會需要對原本的 Linear system 進行 Preconditioning，使得新的 Linear system 能夠更快收斂。</p>
+<p>假設 Linear system 不容易收斂 (也有人稱做 ill-conditioned system) $Ax=b$，我們希望可以找到新的 Linear system $\hat{A}\hat{x}=\hat{b}$，且新的 Linear system 能夠收斂的更快。換句話說，希望可以找到一個 $\hat{A}$，滿足 $\kappa(\hat{A})\ll \kappa(A)$。一種方法就是選擇一個 Non-singular matrix $M$，並套用到 Linear system：</p>
+<script type="math/tex; mode=display">
+M^{-1}Ax=M^{-1}b</script><p>使得 $\kappa(M^{-1}A)\ll \kappa(A)$，同時 $M^{-1}A$ 必須維持 Symmetric positive definite matrix，$M$ 就稱為 <strong>Preconditioner</strong>。若要維持 Symmetric positive definite matrix，最簡單的方式就是 $M$ 同為 Symmetric positive definite matrix，為了確保 $M$ 為 Symmetric positive definite matrix，我們也可以利用另一個 Non-singular matrix $E$，且令 $M=EE^T$ 來表示 $M$，如此就可以確保 $M$ 一定是 Symmetric positive definite matrix (證明請看 [Sec 1-2])</p>
+<div class="note info">
+            <p>Non-singular matrix $M$ 表示 $M$ 是 Invertible，且具有 Inverse matrix $M^{-1}$。</p>
+          </div>
+<p>至於要去哪裡找到如此好的 $M$，聰明如你，最直覺的方式就是選擇 $M=A$，如此一來，$M^{-1}A=A^{-1}A=I$，我們就可以確保 $\kappa(M^{-1}A)=\kappa(I)=1\ll\kappa(A)$，同時 $I$ 也是 Symmetric positive definite matrix。然而，事實卻沒有這麼簡單，原因是因為，如果取 $M=A$ 的話，勢必要先計算出 $A^{-1}$ 才能套用進新的 Linear system $A^{-1}Ax=A^{-1}b$，但問題就在於，就是因為 $A$ 的 Inverse matrix $A^{-1}$ 很難求才會需要使用 Conjugate gradient 的方式來求解，要不然 Linear system $Ax=b$ 早就解完了。因此，只能限定 $M\approx A$，且 $M$ 必須更容易計算 Inverse。</p>
+<p>最終歸納出 $M$ 必須具有以下條件，只要 $M$ 具有以下條件，就可以大幅縮減 Condition number：</p>
+<ul>
+<li>$\kappa(M^{-1}A)\ll\kappa(A)$，有一說是 $M^{-1}A$ 的 Eigenvalues 必須要更 Clustered，因為 $\kappa=\frac{\lambda_\text{max}}{\lambda_\text{min}}$</li>
+<li>$M^{-1}A$ 是 Symmetric positive definite matrix</li>
+<li>$M\approx A \Longrightarrow M^{-1}A\approx A^{-1}A= I$</li>
+<li>$M$ Invertible 且比 $A$ 更容易計算 Inverse matrix</li>
+</ul>
+<p>接著就是如何求解新的 Linear system，一種方式是直接計算出 $M^{-1}$ 後，將新的 $\hat{A}=M^{-1}A$，$\hat{b}=M^{-1}b$ 直接帶入 Conjugate gradient。另一種方式是將 $M$ 分解 $M=EE^T$ 且 $E$ 可能是比 $M$ 還要更容易計算 Inverse 的 Matrix (例如: Triangular matrix)。如果使用第二種 Case 的話，可以將 Linear system 拆解並轉換成新的 Linear system $\hat{A}\hat{x} = \hat{b}$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+M^{-1}Ax &= M^{-1}b\\
+E^{-1}AE^{-T}x &= E^{-1}E^{-T}b\\
+(E^{-1}AE^{-T})(E^Tx) &= (E^{-T}E^T)(E^{-1}b)\\
+\hat{A}\hat{x} &= \hat{b}
+\end{align}</script><p>其中 $\hat{A}=E^{-1}AE^{-T}$，$\hat{x}=E^Tx$，$\hat{b}=E^{-1}b$。帶入 Conjugate gradient 後得到新的 Conjugate gradient (其實就是全部加上 Hat)：</p>
+<script type="math/tex; mode=display">
+\begin{gather}
+\hat{p}_0=\hat{r}_0=\hat{b}-\hat{A}\hat{x}_0\\
+\hat{\alpha}_i = \frac{\hat{r}^T_i\hat{r}_i}{\hat{p}^T_i\hat{A}\hat{p}_i}\\
+\hat{x}_{i+1}=\hat{x}_i+\hat{\alpha}_i\hat{p}_i\\
+\hat{r}_{i+1}=\hat{r}_i-\hat{\alpha}_i\hat{A}\hat{p}_i\\
+\hat{\beta}_{i+1}=\frac{\hat{r}^T_{i+1}\hat{r}_{i+1}}{\hat{r}^T_i\hat{r}_i}\\
+\hat{p}_{i+1}=\hat{r}_{i+1}+\hat{\beta}_{i+1}\hat{p}_i
+\end{gather}</script><p>接下來就是將 Hat 都展開來。計算出新的 Residual $\hat{r}_i$ 與舊 Residual $r_i$ 的關係：</p>
+<script type="math/tex; mode=display">
+\hat{r}_i= \hat{b}-\hat{A}\hat{x}_i=E^{-1}b-(E^{-1}AE^{-T})(E^Tx)=E^{-1}r_i</script><p>再由 [式 2.1.2] 可以得到：</p>
+<script type="math/tex; mode=display">
+\hat{x}=E^Tx=E^T(x_0+\sum_{i=0}^{N-1}\alpha_ip_i)=E^Tx_0+\sum_{i=0}^{N-1}\alpha_iE^Tp_i</script><p>因此定義 $\hat{p}_i=E^Tp_i$，則 $\hat{\alpha}_i$ 可以展開：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\hat{\alpha}_i &= \frac{\hat{r}^T_i\hat{r}_i}{\hat{p}^T_i\hat{A}\hat{p}_i}\\
+    &= \frac{(E^{-1}r_i)^T(E^{-1}r_i)}{(E^Tp_i)^T(E^{-1}AE^{-T})(E^Tp_i)}\\
+    &= \frac{r_i^T(E^{-T}E^{-1})r_i}{p_i^T(EE^{-1})A(E^{-T}E^T)p_i}\\
+    &= \frac{r_i^TM^{-1}r_i}{p_i^TAp_i}
+\end{align}</script><p>接下來將 $\hat{x}_{i+1} = \hat{x}_i+\hat{\alpha}_i\hat{p}_i$ 展開得到：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\hat{x}_{i+1} &= \hat{x}_i+\hat{\alpha}_i\hat{p}_i\\
+E^Tx_{i+1} &= E^Tx_i + \hat{\alpha}_iE^Tp_i\\
+E^Tx_{i+1} &= E^T(x_i + \hat{\alpha}_ip_i)\\
+x_{i+1} &= x_i + \hat{\alpha}_ip_i
+\end{align}</script><p>接下來 $\hat{r}_{i+1}=\hat{r}_i-\hat{\alpha}_i\hat{A}\hat{p}_i$ 也展開：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\hat{r}_{i+1} &= \hat{r}_i-\hat{\alpha}_i\hat{A}\hat{p}_i\\
+E^{-1}r_{i+1} &= E^{-1}r_i-\hat{\alpha}_i(E^{-1}AE^{-T})(E^Tp_i)\\
+E^{-1}r_{i+1} &= E^{-1}r_i-\hat{\alpha}_iE^{-1}A(E^{-T}E^T)p_i\\
+E^{-1}r_{i+1} &= E^{-1}(r_i-\hat{\alpha}_iAp_i)\\
+r_{i+1} &= r_i-\hat{\alpha}_iAp_i
+\end{align}</script><p>接下來展開 $\hat{\beta}_{i+1}$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\hat{\beta}_{i+1} &= \frac{\hat{r}^T_{i+1}\hat{r}_{i+1}}{\hat{r}^T_i\hat{r}_i}\\
+    &= \frac{(E^{-1}r_{i+1})^T(E^{-1}r_{i+1})}{(E^{-1}r_i)^T(E^{-1}r_i)}\\
+    &= \frac{r^T_{i+1}(E^{-T}E^{-1})r_{i+1}}{r^T_{i}(E^{-T}E^{-1})r_{i}}\\
+    &= \frac{r^T_{i+1}M^{-1}r_{i+1}}{r^T_{i}M^{-1}r_{i}}
+\end{align}</script><p>接下來展開 $\hat{p}_{i+1}=\hat{r}_{i+1}+\hat{\beta}_{i+1}\hat{p}_i$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\hat{p}_{i+1} &= \hat{r}_{i+1}+\hat{\beta}_{i+1}\hat{p}_i\\
+E^Tp_{i+1} &= E^{-1}r_{i+1}+\hat{\beta}_{i+1}E^Tp_i\\
+E^{-T}E^Tp_{i+1} &= (E^{-T}E^{-1})r_{i+1} + \hat{\beta}_{i+1}E^{-T}E^Tp_i\\
+p_{i+1} &= M^{-1}r_{i+1} + \hat{\beta}_{i+1}p_i
+\end{align}</script><p>最後一件最重要的事情就是展開 $\hat{p}_0=\hat{r}_0$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\hat{p}_0 &= \hat{r}_0\\
+E^Tp_0 &= E^{-1} r_0\\
+p_0 &= E^{-T}E^{-1} r_0\\
+p_0 &= M^{-1}r_0
+\end{align}</script><p>全部整理起來得到：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+r_0&=b-Ax_0\\
+p_0 &= M^{-1}r_0\\
+\alpha_i &= \frac{r_i^TM^{-1}r_i}{p_i^TAp_i}\\
+x_{i+1} &= x_i + \alpha_ip_i\\
+r_{i+1} &= r_i-\alpha_iAp_i\\
+\beta_{i+1} &= \frac{r^T_{i+1}M^{-1}r_{i+1}}{r^T_{i}M^{-1}r_{i}}\\
+p_{i+1} &= M^{-1}r_{i+1} + \hat{\beta}_{i+1}p_i
+\end{align}</script><p>接著令 $z_i=M^{-1}r_i$ 得到 Preconditioned conjugate gradient：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+r_0 &= b-Ax_0\\
+z_0 &= M^{-1}r_0\\
+p_0 &= z_0\\
+\alpha_i &= \frac{r_i^Tz_i}{p_i^TAp_i}\\
+x_{i+1} &= x_i + \alpha_ip_i\\
+r_{i+1} &= r_i-\alpha_iAp_i\\
+z_{i+1} &= M^{-1}r_{i+1}\\
+\beta_{i+1} &= \frac{r^T_{i+1}z_{i+1}}{r^T_{i}z_{i}}\\
+p_{i+1} &= z_{i+1} + \hat{\beta}_{i+1}p_i
+\end{align}</script><p>結果發現其實根本需要 $E$ 的我：<br><img src="https://i.imgur.com/db33QIH.png =300x" alt=""></p>
+<h3 id="2-3-Incomplete-Cholesky-Preconditioned-Conjugate-Gradient-ICCG"><a href="#2-3-Incomplete-Cholesky-Preconditioned-Conjugate-Gradient-ICCG" class="headerlink" title="2-3. Incomplete-Cholesky Preconditioned Conjugate Gradient (ICCG)"></a>2-3. Incomplete-Cholesky Preconditioned Conjugate Gradient (ICCG)</h3><ul>
+<li><a href="https://en.wikipedia.org/wiki/Cholesky_decomposition#Positive_semidefinite_matrices">Cholesky decomposition - wiki</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Incomplete_Cholesky_factorization">Incomplete Cholesky factorization - wiki</a></li>
+</ul>
+<p>Preconditioner $M$ 可以有很多種，在上一節中我們討論出 $M$ 必須具有以下特性：</p>
+<ul>
+<li>$\kappa(M^{-1}A)\ll\kappa(A)$</li>
+<li>$M^{-1}A$ 是 Symmetric positive definite matrix</li>
+<li>$M\approx A \Longrightarrow M^{-1}A\approx A^{-1}A=I$</li>
+<li>$M$ Invertible 且比 $A$ 更容易計算 Inverse matrix</li>
+</ul>
+<p>但根據 Preconditioned conjugate gradient 計算 $z_{i+1}=M^{-1}r_{i+1}$，其實可以發現不一定要計算出 $M^{-1}$。假若 $M$ 可以被分解為 $M=EE^T$，帶入公式後得到</p>
+<script type="math/tex; mode=display">
+\begin{align}
+z_{i+1}&=(EE^T)^{-1}r_{i+1}\\
+z_{i+1}&= E^{-1}\underbrace{(E^{-T} r_{i+1})}_y\\
+z_{i+1}&= E^{-1}y
+\end{align}</script><p>令 $y=E^{-T}r_{i+1}$，原本需要計算出 Inverse matrix $M^{-1}$ 變成只須計算 $E^{-1}$ 並分別求解 $y=E^{-T}r_{i+1}$ 與 $z_{i+1} = E^{-1}y$，就能能夠計算出 $z_{i+1}$。因此若有辦法將 $M$ 分解成更容易計算 Inverse 的 Matrix $E$ 那將會一大福音。正好，Cholesky 認為任何 Symmetric (Hermitian) positive definite matrix $M$ 都能夠分解為 Lower triangular matrix $L$ 及其 Transpose $L^T$ (若非 Real matrix 則為 Conjugate transpose)，也就是 $M=LL^T$，這個方法稱作 Cholesky factorization。而剛好 Triangular matrix 非常好求 Inverse。</p>
+<div class="note info">
+            <p>Prove: 若 $M$ 為 Symmetric positive definite matrix，則存在唯一的 Cholesky factorization $LL^T$，其中 $L$ 是 Lower triangular matrix，且 Diagonal element 皆為正。</p><p>(等我想到再補充)</p>
+          </div>
+<p>然而，為了滿足 $M\approx A$ 而直接取 $M=A$ 計算 Cholesky factorization 還是會遇到同樣 $A^{-1}$ 的問題，除此之外，對於 Sparse matrix ($n\ll N\times N$，其中 $n$ 為非零項的數量) 而言， Cholesky factorization 是一大問題：經過分解後會爆出一堆非零項，使得 Sparse matrix 變得不是 Sparse。因此，解決方法就是使用 Incomplete-Cholesky factorization，來維持 Matrix 的 Sparsity。Incomplete-Cholesky factorization 在對 $A$ 計算 Cholesky factorization 的時候會將原本 $A$ 為 $0$ 的項維持為 $0$，只針對非零項計算，因此最後的結果會與原先的 Matrix 擁有相同的 Sparsity，同時可以得到一個很好的 Approximation $M=LL^T\approx A$。</p>
+<h3 id="2-4-ICCG-Algorithm"><a href="#2-4-ICCG-Algorithm" class="headerlink" title="2-4. ICCG Algorithm"></a>2-4. ICCG Algorithm</h3><p>Recall 前幾節的結果，Incomplete-Cholesky preconditioned conjugate gradient：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+r_0 &= b-Ax_0\\
+L &= \text{Preconditioning}(A)\\
+z_0 &= L^{-1}L^{-T}r_0\\
+p_0 &= z_0\\
+\alpha_i &= \frac{r_i^Tz_i}{p_i^TAp_i}\\
+x_{i+1} &= x_i + \alpha_ip_i\\
+r_{i+1} &= r_i-\alpha_iAp_i\\
+z_{i+1} &= L^{-1}L^{-T}r_{i+1}\\
+\beta_{i+1} &= \frac{r^T_{i+1}z_{i+1}}{r^T_{i}z_{i}}\\
+p_{i+1} &= z_{i+1} + \hat{\beta}_{i+1}p_i
+\end{align}</script><p>假設 Initial guess $x_0=\mathbf{0}$，可以得到：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+x_0 &= 0\\
+r_0 &= b
+\end{align}</script><p>轉換成演算法：</p>
+<p><img src="https://i.imgur.com/alrj8hn.png" alt=""></p>
+<p>基本上這個演算法是一步一步根據推出來的公式計算，最標準的流程。維基百科也是使用這個順序。但為了後續方便使用 cuBLAS/cuSPARSE 實做，我比較習慣稍微調動一些順序變成下圖：</p>
+<p><img src="https://i.imgur.com/hL1FiZD.png" alt=""></p>
+<p>但基本上這兩個演算法做的事情是完全相同的。</p>
+<h2 id="3-cuBLAS-amp-cuSPARSE"><a href="#3-cuBLAS-amp-cuSPARSE" class="headerlink" title="3. cuBLAS &amp; cuSPARSE"></a>3. cuBLAS &amp; cuSPARSE</h2><p>cuBLAS 與 cuSPARSE 都是 CUDA 內建的 Library，但是不同版本 CUDA 的 cuBLAS 與 cuSPARSE API 或多或少會有一些差異，這篇將以 CUDA 11.0 版本為主，此外也會加入一些 CUDA 8.0 的資料作為補充。</p>
+<h3 id="3-1-cuBLAS-Introduction"><a href="#3-1-cuBLAS-Introduction" class="headerlink" title="3-1. cuBLAS Introduction"></a>3-1. cuBLAS Introduction</h3><p>cuBLAS 是以 CUDA 實作的 BLAS (Basic Linear Algebra Subprograms) library。提供了一些常用計算 Matrix/Vector 相關的 High-level API。例如：Matrix/vector copy、sort、dot product、multiplication 等等，另外也有提供對於特殊類型矩陣 (symmetric、triangular、hemitian) 做過優化的 API。</p>
+<p>cuBLAS 使用 <strong>column-major</strong>，所以在儲存 Array 時需要注意順序。此外，在 Fortran 中是使用 1-based indexing，但在 C/C++ 中是使用 0-based indexing。</p>
+<p><img src="https://i.imgur.com/EprrqSz.jpg" alt=""></p>
+<p>使用 cuBLAS 時首先需要在程式碼中 Include <code>cublas_v2.h</code>，後面的 <code>v2</code> 代表是新的 API，而舊的 API <code>cublas.h</code> 則是 CUDA 4.0 以前的 API。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cublas_v2.h&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>編譯時需要加上 Library 的 Link</p>
+<ul>
+<li>使用 <code>nvcc</code> Compile 需要加上 <code>-lcublas</code>：<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nvcc hello_cublas.cu -o hello_cublas -lcublas</span><br></pre></td></tr></table></figure></li>
+<li>使用 Visual Studio 則是從 <code>Property</code> 加：<ul>
+<li>首先到 <code>CUDA C/C++</code> 的地方，在 <code>Additional Include Directories</code> 地方加上 <code>$(CudaToolkitIncludeDir)</code>。這是為了讓 Visual Studio 找的到 cuBLAS 的 header file。<img src="https://i.imgur.com/RgflLlW.png" alt=""></li>
+<li>接著到 <code>CUDA Linker</code> 的地方，在 <code>Additional Librbary Directories</code> 地方加上 <code>$(CudaToolkitLibDir)</code>，並在 Additional Dependencies 地方加上 <code>cublas.lib</code><br><img src="https://i.imgur.com/QvGf09v.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<p>這樣就可以正常編譯 cuBLAS。<br><div class="note warning">
+            <p>需要注意的是 Visual Studio 的 <code>CUDA C/C++</code> 與 <code>CUDA Linker</code> 頁籤是對應 <code>.cu</code> File，如果想要在一般 <code>.c</code> 或 <code>.cpp</code> File 使用 cuBLAS 則必須在 <code>VC++ Directories</code> 與 <code>Linker</code> 下的 <code>Input</code> 頁籤做相同的處理，否則會出現 Link error。<br><img src="https://i.imgur.com/eUDlQzz.png" alt=""><br><img src="https://i.imgur.com/nWBcylz.png" alt=""></p>
+          </div></p>
+<h3 id="3-2-cuBLAS-APIs"><a href="#3-2-cuBLAS-APIs" class="headerlink" title="3-2. cuBLAS APIs"></a>3-2. cuBLAS APIs</h3><ul>
+<li><a href="https://docs.nvidia.com/cuda/cublas/index.html">cuBLAS :: CUDA Toolkit Documentation</a></li>
+</ul>
+<p>在使用 cuBLAS 的 API 前，需要先呼叫 <code>cublasCreate</code> 建立 cuBLAS 的 Handle，有 Handle 才能正常使用 cuBLAS API，且在呼叫 cuBLAS API 時，Handle 必須傳入 Function。最後程式結束時必須呼叫 <code>cublasDestroy</code> 來刪除 cuBLAS Handle。如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cublasHandle_t cubHandle;</span><br><span class="line">    cublasStatus_t cubStat;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Initialize cuBLAS</span></span><br><span class="line">    cubStat = cublasCreate( &amp;cubHandle );</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Destroy cuBLAS handle</span></span><br><span class="line">    cubStat = cublasDestroy(cubHandle);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>cubStat</code> 用來呼叫的 Function call 是否有正常執行，如果 API 有發生錯誤的話，Error code 會儲存在內，詳細可以參考官方的 Document，每個 Function call 底下都會寫有可能回傳的 Error code。</p>
+<p>接下來是建立 Vector，使用 <code>cudaMalloc</code> 在 GPU 建立空間後，將資料複製到 GPU 有兩種方式：</p>
+<ol>
+<li>第一種是使用 CUDA 原生的 <code>cudaMemcpy</code> 複製到 GPU 上</li>
+<li>第二種是使用 cuBLAS API <code>cublasSetVector</code>/<code>cublasGetVector</code> 來存取 GPU 上的空間</li>
+</ol>
+<p>不管使用哪個 API，最後都必須 Free memory。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> vec[] = &#123;<span class="comment">/*...*/</span>&#125;; <span class="comment">// Vector in Host memory </span></span><br><span class="line"><span class="keyword">double</span> *d_vec;  <span class="comment">// Device pointer</span></span><br><span class="line">cudaMalloc(d_vec, N*<span class="keyword">sizeof</span>(<span class="keyword">double</span>));</span><br><span class="line"><span class="comment">// Set vector</span></span><br><span class="line">cudaMemcpy(d_vec, vec, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>),</span><br><span class="line">                  cudaMemcpyHostToDevice);</span><br><span class="line">cublasSetVector(N, <span class="keyword">sizeof</span>(<span class="keyword">double</span>), vec, <span class="number">1</span>, d_vec, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get vector</span></span><br><span class="line">cudaMemcpy(vec, d_vec, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>),</span><br><span class="line">                  cudaMemcpyDeviceToHost);</span><br><span class="line">cublasGetVector(N, <span class="keyword">sizeof</span>(<span class="keyword">double</span>), d_vec, <span class="number">1</span>, vec, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free memory</span></span><br><span class="line">cudaFree(d_vec);</span><br></pre></td></tr></table></figure>
+<p>使用 cuBLAS API <code>cublasSetVector</code>/<code>cublasGetVector</code> 的好處在於，他有提供使用者設定 increment 的功能，也就是複製每個資料間要間隔多少資料，這在從一個 Matrix 中複製出 Column vector 或 Row vector 時非常實用。</p>
+<p><img src="https://i.imgur.com/i702v6y.png =500x" alt=""><br><img src="https://i.imgur.com/zuEdAOU.png =500x" alt=""></p>
+<p>接下來是 Matrix type，同樣使用 <code>cudaMalloc</code> 方式建立 GPU 空間，同 Vector，可以使用 <code>cudaMemcpy</code> 或是使用 cuBLAS API <code>cublasSetMatrix</code>/<code>cublasGetMatrix</code> 存取 Matrix。最重要的是，他是 <strong>Column-major</strong>！因此 Host memory 與 Device memory 都必須儲存成 Column-major 的形式。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cudaMalloc(&amp;d_A, N*M*<span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// copy Matrix A from host to device</span></span><br><span class="line">cublasSetMatrix(M, N, <span class="keyword">sizeof</span>(<span class="keyword">float</span>), A, M, d_A, M);</span><br><span class="line"></span><br><span class="line"><span class="comment">// copy from device to host</span></span><br><span class="line">cublasGetMatrix(M, N, <span class="keyword">sizeof</span>(<span class="keyword">float</span>), d_A, M, A, M);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free memory</span></span><br><span class="line">cudaFree(d_A);</span><br></pre></td></tr></table></figure>
+<p>cuBLAS API <code>cublasSetMatrix</code>/<code>cublasGetMatrix</code> 有兩個參數 <code>lda</code> 與 <code>ldb</code>，分別代表 Source 與 Destination Matrix 的 Leading dimension。</p>
+<p>接下來是介紹 cuBLAS 的 Operation API，cuBLAS 將 API 分成 3 個 Level：</p>
+<ul>
+<li>Level-1：與 Vector 相關，或是 Vector-vector operations。例如，<code>min</code>、<code>max</code>、<code>sum</code>、<code>copy</code>、<code>dot product</code>、<code>euclidean norm</code> 等等。</li>
+<li>Level-2：Matrix-vector operations。例如，Matrix-vector multiplication 等等。</li>
+<li>Level-3：Matrix-matrix operations。例如，Matrix-matrix multiplication 等等。</li>
+</ul>
+<p>根據不同的資料型態，API 的名稱也會不一樣：<br>|Type|Notation <code>&lt;t&gt;</code> | Meaning|<br>|-|-|-|<br>|<code>float</code>| ‘s’ or ‘S’ | Real single-precision |<br>|<code>double</code>| ‘d’ or ‘D’ | Real double-precision |<br>|<code>cuComplex</code>| ‘c’ or ‘C’ | Complex single-precision|<br>|<code>cuDoubleComplex</code>|’z’ or ‘Z’|Complex double-precision|</p>
+<p>舉例來說， Level-1 的 Function <code>cublas&lt;t&gt;axpy</code>，計算 Vector $x$ 與 Vector $y$ 的加法，$y\gets\alpha x+y$</p>
+<p><img src="https://i.imgur.com/QKCou7y.png" alt=""></p>
+<p>Level-2 的 Function <code>cublas&lt;t&gt;gemv</code>，計算 Matrix $A$ 與 Vector $x$ 的乘法，$y\gets\alpha \text{OP}(A)x+\beta y$</p>
+<p><img src="https://i.imgur.com/oTeomLr.png" alt=""></p>
+<p>其中 $\text{OP}$ 是在計算前，cuBLAS 會對 Matrix $A$ 套用的 Operation：<br>|OP|Meaning|<br>|-|-|<br>|<code>CUBLAS_OP_N</code>| The non-transpose operation is selected|<br>|<code>CUBLAS_OP_T</code>| The transpose oeration is selected|<br>|<code>CUBLAS_OP_C</code>| The conjugate transpose operation is selected|</p>
+<p>Level-3 的 Function <code>cublas&lt;t&gt;gemm</code> 計算 Matrix $A$ 與 Matrix $B$ 的矩陣乘法，$C\gets\alpha\text{OP}(A)\text{OP}(B)+\beta C$</p>
+<p><img src="https://i.imgur.com/4KbJWH4.png" alt=""></p>
+<p>Level-3 除了一般的 Matrix-matrix multiplication 之外，cuBLAS 還有提供額外的 API 給特殊的 Matrix 型態使用：</p>
+<p><code>cublasFillMode_t</code> 用來指定是 Upper triangle 還是 Lower triangle。<br>|<code>cublasFillMode_t</code>|Meaning|<br>|-|-|<br>|<code>CUBLAS_FILL_MODE_LOWER</code>|The lower part of the matrix is filled|<br>|<code>CUBLAS_FILE_MODE_UPPER</code>|The upper part of the matrix is filled|</p>
+<p>例如 <code>cublas&lt;t&gt;symm</code>，計算 Symmetric matrix-matrix multiplication，如果你的 Matrix 是 Symmetric 就可以使用這個 API 來進行更有效率的計算，則 cuBLAS 在運算時其實只需要取一半的值 (Upper triangle 或是 Lower triangle) 出來就可以了，另外一半是對稱的，這樣在 GPU memory 的存取上會比較有效率。</p>
+<p><img src="https://i.imgur.com/cXQpf2O.png" alt=""></p>
+<p>另外還有像是 <code>cublas&lt;t&gt;trmm</code> 計算 Triangle matrix-matrix multiplication。</p>
+<p><code>cublasDiagType_t</code> 代表 Matrix 的對角線是不是 Unit (Unit matrix 的那個 unit)，如果是的話，cuBLAS 在運算時就會忽略對角線。<br>|<code>cublasDiagType_t</code>|Meaning|<br>|-|-|<br>|<code>CUBLAS_DIAG_NON_UNIT</code>| The matrix diagonal has non-unit elements|<br>|<code>CUBLAS_DIAG_UNIT</code>| The matrix diagonal has unit elements|</p>
+<p>除此之外，cuBLAS 還有提供 <code>Stream</code> API 可以進行 Asynchronous 的計算，詳細請看 document。</p>
+<h3 id="3-3-Hello-cuBLAS"><a href="#3-3-Hello-cuBLAS" class="headerlink" title="3-3. Hello cuBLAS"></a>3-3. Hello cuBLAS</h3><p>這節將會使用 cuBLAS 示範 Matrix-matrix multiplication。首先寫好基本的 Framework：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cuda.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cublas_v2.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// You can find the source code here:</span></span><br><span class="line"><span class="comment">// https://gist.github.com/Ending2015a/4eb30e7665d91debc723d9c73afec821</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;error_helper.hpp&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cublasHandle_t cubHandle;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Initialize cuBLAS</span></span><br><span class="line">    error_check(cublasCreate( &amp;cubHandle ));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Get cuBLAS version information</span></span><br><span class="line">    <span class="keyword">int</span> major_version, minor_version;</span><br><span class="line">    </span><br><span class="line">    error_check(cublasGetProperty( MAJOR_VERSION, &amp;major_version ));</span><br><span class="line">    error_check(cublasGetProperty( MINOR_VERSION, &amp;minor_version ));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Say hello to cuBLAS</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Hello cuBLAS!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span></span><br><span class="line">              &lt;&lt; <span class="string">&quot;* major version: &quot;</span> &lt;&lt; major_version &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span></span><br><span class="line">              &lt;&lt; <span class="string">&quot;* minor version: &quot;</span> &lt;&lt; minor_version &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> Matrix-matrix multiplication</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Destroy cuBLAS handle</span></span><br><span class="line">    error_check(cublasDestroy(cubHandle));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這段 Code 在一開始建立了 <code>cubHandle</code>，接著向 cuBLAS 打招呼，順便印出 cuBLAS 的版本資訊，最後將 <code>cubHandle</code> 摧毀，結束程序。</p>
+<p>接下來是撰寫 Matrix-matrix multiplication，$AB=C$，其中 $A\in\mathbb{R}^{N\times M}$，$B\in\mathbb{R}^{M\times P}$，$C\in\mathbb{R}^{N\times P}$。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// <span class="doctag">TODO:</span> Matrix-matrix multiplication</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> M = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> P = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> a[N*M];</span><br><span class="line"><span class="keyword">float</span> b[M*P];</span><br><span class="line"><span class="keyword">float</span> c[N*P];</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create matrix A, B in row-major order</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N*M;++i)</span><br><span class="line">&#123;</span><br><span class="line">    a[i] = (<span class="keyword">float</span>)(i+<span class="number">1</span>); <span class="comment">//1, 2, 3, 4, ~</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;M*P;++i)</span><br><span class="line">&#123;</span><br><span class="line">    b[i] = (<span class="keyword">float</span>)(M*P-i); <span class="comment">//8, 7, 6, 5, ~</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>宣告 Dimension，宣告 Host memory 上的 matrix，需要注意的是<strong>在這邊我是使用 row-major 的方式初始化 Matrix</strong>，後面有點小 Trick。印出來看：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_matrix</span><span class="params">(<span class="keyword">float</span> *mat, <span class="keyword">const</span> <span class="keyword">int</span> N, <span class="keyword">const</span> <span class="keyword">int</span> M)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N*M;++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; mat[i];</span><br><span class="line">        <span class="keyword">if</span>((i+<span class="number">1</span>)%M==<span class="number">0</span>)</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;, &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//print matrix</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;A: &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">print_matrix(a, N, M);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;B: &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">print_matrix(b, M, P);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>接著是宣告、分配 Device memory 空間，使用 cuBLAS API 複製 Matrix data 到 device：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">float</span> *device_a;</span><br><span class="line"><span class="keyword">float</span> *device_b;</span><br><span class="line"><span class="keyword">float</span> *device_c;</span><br><span class="line"></span><br><span class="line">error_check(cudaMalloc(&amp;device_a, N*M*<span class="keyword">sizeof</span>(<span class="keyword">float</span>)));</span><br><span class="line">error_check(cudaMalloc(&amp;device_b, M*P*<span class="keyword">sizeof</span>(<span class="keyword">float</span>)));</span><br><span class="line">error_check(cudaMalloc(&amp;device_c, N*P*<span class="keyword">sizeof</span>(<span class="keyword">float</span>)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// copy host matrix &#x27;a&#x27; to device matrix &#x27;device_a&#x27;</span></span><br><span class="line">error_check(cublasSetMatrix(M, N, <span class="keyword">sizeof</span>(<span class="keyword">float</span>), a, M, device_a, M));</span><br><span class="line">error_check(cublasSetMatrix(P, M, <span class="keyword">sizeof</span>(<span class="keyword">float</span>), b, P, device_b, P));</span><br></pre></td></tr></table></figure></p>
+<p>這邊因為之後打算使用 <code>cublasSgemm</code> 這個 API 計算矩陣乘法：</p>
+<script type="math/tex; mode=display">
+C\gets\alpha\text{OP}(A)\text{OP}(B) + \beta C</script><p><code>cublasSgemm</code> 會要求兩個常數 $\alpha$ 與 $\beta$：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> alpha = <span class="number">1.0f</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> beta = <span class="number">0.0f</span>;</span><br></pre></td></tr></table></figure><br>直接分別設為 $1$ 與 $0$，計算就會 reduce 成 $C\gets\text{OP}(A)\text{OP}(B)$。</p>
+<p>接下來就是 Tricky 的地方。做 Matrix-matrix multiplication：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">error_check(cublasSgemm(cubHandle, CUBLAS_OP_N, CUBLAS_OP_N, P, N, M,</span><br><span class="line">                        &amp;alpha, device_b, P, device_a, M,</span><br><span class="line">                        &amp;beta, device_c, P));</span><br></pre></td></tr></table></figure></p>
+<p>這邊要注意 Tricky 的地方。因為 Row-major 與 Column-major 只差在一次 Transpose，因此根據 $(AB)^T=B^TA^T$ 的特性，Row-major 的 matrix <code>b</code> 與 matrix <code>a</code> 在 Column-major 下必須倒過來相乘。在 row-major 下，我們的 Matrix <code>a</code> 與 <code>b</code> 會長這樣：</p>
+<script type="math/tex; mode=display">
+a=
+\left[\begin{matrix}
+1 & 2 & 3 & 4\\
+5 & 6 & 7 & 8\\
+9 & 10 & 11 & 12\\
+\end{matrix}\right], \quad
+b=
+\left[\begin{matrix}
+8 & 7 \\
+6 & 5 \\
+4 & 3 \\
+2 & 1 \\
+\end{matrix}\right]</script><p>但是 cuBLAS 是 column-major，因此在 cuBLAS 看來矩陣其實長這樣：</p>
+<script type="math/tex; mode=display">
+a=
+\left[\begin{matrix}
+1 & 5 & 9 \\
+2 & 6 & 10 \\
+3 & 7 & 11 \\
+4 & 8 & 12\\
+\end{matrix}\right], \quad
+b=
+\left[\begin{matrix}
+8 & 6 & 4 & 2\\
+7 & 5 & 3 & 1\\
+\end{matrix}\right]</script><p>所以在計算 $AB$ 時，必須將 $A$ 與 $B$ 對調，變成 $BA$，如此一來就會計算出 Transpose 過的 $C$</p>
+<script type="math/tex; mode=display">
+c=\left[\begin{matrix}
+8 & 6 & 4 & 2\\
+7 & 5 & 3 & 1\\
+\end{matrix}\right] \left[\begin{matrix}
+1 & 5 & 9 \\
+2 & 6 & 10 \\
+3 & 7 & 11 \\
+4 & 8 & 12\\
+\end{matrix}\right] = \left[\begin{matrix}
+40 & 120 & 200\\
+30 & 94 & 158\\
+\end{matrix}\right]</script><p>因為 cuBLAS 是 column-major，因此直接將 <code>device_c</code> copy 回 <code>c</code>，在 row-major 下就會 Transpose 回來，得到正確的值。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// device to host</span></span><br><span class="line">error_check(cublasGetMatrix(P, N, <span class="keyword">sizeof</span>(<span class="keyword">float</span>), device_c, P, c, P));</span><br><span class="line"></span><br><span class="line"><span class="comment">// print answer</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;C: &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">print_matrix(c, N, P);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>在 row-major 下，<code>c</code> 為：</p>
+<script type="math/tex; mode=display">
+c= \left[\begin{matrix}
+40 & 30 \\
+120 & 94 \\
+200 & 158\\
+\end{matrix}\right]</script><p>最後不要忘記 Free memory：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Free memory</span></span><br><span class="line">cudaFree(device_a);</span><br><span class="line">cudaFree(device_b);</span><br><span class="line">cudaFree(device_c);</span><br></pre></td></tr></table></figure></p>
+<p><del>如果能夠做到這種程度，代表你對 row-major/column-major 關係很熟了</del></p>
+<h3 id="3-4-cuSPARSE-Introduction"><a href="#3-4-cuSPARSE-Introduction" class="headerlink" title="3-4. cuSPARSE Introduction"></a>3-4. cuSPARSE Introduction</h3><p>cuSPARSE 是 cuBLAS 的 Sparse version。在 cuBLAS 中使用的都是 Dense vector/matrix，而 cuSPARSE 則提供了一系列 API 用來從事 Sparse vector/matrix 相關的計算。且除了 Matrix/Vector operation 之外，cuSPARSE 也有提供許多求解 Sparse linear system 相關的 API。</p>
+<p>Sparse matrix 有一個特點就是矩陣非常大，其中包含了許多 $0$ 項，如果在 GPU 上儲存這些 $0$ 項其實是非常浪費空間的，因此 cuSPARSE 提供了幾種 Data format 來儲存 Sparse matrix，節約 Memory 使用量：</p>
+<p><del>這邊我懶得重寫，直接貼我的 Slide</del></p>
+<ul>
+<li>COO (Coordinate Format)<br>這是最為直接的表示方法，儲存矩陣中每個非 $0$ 項的位置：<br><img src="https://i.imgur.com/ZCJtDi1.png" alt=""></li>
+<li>CSR (Compressed Sparse Row Format)<br>這個表示法對 Row 方向的資料進行了壓縮，他紀錄的是 Row 開始的 Entry 的 index。<br><img src="https://i.imgur.com/16gxonJ.png" alt=""></li>
+<li>CSC (Compressed Sparse Column Format)<br>這個表示法則是對 Col 進行壓縮<br><img src="https://i.imgur.com/A87jBrY.png" alt=""></li>
+<li>另外還有 BSR 與 BSRX 但由於不常使用，就不多介紹</li>
+</ul>
+<p>Sparse vector 使用兩個 Array 來表示，第一個 Array 儲存 Non-zero term，第二個 Array 則儲存 Non-zero term 的 Index。</p>
+<p>使用 cuSPARSE 的方式與 cuBLAS 類似，先 Include <code>cusparse.h</code> (這邊不用 <code>v2</code>)，Compile 時同樣要加上 Link：</p>
+<ul>
+<li>使用 <code>nvcc</code>：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nvcc hello_cusparse.cu -o hello_cusparse -lcusparse</span><br></pre></td></tr></table></figure></li>
+<li>使用 Visual Studio，在 <code>Additional Dependencies</code> 加上 <code>cusparse.lib</code></li>
+</ul>
+<p>就可以正常 Compile。</p>
+<h3 id="3-5-cuSPARSE-API"><a href="#3-5-cuSPARSE-API" class="headerlink" title="3-5. cuSPARSE API"></a>3-5. cuSPARSE API</h3><ul>
+<li><a href="https://docs.nvidia.com/cuda/cusparse/index.html">cuSPARSE :: CUDA Toolkit Documentation</a></li>
+</ul>
+<p>在使用 cuSPARSE 時，需要呼叫 <code>cusparseCreate</code> 建立 cuSPARSE 的 Handle <code>cusparseHandle_t</code>，在最後程式結束前則需呼叫 <code>cusparseDestroy</code> Destroy：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cusparseHandle_t cusHandle;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Initialize cuSPARSE</span></span><br><span class="line">    cusparseCreate( &amp;cusHandle );</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Destroy cuSPARSE handle</span></span><br><span class="line">    cusparseDestroy(cusHandle);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>建立 Sparse matrix 時，則需要根據 Data format (COO、CSR、CSC) 建立對應的 Data，如：COO format 需要建立三個 Array：</p>
+<ul>
+<li><code>cooValA</code> 儲存 Non-zero term</li>
+<li><code>cooRowIndA</code> 儲存 Non-zero term 的 row index</li>
+<li><code>cooColIndA</code> 儲存 Non-zero term 的 column index。</li>
+</ul>
+<p>如果想要建立 <code>CSR</code> 或 <code>CSC</code> format 但是不會 (或是不方便) 建立 Row/Column index 話，可以先建立 <code>COO</code> format，使用 cuSPARSE 提供的 Format Conversion API <code>cusparse&lt;t&gt;coo2csr</code> 做 Data format 的轉換。也可以直接從 Dense matrix，使用 <code>cusparse&lt;t&gt;dense2csc</code> / <code>cusparse&lt;t&gt;dense2csr</code> 轉換。</p>
+<p>與 cuBLAS 不同的地方在於，cuSPARSE 在宣告 Matrix 時，必須建立該 Matrix 的 Descriptor <code>cusparseMatDescr_t</code>。<code>cusparseMatDescr_t</code> 包含了大略以下資料：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">typeof <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    cusparseMatrixType_t MatrixType;</span><br><span class="line">    cusparseFillMode_t FillMode;</span><br><span class="line">    cusparseDiagType_t DiagType;</span><br><span class="line">    cusparseIndexBase_t IndexBase;</span><br><span class="line">&#125; cusparseMatDescr_t;</span><br></pre></td></tr></table></figure></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><code>cusparseDiagType_t</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CUSPARSE_DIAG_TYPE_NON_UNIT</code></td>
+<td>The matrix diagonal has non-unit elements.</td>
+</tr>
+<tr>
+<td><code>CUSPARSE_DIAG_TYPE_UNIT</code></td>
+<td>The matrix diagonal has unit elements.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><code>cusparseFillMode_t</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CUSPARSE_FILL_MODE_LOWER</code></td>
+<td>The lower triangular part is stored.</td>
+</tr>
+<tr>
+<td><code>CUSPARSE_FILL_MODE_UPPER</code></td>
+<td>The upper triangular part is stored.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><code>cusparseIndexBase_t</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CUSPARSE_INDEX_BASE_ZERO</code></td>
+<td>The base index is zero.</td>
+</tr>
+<tr>
+<td><code>CUSPARSE_INDEX_BASE_ONE</code></td>
+<td>The base index is one.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在過去的版本中 (CUDA 8.0) 為了節約 Memory，針對特殊的 Matrix (Symmetric、Triangular、Hermitian) 可以在 <code>cusparseMatrixType_t</code> 指定。如果有指定特殊的 Matrix 的話，cuSPARSE 會只使用 Lower triangle 或 Upper triangle 半邊的 Data 做計算，端看 <code>cusparseFillMode_t</code> 是指定 Lower 還是 Upper。如此一來，使用者可以只需要儲存半邊的 Matrix。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><code>cusparseMatrixType_t</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CUSPARSE_MATRIX_TYPE_GENERAL</code></td>
+<td>The matrix is general.</td>
+</tr>
+<tr>
+<td><code>CUSPARSE_MATRIX_TYPE_SYMMETRIC</code></td>
+<td>The matrix is symmetric. (<em>Deprecated</em>)</td>
+</tr>
+<tr>
+<td><code>CUSPARSE_MATRIX_TYPE_HERMITIAN</code></td>
+<td>The matrix is Hermitian. (<em>Deprecated</em>)</td>
+</tr>
+<tr>
+<td><code>CUSPARSE_MATRIX_TYPE_TRIANGULAR</code></td>
+<td>The matrix is triangular. (<em>Deprecated</em>)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note warning">
+            <p>然而在 CUDA 11.0 中，<strong>官方不再鼓勵使用者使用 General 以外的 Matrix Type</strong>，原因是在許多計算中 (Matrix-vector multiplication、Preconditioners、Lienar system solvers 等等)，使用<strong>非 General type </strong>的計算耗費時間會是 General type 的 10 倍慢**，因此在 CUDA 11.0 中，大部分的 API 不再支援非 General type 的 Matrix。因此使用者在指定 Matrix type 時直接填寫 <code>CUSPARSE_MATRIX_TYPE_GENERAL</code> 即可。</p>
+          </div>
+<p>以下示範如何宣告一個 <code>cusparseMatDescr_t</code>：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create descriptor for the matrix A</span></span><br><span class="line">cusparseMatDescr_t descr_A = <span class="number">0</span>;</span><br><span class="line">cusparseCreateMatDescr(&amp;descr_A);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Set properties of the matrix A</span></span><br><span class="line">cusparseSetMatType(descr_A, CUSPARSE_MATRIX_TYPE_GENERAL);</span><br><span class="line">cusparseSetMatIndexBase(descr_A, CUSPARSE_INDEX_BASE_ZERO);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free descriptor</span></span><br><span class="line">cusparseDestroyMatDescr(descr_A);</span><br></pre></td></tr></table></figure></p>
+<p>cuSPARSE 同樣有提供 3 個 Level 的 API：</p>
+<ul>
+<li>Level-1：Sparse vector operation (在 CUDA 11.0 中已列為 <em>Deprecated</em>)</li>
+<li>Level-2：Sparse matrix-dense/sparse vector operation 以及求解 Matrix-vector sparse linear system 相關 API</li>
+<li>Level-3：Sparse matrix-dense matrix operation 以及求解 Matrix-matrix sparse linear system</li>
+</ul>
+<p>需要注意的是 Level-2 與 Level-3 求解 Sparse linear system 的 API 有限定 Matrix 必須是 Triangular，如果矩陣非 Triangular 則只會使用 Lower triangle 的 Data，Upper triangle 忽略。</p>
+<p>注意到，Level-3 是 Sparse matrix 對 dense matrix operation，Sparse matrix 對 sparse matrix 的 operation 則是放在 Extra API，但其中也有一些 API 已經列為 <em>Deprecated</em>。而多數 API 被列為 Deprecated 的原因是因為，CUDA 11.0 決定要將一些常用的 Multiplication operation 做整合，因此提供了另一種型態的 API —- Generic API。</p>
+<p>使用 Generic API 的方法與 cuBLAS 大不相同。首先需要建立對應 Data format 的 Descriptor (不同於 <code>cusparseMatDescr_t</code>)。例如，如果要建立 <code>CSR</code> format 的 Sparse matrix 則必須呼叫對應的 API 來建立 Descriptor：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cusparseSpMatDescr_t mat_A;</span><br><span class="line">cusparseCreateCsr(&amp;mat_A, N, N, nnz, d_rowPtr, d_colIdx, d_A, </span><br><span class="line">                 CUSPARSE_INDEX_32I, <span class="comment">// row index data type (int)</span></span><br><span class="line">                 CUSPARSE_INDEX_32I, <span class="comment">// col index data type (int) </span></span><br><span class="line">                 CUSPARSE_INDEX_BASE_ZERO, <span class="comment">// 0-based index</span></span><br><span class="line">                 CUDA_R_64F);  <span class="comment">// Data type (real double-floating point)</span></span><br></pre></td></tr></table></figure></p>
+<p>建立 Dense vector：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cusparseDnVecDescr_t vec_x;</span><br><span class="line">cusparseCreateDnVec(&amp;vec_x, N, d_x, CUDA_R_64F);</span><br></pre></td></tr></table></figure></p>
+<p>建立完後，呼叫 Generic API 時都是使用 Descriptor 來代表 Vector/Matrix。例如 <code>cusparseSpMV</code> 計算 Sparse-matrix 對 dense-vector 的 Multiplication：</p>
+<script type="math/tex; mode=display">
+y\gets \alpha \text{OP}(A)x+\beta y</script><p><img src="https://i.imgur.com/zxsshA5.png" alt=""></p>
+<p>計算分成兩個階段，首先使用者必須自行呼叫 <code>cusparseSpMV_bufferSize</code> 估算 <code>cusparseSPMV</code> 所需的額外 Buffer 空間大小，之後自行呼叫 <code>cudaMalloc</code> 建立後，再呼叫 <code>cusparseSpMV</code> 換成計算。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> alpha = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">double</span> beta = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">size_t</span> buf_size = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">double</span> *d_buf;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Compute buffer size in computing matrix-vector multiplocation</span></span><br><span class="line">cusparseSpMV_bufferSize(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE, </span><br><span class="line">                        &amp;alpha, mat_A, vec_x, </span><br><span class="line">                        &amp;beta, vec_y, </span><br><span class="line">                        CUDA_R_64F, </span><br><span class="line">                        CUSPARSE_CSRMV_ALG1, </span><br><span class="line">                        &amp;buf_size);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Allocate buffer memory</span></span><br><span class="line">cudaMalloc(&amp;d_buf, buf_size);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perform matrix-vector multiplocation</span></span><br><span class="line">cusparseSpMV(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE, </span><br><span class="line">             &amp;alpha, mat_A, vec_x, </span><br><span class="line">             &amp;beta, vec_y, </span><br><span class="line">             CUDA_R_64F, </span><br><span class="line">             CUSPARSE_CSRMV_ALG1, </span><br><span class="line">             d_buf));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free buffer</span></span><br><span class="line">cudaFree(d_buf);</span><br></pre></td></tr></table></figure></p>
+<p>最後需要呼叫對應的 API 來銷毀 Generic API 的 descriptor<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Destroy descriptor</span></span><br><span class="line">cusparseDestroySpMat(mat_A);</span><br><span class="line">cusparseDestroyDnVec(vec_x);</span><br><span class="line">cusparseDestroyDnVec(vec_y);</span><br></pre></td></tr></table></figure></p>
+<p>求解 Sparse linear system 在 CUDA 11.0 中也有大幅度的變更，原先在 CUDA 8.0 中，求解 Sparse linear system 時 cuSPARSE 會自己建立刪除額外的 Buffer，但從 CUDA 11.0 開始也需要使用者自行處理 Buffer。除此之外，Sparse linear system 只支援 Triangular matrix，若 Matrix 不是 Triangular，cuSPARSE 會忽略除了 Lower triangle 以外的 Data。</p>
+<p>求解 Sparse linear system 前需要先建立對應 Data format 的 Infomation object，接著分成兩個階段 (Phase)，首先先執行 Analysis phase 分析 Matrix 型態，之後再執行 Solve phase 解出 Linear system。以下示範使用 <code>cusparse&lt;t&gt;csrsv2</code> 求解 Sparse linear system $\text{OP}(A)y=\alpha x$：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create infomation object</span></span><br><span class="line">csrsv2Info_t info_A;</span><br><span class="line">cusparseCreateCsrsv2Info(&amp;info_A);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> buf_size;</span><br><span class="line"><span class="keyword">double</span> *d_buf;</span><br><span class="line"><span class="comment">// Compute buffer size for solving linear system</span></span><br><span class="line">cusparseDcsrsv2_bufferSize(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE,</span><br><span class="line">                          N, nnz, descr_A,  <span class="comment">//descr_A: cusparseMatDescr_t</span></span><br><span class="line">                          d_A, d_rowIdx, d_colIdx,</span><br><span class="line">                          info_A, &amp;buf_size);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Allocate buffer memory</span></span><br><span class="line">cudaMalloc(&amp;d_buf, buf_size);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Analysis phase</span></span><br><span class="line">cusparseDcsrsv2_analysis(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE,</span><br><span class="line">                        N, nnz, descr_A,  <span class="comment">//descr_A: cusparseMatDescr_t</span></span><br><span class="line">                        d_A, d_rowIdx, d_colIdx,</span><br><span class="line">                        info_A, CUSPARSE_SOLVE_POLICY_USE_LEVEL, d_buf);</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> alpha = <span class="number">1</span>;</span><br><span class="line"><span class="comment">// Solve phase</span></span><br><span class="line">cusparseDcsrsv2_solve(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE,</span><br><span class="line">                     N, nnz, &amp;alpha, descr_A, <span class="comment">//descr_A: cusparseMatDescr_t</span></span><br><span class="line">                     d_A, d_rowIdx, d_colIdx,</span><br><span class="line">                     info_A, d_x, d_y, </span><br><span class="line">                     CUSPARSE_SOLVE_POLICY_USE_LEVEL, d_buf);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free buffer</span></span><br><span class="line">cudaFree(d_buf);</span><br><span class="line"><span class="comment">// Destroy information object</span></span><br><span class="line">cusparseDestroyCsrsv2Info(info_A);</span><br></pre></td></tr></table></figure></p>
+<p>求解 Linear system 這類 API 在 CUDA 11.0 時有新增一個新的參數<code>cusparseSolvePolicy_t</code>：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><code>cusparseSolvePolicy_t</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CUSPARSE_SOLVE_POLICY_NO_LEVEL</code></td>
+<td>No level information is generated and used.</td>
+</tr>
+<tr>
+<td><code>CUSPARSE_SOLVE_POLICY_USE_LEVEL</code></td>
+<td>Generate and use level information.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在 Document 裡，每個 API 底下的解說都有寫這個參數的用途，但並沒有說的很詳細，我也不清楚這個參數實際的用途。簡而言之，這個參數能夠提升某些運算的效率，本身並不影響計算的結果。</p>
+<p>除了這些 API 之外，cuSPARSE 還有提供其他額外的 API，例如 Preconditioner、Format conversion 等等，詳細請看 Document。</p>
+<h3 id="3-6-Hello-cuSPARSE"><a href="#3-6-Hello-cuSPARSE" class="headerlink" title="3-6. Hello cuSPARSE"></a>3-6. Hello cuSPARSE</h3><p>這邊範例將會介紹如何使用 cuSPARSE 計算 Sparse matrix dense vector multiplication。首先建立基礎 Framework。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cuda_runtime.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cusparse.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cublas_v2.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// You can find the source code here:</span></span><br><span class="line"><span class="comment">// https://gist.github.com/Ending2015a/4eb30e7665d91debc723d9c73afec821</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;error_helper.hpp&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// Initialize cuBLAS / cuSPARSE</span></span><br><span class="line">    cublasHandle_t cubHandle = <span class="number">0</span>;</span><br><span class="line">    error_check(cublasCreate(&amp;cubHandle));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">cusparsehandle_t</span> cusHandle = <span class="number">0</span>;</span><br><span class="line">    error_check(cusparseCreate(&amp;cusHandle));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> Sparse matrix dense vector multiplication</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Destroy handles</span></span><br><span class="line">    cusparseDestroy(cusHandle);</span><br><span class="line">    cublasDestroy(cubhandle);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下來在 Host 建立一個 Sparse matrix 與一個 Dense vector，這邊隨便寫一些 Hash 函數來產生亂數：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// random hash (2D to 1D)</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">hash21</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">double</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    x = (x*<span class="number">24.36854</span> + y*<span class="number">15.75427</span> + <span class="number">43.454614</span>);</span><br><span class="line">    y = (x*<span class="number">57.5654</span> + y*<span class="number">21.1435</span> + <span class="number">37.159636</span>);</span><br><span class="line">    x = <span class="built_in">sin</span>(x+y)*<span class="number">516.918738574</span>;</span><br><span class="line">    <span class="keyword">return</span> ((<span class="keyword">int</span>)((<span class="number">-1.</span> + <span class="number">2.</span> * <span class="built_in">fabs</span>(x - (<span class="keyword">long</span>)x))*<span class="number">100.</span>))*<span class="number">0.1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// create tridiagonal matrix in column-major order</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">createDenseMatrix</span><span class="params">(<span class="keyword">double</span> **o_mat, <span class="keyword">int</span> N)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> *mat = <span class="keyword">new</span> <span class="keyword">double</span>[N*N]&#123;&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> x=<span class="number">0</span>;x&lt;N;++x)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> y=<span class="number">0</span>;y&lt;N;++y)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(x == y)</span><br><span class="line">                mat[y+x*N] = hash21(x, y);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>( <span class="built_in">abs</span>(x-y) == <span class="number">1</span> )</span><br><span class="line">                mat[y+x*N] = hash21(x, y);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    *o_mat = mat;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// create random vector</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">createDenseVector</span><span class="params">(<span class="keyword">double</span> **o_vec, <span class="keyword">int</span> N)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> *vec = <span class="keyword">new</span> <span class="keyword">double</span>[N]&#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> x=<span class="number">0</span>;x&lt;N;++x)</span><br><span class="line">    &#123;</span><br><span class="line">        vec[x] = hash21(x, -x+<span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    *o_vec = vec;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// print matrix</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_matrix</span><span class="params">(<span class="keyword">double</span> *mat, <span class="keyword">const</span> <span class="keyword">int</span> N)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;++j)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(j != <span class="number">0</span>) <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;, &quot;</span>;</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::fixed &lt;&lt; <span class="built_in">std</span>::setprecision(<span class="number">2</span>) &lt;&lt; mat[i + j*N];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// print vector</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_vector</span><span class="params">(<span class="keyword">double</span> *vec, <span class="keyword">const</span> <span class="keyword">int</span> N)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(i != <span class="number">0</span>) <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;, &quot;</span>;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::fixed &lt;&lt; <span class="built_in">std</span>::setprecision(<span class="number">2</span>) &lt;&lt; vec[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>這邊不需要太在意寫了甚麼，基本上就是用盡各種辦法建立了一個 Sparse matrix 跟 Dense vector。</p>
+<p>接著回到 <code>TODO</code> 的地方繼續完成 Matrix vector multiplication。建立 Matrix 跟 Vector，copy 到 GPU 上：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// <span class="doctag">TODO:</span> Sparse matrix dense vector multiplication</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate random dense tridiagonal matrix A (column-major)</span></span><br><span class="line"><span class="keyword">int</span> N = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">double</span> *A = <span class="number">0</span>;</span><br><span class="line">createDenseMatrix(&amp;A, N);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Print matrix</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;My matrix &#x27;A&#x27;: &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">print_matrix(A, N);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate random dense vector b</span></span><br><span class="line"><span class="keyword">double</span> *b = <span class="number">0</span>;</span><br><span class="line">createDenseVector(&amp;b, N);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Print matrix</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;My vector &#x27;b&#x27;: &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">print_vector(b, N);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Device pointer (Dense)</span></span><br><span class="line"><span class="keyword">double</span> *d_A = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">double</span> *d_b = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">double</span> *d_c = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Allocate GPU memory</span></span><br><span class="line">error_check(cudaMalloc(&amp;d_A, <span class="keyword">sizeof</span>(<span class="keyword">double</span>) * N * N));</span><br><span class="line">error_check(cudaMalloc(&amp;d_b, <span class="keyword">sizeof</span>(<span class="keyword">double</span>) * N));</span><br><span class="line">error_check(cudaMalloc(&amp;d_c, <span class="keyword">sizeof</span>(<span class="keyword">double</span>) * N));</span><br><span class="line"></span><br><span class="line"><span class="comment">// you can also use cudaMemcpy/cudaMemcpy2D as well.</span></span><br><span class="line">error_check(cublasSetMatrix(N, N, <span class="keyword">sizeof</span>(<span class="keyword">double</span>), A, N, d_A, N));</span><br><span class="line">error_check(cublasSetVector(N, <span class="keyword">sizeof</span>(<span class="keyword">double</span>), b, <span class="number">1</span>, d_b, <span class="number">1</span>));</span><br></pre></td></tr></table></figure></p>
+<p>建立 Matrix A 的 Description：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create descriptor of the matrix A</span></span><br><span class="line">cusparseMatDescr_t descr_A = <span class="number">0</span>;</span><br><span class="line">error_check(cusparseCreateMatDescr(&amp;descr_A));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Set properties of the matrix A</span></span><br><span class="line">error_check(cusparseSetMatType(descr_A, CUSPARSE_MATRIX_TYPE_GENERAL));</span><br><span class="line">error_check(cusparseSetMatIndexBase(descr_A, CUSPARSE_INDEX_BASE_ZERO));</span><br></pre></td></tr></table></figure></p>
+<p>接下來要將 Dense matrix A 轉換成 Sparse 的 Format，因此要先計算 Matrix A 的 Non-zero term 數量，這個地方可以使用 cuSPARSE API <code>cusparseDnnz</code> 計算，之後再使用 <code>cusparseDdense2csr</code> 將 Dense format 的 Matrix A 轉換成 CSR format。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Count non-zero terms</span></span><br><span class="line"><span class="keyword">int</span> nnz = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *d_nnz_perRow = <span class="number">0</span>;</span><br><span class="line">error_check(cudaMalloc(&amp;d_nnz_perRow, N * <span class="keyword">sizeof</span>(<span class="keyword">int</span>)));</span><br><span class="line">error_check(cusparseDnnz(cusHandle, CUSPARSE_DIRECTION_ROW, N, </span><br><span class="line">                        N, descr_A, d_A, </span><br><span class="line">                        N, d_nnz_perRow, &amp;nnz));</span><br><span class="line"><span class="comment">// Print message</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Total number of non-zero terms in dense matrix A = &quot;</span> &lt;&lt; nnz &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Convert dense format to csr format</span></span><br><span class="line"><span class="keyword">double</span> *d_csrValA = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *d_rowPtrA = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *d_colIdxA = <span class="number">0</span>;</span><br><span class="line">error_check(cudaMalloc(&amp;d_csrValA, nnz * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">error_check(cudaMalloc(&amp;d_rowPtrA, (N+<span class="number">1</span>) * <span class="keyword">sizeof</span>(<span class="keyword">int</span>)));</span><br><span class="line">error_check(cudaMalloc(&amp;d_colIdxA, nnz * <span class="keyword">sizeof</span>(<span class="keyword">int</span>)));</span><br><span class="line">error_check(cusparseDdense2csr(cusHandle, N, N, </span><br><span class="line">                            descr_A, d_A, </span><br><span class="line">                            N, d_nnz_perRow,</span><br><span class="line">                            d_csrValA, d_rowPtrA, d_colIdxA));</span><br></pre></td></tr></table></figure></p>
+<p>接著因為要使用 Generic API <code>cusparseSpMV</code> 計算 Matrix vector multiplication，因此要先建立 Descriptors：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create Generic API descriptor</span></span><br><span class="line">cusparseSpMatDescr_t mat_A;</span><br><span class="line">error_check(cusparseCreateCsr(&amp;mat_A, N, N, nnz,</span><br><span class="line">    d_rowPtrA, d_colIdxA, d_csrValA,</span><br><span class="line">    CUSPARSE_INDEX_32I, CUSPARSE_INDEX_32I,</span><br><span class="line">    CUSPARSE_INDEX_BASE_ZERO, CUDA_R_64F));</span><br><span class="line"></span><br><span class="line">cusparseDnVecDescr_t vec_b;</span><br><span class="line">error_check(cusparseCreateDnVec(&amp;vec_b, N, d_b, CUDA_R_64F));</span><br><span class="line"></span><br><span class="line">cusparseDnVecDescr_t vec_c;</span><br><span class="line">error_check(cusparseCreateDnVec(&amp;vec_c, N, d_c, CUDA_R_64F));</span><br></pre></td></tr></table></figure></p>
+<p>接下來就是計算 Matrix vector multiplication，先呼叫 <code>cusparseSpMV_bufferSize</code> 計算計算所需的 Buffer 空間，接著呼叫 <code>cusparseSpMV</code> 完成計算：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">size_t</span> buf_size;</span><br><span class="line"><span class="keyword">double</span> *d_buf;</span><br><span class="line"><span class="keyword">double</span> alpha = <span class="number">1.0</span>;</span><br><span class="line"><span class="keyword">double</span> beta = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line">error_check(cusparseSpMV_bufferSize(cusHandle, </span><br><span class="line">                                    CUSPARSE_OPERATION_NON_TRANSPOSE,</span><br><span class="line">                                    &amp;alpha, mat_A, vec_b, </span><br><span class="line">                                    &amp;beta, vec_c, CUDA_R_64F, </span><br><span class="line">                                    CUSPARSE_CSRMV_ALG1, &amp;buf_size));</span><br><span class="line"><span class="comment">// Allocate buffer</span></span><br><span class="line">cudaMalloc(&amp;d_buf, buf_size);</span><br><span class="line"></span><br><span class="line">error_check(cusparseSpMV(cusHandle, </span><br><span class="line">                         CUSPARSE_OPERATION_NON_TRANSPOSE,</span><br><span class="line">                         &amp;alpha, mat_A, vec_b, </span><br><span class="line">                         &amp;beta, vec_c, CUDA_R_64F, </span><br><span class="line">                         CUSPARSE_CSRMV_ALG1, d_buf));</span><br></pre></td></tr></table></figure></p>
+<p>最後將解答從 GPU memory 複製到 Host，並印出答案：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// device to host</span></span><br><span class="line"><span class="keyword">double</span> *c = <span class="keyword">new</span> <span class="keyword">double</span>[N]&#123;&#125;;</span><br><span class="line">error_check(cublasGetVector(N, <span class="keyword">sizeof</span>(<span class="keyword">double</span>), d_c, <span class="number">1</span>, c, <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// print answer</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Answer: &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">print_vector(c, N);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure></p>
+<p>程式最後將所有資源 Free 掉：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">delete</span>[] A;</span><br><span class="line"><span class="keyword">delete</span>[] b;</span><br><span class="line"><span class="keyword">delete</span>[] c;</span><br><span class="line">cudaFree(d_A);</span><br><span class="line">cudaFree(d_b);</span><br><span class="line">cudaFree(d_c);</span><br><span class="line">cudaFree(d_nnz_perRow);</span><br><span class="line">cudaFree(d_csrValA);</span><br><span class="line">cudaFree(d_rowPtrA);</span><br><span class="line">cudaFree(d_colIdxA);</span><br><span class="line">cudaFree(d_buf);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free handles, descriptors, </span></span><br><span class="line">cusparseDestroyMatDescr(descr_A);</span><br><span class="line">cusparseDestroySpMat(mat_A);</span><br><span class="line">cusparseDestroyDnVec(vec_b);</span><br><span class="line">cusparseDestroyDnVec(vec_c);</span><br></pre></td></tr></table></figure></p>
+<p>成功的的話就會算出答案：<br><code>-33.48, 52.97, -47.62, 82.27, 3.97</code></p>
+<h2 id="4-Implementation"><a href="#4-Implementation" class="headerlink" title="4. Implementation"></a>4. Implementation</h2><p>這章節將解說如何使用 cuBLAS/cuSPARSE 實做 Incomplete-Cholesky preconditioned conjugate gradient。</p>
+<h3 id="4-1-Frameworks"><a href="#4-1-Frameworks" class="headerlink" title="4-1. Frameworks"></a>4-1. Frameworks</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cuda_runtime.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cublas_v2.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cusparse.h&gt;</span></span></span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> inputPath = <span class="string">&quot;testcase/size1M/case_1M.in&quot;</span>; <span class="comment">// Input file path</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> answerPath = <span class="string">&quot;testcase/size1M/case_1M.out&quot;</span>; <span class="comment">// Answer file path</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* TODO */</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先要處理的就是 Matrix 的讀寫。</p>
+<ul>
+<li>Input：使用 COO 格式<ul>
+<li>$N$ (32-bit int)：表示 Matrix $A$ 大小為 $N\times N$，Vector $b$ 維度為 $N$</li>
+<li>$\text{nz}$ (32-bit int)：表示矩陣 $A$ 具有的 Non-zero term 數量</li>
+<li>3-tuple 有 $\text{nz}$ 個：<ul>
+<li>$i$ (32-bit int)：表示 Row index (0-based)</li>
+<li>$j$ (32-bit int)：表示 Column index (0-based)</li>
+<li>$A_{ij}$ (64-bit float)：表示 Element $A_{ij}$ 的值</li>
+</ul>
+</li>
+<li>$N$ 個 64-bit float 代表 Vector $b$</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/dt0WMYA.png =500x" alt=""></p>
+<ul>
+<li>Output：<ul>
+<li>$N$ (32-bit int)：表示 Vector $x$ 的維度</li>
+<li>$N$ 個 64-bit float 代表 Vector $x$</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/gmrsO1x.png =240x" alt=""></p>
+<p>因此讀檔的部份：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Read testcase</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">read</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> filePath,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">int</span> *pN, <span class="keyword">int</span> *pnz,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">double</span> **cooVal,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">int</span> **cooRowIdx, <span class="keyword">int</span> **cooColIdx,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">double</span> **b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::ifstream <span class="title">in</span><span class="params">(filePath, <span class="built_in">std</span>::ios::binary)</span></span>;</span><br><span class="line"></span><br><span class="line">    in.read((<span class="keyword">char</span>*)pN, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));  <span class="comment">// read N</span></span><br><span class="line">    in.read((<span class="keyword">char</span>*)pnz, <span class="keyword">sizeof</span>(<span class="keyword">int</span>)); <span class="comment">// read nz</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Create array</span></span><br><span class="line">    *cooVal = <span class="keyword">new</span> <span class="keyword">double</span>[*pnz]&#123;&#125;;</span><br><span class="line">    *cooRowIdx = <span class="keyword">new</span> <span class="keyword">int</span>[*pnz]&#123;&#125;;</span><br><span class="line">    *cooColIdx = <span class="keyword">new</span> <span class="keyword">int</span>[*pnz]&#123;&#125;;</span><br><span class="line">    *b = <span class="keyword">new</span> <span class="keyword">double</span>[*pN]&#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// read each element Aij</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; *pnz; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        in.read((<span class="keyword">char</span>*)&amp;(*cooRowIdx)[i], <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">        in.read((<span class="keyword">char</span>*)&amp;(*cooColIdx)[i], <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">        in.read((<span class="keyword">char</span>*)&amp;(*cooVal)[i], <span class="keyword">sizeof</span>(<span class="keyword">double</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// read b</span></span><br><span class="line">    in.read((<span class="keyword">char</span>*)(*b), <span class="keyword">sizeof</span>(<span class="keyword">double</span>)*(*pN));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Read answer</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">readAnswer</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> filePath,</span></span></span><br><span class="line"><span class="function"><span class="params">                <span class="keyword">int</span> *pN, <span class="keyword">double</span> **x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::ifstream <span class="title">in</span><span class="params">(filePath, <span class="built_in">std</span>::ios::binary)</span></span>;</span><br><span class="line"></span><br><span class="line">    in.read((<span class="keyword">char</span>*)pN, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"></span><br><span class="line">    *x = <span class="keyword">new</span> <span class="keyword">double</span>[*pN]&#123;&#125;;</span><br><span class="line"></span><br><span class="line">    in.read((<span class="keyword">char</span>*)(*x), <span class="keyword">sizeof</span>(<span class="keyword">double</span>)*(*pN));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>讀檔這邊因為會需要更改傳入的參數，因此使用 Call by reference。接下來回到 <code>main</code>：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// in `main` function</span></span><br><span class="line"><span class="keyword">int</span> N;</span><br><span class="line"><span class="keyword">int</span> nz;</span><br><span class="line"><span class="keyword">double</span> *A;</span><br><span class="line"><span class="keyword">int</span> *rowIdxA;</span><br><span class="line"><span class="keyword">int</span> *colIdxA;</span><br><span class="line"><span class="keyword">double</span> *b;</span><br><span class="line">read(inputPath, &amp;N, &amp;nz, &amp;A, &amp;rowIdxA, &amp;colIdxA, &amp;b);</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> *ans_x;</span><br><span class="line">readAnswer(answerPath, &amp;N, &amp;ans_x);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Print message</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;N = &quot;</span> &lt;&lt; N &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;nz = &quot;</span> &lt;&lt; nz &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure></p>
+<p>讀檔到這邊就完成了，由於讀進來的 Matrix $A$ 是 COO，需要轉換成 CSR，因此需要先初始化 cuBLAS/cuSPARSE：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create handles</span></span><br><span class="line">cublasHandle_t cubHandle;</span><br><span class="line">cusparseHandle_t cusHandle;</span><br><span class="line"></span><br><span class="line">error_check(cublasCreate(&amp;cubHandle));</span><br><span class="line">error_check(cusparseCreate(&amp;cusHandle));</span><br></pre></td></tr></table></figure></p>
+<p>接著分配 Matrix $A$ 在 GPU 上的 Memory，並複製一份過去：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Allocate GPU memory &amp; copy matrix/vector to device</span></span><br><span class="line"><span class="keyword">double</span> *d_A;</span><br><span class="line"><span class="keyword">int</span> *d_rowIdxA; <span class="comment">// COO</span></span><br><span class="line"><span class="keyword">int</span> *d_rowPtrA; <span class="comment">// CSR</span></span><br><span class="line"><span class="keyword">int</span> *d_colIdxA;</span><br><span class="line"><span class="keyword">double</span> *d_b;</span><br><span class="line"></span><br><span class="line">error_check(cudaMalloc(&amp;d_A, nz * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">error_check(cudaMalloc(&amp;d_rowIdxA, nz * <span class="keyword">sizeof</span>(<span class="keyword">int</span>)));</span><br><span class="line">error_check(cudaMalloc(&amp;d_rowPtrA, (N + <span class="number">1</span>) * <span class="keyword">sizeof</span>(<span class="keyword">int</span>)));  <span class="comment">// (N+1) !!!!</span></span><br><span class="line">error_check(cudaMalloc(&amp;d_colIdxA, nz * <span class="keyword">sizeof</span>(<span class="keyword">int</span>)));</span><br><span class="line">error_check(cudaMalloc(&amp;d_b, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line"></span><br><span class="line">error_check(cudaMemcpy(d_A, A, nz * <span class="keyword">sizeof</span>(<span class="keyword">double</span>), cudaMemcpyHostToDevice));</span><br><span class="line">error_check(cudaMemcpy(d_rowIdxA, rowIdxA, nz * <span class="keyword">sizeof</span>(<span class="keyword">int</span>), cudaMemcpyHostToDevice));</span><br><span class="line">error_check(cudaMemcpy(d_colIdxA, colIdxA, nz * <span class="keyword">sizeof</span>(<span class="keyword">int</span>), cudaMemcpyHostToDevice));</span><br><span class="line">error_check(cudaMemcpy(d_b, b, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>), cudaMemcpyHostToDevice));</span><br></pre></td></tr></table></figure></p>
+<p>這邊需要注意 CSR 格式是針對 RowIdx 做壓縮，壓縮後的大小為 $N+1$，在 Document 上有寫。接著就是 Call <a href="https://docs.nvidia.com/cuda/cusparse/index.html#coo2csr"><code>cusparseXcoo2csr</code></a> 做轉換：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Convert matrix A from COO format to CSR format</span></span><br><span class="line">error_check(cusparseXcoo2csr(cusHandle, d_rowIdxA, nz, N,</span><br><span class="line">                    d_rowPtrA, CUSPARSE_INDEX_BASE_ZERO));</span><br></pre></td></tr></table></figure></p>
+<p>接著就是建立 ICCGsolver 跟 Call solve，內容的部份會在 4-2 節實作：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create conjugate gradient solver</span></span><br><span class="line"><span class="keyword">int</span> max_iter = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">double</span> tolerance = <span class="number">1e-12</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">ICCGsolver <span class="title">solver</span><span class="params">(max_iter, tolerance, cubHandle, cusHandle)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Print message</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Solving linear system...&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">bool</span> res = solver.solve(N, nz, d_A, d_rowPtrA, d_colIdxA, d_b);</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; (res ? <span class="string">&quot;Converged!&quot;</span>: <span class="string">&quot;Failed to converge&quot;</span>) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure></p>
+<p>這邊我讓 <code>solver.solve</code> 回傳 <code>true</code> 如果 <code>solver</code> 成功在 <code>max_iter</code> Iteration 內收斂 (小於 <code>tolerance</code>) 的話，否則回傳 <code>false</code>。接下來就是將解答從 GPU 摳回 Host memory，並驗證結果：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> *x = <span class="keyword">new</span> <span class="keyword">double</span>[N] &#123;&#125;;</span><br><span class="line">error_check(cudaMemcpy(x, solver.x_ptr(), N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>), cudaMemcpyDeviceToHost));</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> tol = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; ++i)</span><br><span class="line">&#123;</span><br><span class="line">    tol += x[i] - ans_x[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// print message</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Solved in &quot;</span> &lt;&lt; solver.iter_count() &lt;&lt; <span class="string">&quot; iterations, final norm(r) = &quot;</span></span><br><span class="line">        &lt;&lt; <span class="built_in">std</span>::scientific &lt;&lt; solver.err() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Total error (compared with ans_x): &quot;</span> &lt;&lt; tol &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure></p>
+<p>最後要記得把 Memory 都 Free 掉：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Free Host memory</span></span><br><span class="line"><span class="keyword">delete</span>[] A;</span><br><span class="line"><span class="keyword">delete</span>[] rowIdxA;</span><br><span class="line"><span class="keyword">delete</span>[] colIdxA;</span><br><span class="line"><span class="keyword">delete</span>[] b;</span><br><span class="line"><span class="keyword">delete</span>[] ans_x;</span><br><span class="line"><span class="keyword">delete</span>[] x;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free Device memory</span></span><br><span class="line">cudaFree(d_A);</span><br><span class="line">cudaFree(d_rowIdxA);</span><br><span class="line">cudaFree(d_rowPtrA);</span><br><span class="line">cudaFree(d_colIdxA);</span><br><span class="line">cudaFree(d_b);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free handles</span></span><br><span class="line">cublasDestroy(cubHandle);</span><br><span class="line">cusparseDestroy(cusHandle);</span><br></pre></td></tr></table></figure></p>
+<p>到這邊 <code>main</code> 就完成了，下一節就是實作 <code>ICCGsolver</code>。</p>
+<h3 id="4-2-Main-Algorithm"><a href="#4-2-Main-Algorithm" class="headerlink" title="4-2. Main Algorithm"></a>4-2. Main Algorithm</h3><p>先定義 <code>class ICCGsolver</code>：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ICCGsolver</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    cublasHandle_t cubHandle;</span><br><span class="line">    cusparseHandle_t cusHandle;</span><br><span class="line">    </span><br><span class="line">    cusparseMatDescr_t descr_A;</span><br><span class="line">    cusparseMatDescr_t descr_L;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// host data</span></span><br><span class="line">    <span class="keyword">int</span> N = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> nz = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> max_iter;</span><br><span class="line">    <span class="keyword">int</span> k;  <span class="comment">// k iteration</span></span><br><span class="line">    <span class="keyword">double</span> tolerance;</span><br><span class="line">    <span class="keyword">double</span> alpha;</span><br><span class="line">    <span class="keyword">double</span> beta;</span><br><span class="line">    <span class="keyword">double</span> rTr;</span><br><span class="line">    <span class="keyword">double</span> pTq;</span><br><span class="line">    <span class="keyword">double</span> rho;    <span class="comment">//rho&#123;k&#125;</span></span><br><span class="line">    <span class="keyword">double</span> <span class="keyword">rho_t</span>;  <span class="comment">//rho&#123;k-1&#125;</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> one = <span class="number">1.0</span>;  <span class="comment">// constant</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> zero = <span class="number">0.0</span>;   <span class="comment">// constant</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// device data</span></span><br><span class="line">    <span class="keyword">double</span> *d_ic = <span class="literal">nullptr</span>;  <span class="comment">// Factorized L</span></span><br><span class="line">    <span class="keyword">double</span> *d_x = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">double</span> *d_y = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">double</span> *d_z = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">double</span> *d_r = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">double</span> *d_rt = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">double</span> *d_xt = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">double</span> *d_q = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">double</span> *d_p = <span class="literal">nullptr</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">bool</span> release_cusHandle = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">bool</span> release_cubHandle = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ICCGsolver(<span class="keyword">int</span> max_iter = <span class="number">1000</span>, <span class="keyword">double</span> tol = <span class="number">1e-12</span>,</span><br><span class="line">        cublasHandle_t cub_handle = <span class="literal">NULL</span>,</span><br><span class="line">        cusparseHandle_t cus_handle = <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    ~ICCGsolver();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span> nz,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">double</span> *d_A, <span class="keyword">int</span> *d_rowIdx, <span class="keyword">int</span> *d_colIdx,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">double</span> *d_b)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">double</span> *<span class="title">x_ptr</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">err</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">iter_count</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">allocate_nz_memory</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">allocate_N_memory</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">free_nz_memory</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">free_N_memory</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">check_and_resize</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span> nz)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>只要有前綴 <code>d_*</code> 表示他是指向 GPU device 的 Pointer。</p>
+<ul>
+<li>首先是 Line <code>4</code>、<code>5</code> 宣告 Handle，接著是因為我們會用到兩個 Matrix 分別為 $A$ 與 Factorized matrix $L$，因此宣告兩個 Descriptor。</li>
+<li><code>11</code>~<code>23</code> 是計算時會用到的變數。</li>
+<li><code>25</code>~<code>34</code> 則是 GPU 計算實用到的變數。</li>
+<li><code>36</code>~<code>37</code> 用來紀錄 Handler 需要需要自動釋放，如果 Handler 是使用者宣告 <code>ICCGsolver</code> 時傳入的則使用者要自行釋放，如果不是則自動釋放。</li>
+<li><code>40</code>~<code>42</code> 是 Constructor，第一個參數 <code>max_iter</code> 表示 Iteration 的上限，<code>tol</code> 表示 Tolerance，<code>cub_handle</code> 與 <code>cus_handle</code> 可傳入可不傳入。</li>
+<li><code>44</code> 是 Destructor，要 Free 掉所有 GPU memory。</li>
+<li><code>46</code>~<code>48</code> 是解方程的 API，<code>N</code>、<code>nz</code> 分別表示 Matrix 大小以及 Non-zero term 數量，<code>d_A</code>、<code>d_rowIdx</code>、<code>d_colIdx</code> 為 CSR format 的 Matrix $A$，<code>d_b</code> 是 Vector $b$。</li>
+<li><code>50</code> 用來取得 <code>d_x</code> Pointer，可以利用這個 Pointer 將答案複製出來。</li>
+<li><code>51</code> 用來取得誤差值 $|r_k|$。</li>
+<li><code>52</code> 用來取得 Iteration count $k$。</li>
+<li><code>55</code>~<code>60</code> 用來分配、釋放 GPU memory。</li>
+</ul>
+<p>首先是完成 Constructor 與 Destructor：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">ICCGsolver::ICCGsolver(<span class="keyword">int</span> max_iter, <span class="keyword">double</span> tol,</span><br><span class="line">    cublasHandle_t cub_handle, cusparseHandle_t cus_handle) </span><br><span class="line">    : max_iter(max_iter), tolerance(tol), </span><br><span class="line">      cubHandle(cub_handle), cusHandle(cus_handle)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// create cuBLAS handle</span></span><br><span class="line">    <span class="keyword">if</span> (cubHandle == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        error_check(cublasCreate(&amp;cubHandle));</span><br><span class="line">        release_cubHandle = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// create cuSPARSE handle</span></span><br><span class="line">    <span class="keyword">if</span> (cusHandle == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        error_check(cusparseCreate(&amp;cusHandle));</span><br><span class="line">        release_cusHandle = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// create descriptor for matrix A</span></span><br><span class="line">    error_check(cusparseCreateMatDescr(&amp;descr_A));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize properties of matrix A</span></span><br><span class="line">    error_check(cusparseSetMatType(descr_A, CUSPARSE_MATRIX_TYPE_GENERAL));</span><br><span class="line">    error_check(cusparseSetMatFillMode(descr_A, CUSPARSE_FILL_MODE_LOWER));</span><br><span class="line">    error_check(cusparseSetMatDiagType(descr_A, CUSPARSE_DIAG_TYPE_NON_UNIT));</span><br><span class="line">    error_check(cusparseSetMatIndexBase(descr_A, CUSPARSE_INDEX_BASE_ZERO));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// create descriptor for matrix L</span></span><br><span class="line">    error_check(cusparseCreateMatDescr(&amp;descr_L));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// initialize properties of matrix L</span></span><br><span class="line">    error_check(cusparseSetMatType(descr_L, CUSPARSE_MATRIX_TYPE_GENERAL));</span><br><span class="line">    error_check(cusparseSetMatFillMode(descr_L, CUSPARSE_FILL_MODE_LOWER));</span><br><span class="line">    error_check(cusparseSetMatIndexBase(descr_L, CUSPARSE_INDEX_BASE_ZERO));</span><br><span class="line">    error_check(cusparseSetMatDiagType(descr_L, CUSPARSE_DIAG_TYPE_NON_UNIT));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Constructor 做的事情很簡單，初始化傳入得參數後，建立 Matrix $A$ 與 $L$ 的 Descriptor，這邊需要注意的是在 CUDA 11.0 <code>cusparseMatDescr_t</code> 已經有快要 <em>Deprecate</em> 的傾向，因此這邊設定 Properties 也沒什麼選項可選，首先是 <code>cusparseSetMatType</code>，目前除了 <code>CUSPARSE_MATRIX_TYPE_GENERAL</code> 選項以外其他都 <em>Deprecate</em> 因此直接勇敢的設成 <code>CUSPARSE_MATRIX_TYPE_GENERAL</code> 就可以了，剩下就是除了 <code>cusparseSetMatIndexBase</code> 需要照實填寫外，其他都會被忽略，並不是很重要。</p>
+<p>接下來是 Destructor：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">ICCGsolver::~ICCGsolver()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// free data</span></span><br><span class="line">    free_nz_memory();</span><br><span class="line">    free_N_memory();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// release descriptor</span></span><br><span class="line">    cusparseDestroyMatDescr(descr_A);</span><br><span class="line">    cusparseDestroyMatDescr(descr_L);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// release handles</span></span><br><span class="line">    <span class="keyword">if</span> (release_cubHandle)</span><br><span class="line">    &#123;</span><br><span class="line">        cublasDestroy(cubHandle);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (release_cusHandle)</span><br><span class="line">    &#123;</span><br><span class="line">        cusparseDestroy(cusHandle);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Destructor 做的事情更簡單，就是將 GPU memory 都 Free 掉，Descriptor 也 Free 掉，Handle 看是不是使用者傳入的，如果不是，就一起毀掉，如果是就不用毀掉。</p>
+<p>接下來是除了 <code>solve</code> 以外的 Function：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> *<span class="title">ICCGsolver::x_ptr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> d_x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">ICCGsolver::err</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> rTr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ICCGsolver::iter_count</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> k;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>x_ptr()</code> 用來取得答案的 GPU Pointer。<code>err()</code> 用來取得誤差值 $|r_k|=r^Tr$。<code>iter_count()</code>用來取得最後一次 <code>solve</code> 的 Iteration count。接下來 Memory 相關：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ICCGsolver::check_and_resize</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span> nz)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// allocate N</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;N &lt; N)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;N = N;</span><br><span class="line">        free_N_memory();</span><br><span class="line">        allocate_N_memory();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;nz &lt; nz)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;nz = nz;</span><br><span class="line">        free_nz_memory();</span><br><span class="line">        allocate_nz_memory();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>check_and_resize</code> 用來檢查，呼叫 <code>solve</code> 時新傳進來的 $N$ 與 $\text{nz}$ 有沒有比目前分配的還大，如果比較大，就要 Free 掉並重新分配一個更大的空間來做計算。</p>
+<p>因此釋放與分配空間的 Function：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ICCGsolver::allocate_N_memory</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    error_check(cudaMalloc(&amp;d_x, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">    error_check(cudaMalloc(&amp;d_y, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">    error_check(cudaMalloc(&amp;d_z, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">    error_check(cudaMalloc(&amp;d_r, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">    error_check(cudaMalloc(&amp;d_rt, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">    error_check(cudaMalloc(&amp;d_xt, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">    error_check(cudaMalloc(&amp;d_q, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">    error_check(cudaMalloc(&amp;d_p, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ICCGsolver::allocate_nz_memory</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    error_check(cudaMalloc(&amp;d_ic, nz * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ICCGsolver::free_N_memory</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cudaFree(d_x);</span><br><span class="line">    cudaFree(d_y);</span><br><span class="line">    cudaFree(d_z);</span><br><span class="line">    cudaFree(d_r);</span><br><span class="line">    cudaFree(d_rt);</span><br><span class="line">    cudaFree(d_xt);</span><br><span class="line">    cudaFree(d_q);</span><br><span class="line">    cudaFree(d_p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ICCGsolver::free_nz_memory</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cudaFree(d_ic);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>到這邊，週邊的 Function 全部完成了，總算可以進入正題：Preconditioned conjugate gradient。建議這邊實作的時候可以搭配 Algorithm 1。</p>
+<p>Recall Algorithm 1：<br><img src="https://i.imgur.com/hL1FiZD.png" alt=""></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ICCGsolver::solve</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span> nz,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">double</span> *d_A, <span class="keyword">int</span> *d_rowIdx, <span class="keyword">int</span> *d_colIdx,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">double</span> *d_b, <span class="keyword">double</span> *d_guess)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    check_and_resize(N, nz);</span><br><span class="line">     </span><br><span class="line">    <span class="comment">// --- 1. Create cuSPARSE generic API objects ---</span></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">     </span><br><span class="line">    <span class="comment">// --- 2. Perform incomplete cholesky factorization ---</span></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// --- 3. Prepare for performing conjugate gradient ---</span></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// --- 4. Perform conjugate gradient ---</span></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// --- 5. Finalize ---</span></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> rTr &lt; tolrance; <span class="comment">// return true if converged</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先一開始需要先檢查、分配 GPU 空間，因此 Call <code>check_and_resize</code>，接著我將分成 5 個部份分別實作。</p>
+<p>先從第二部份開始，這邊會對應到 Algorithm 1 的 Line <code>4</code>：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// --- Perform incomplete cholesky factorization ---</span></span><br><span class="line">csric02Info_t icinfo_A;</span><br><span class="line"><span class="keyword">size_t</span> buf_size = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">size_t</span> u_temp_buf_size = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">size_t</span> u_temp_buf_size2 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> i_temp_buf_size = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">void</span> *d_buf = <span class="literal">NULL</span>;</span><br></pre></td></tr></table></figure></p>
+<p>cuSPARSE 進行 Incomplete cholesky factorization 分成幾個步驟：</p>
+<ul>
+<li>Call <code>cusparseCreateCsric02Info</code> 建立 <code>csric02Info_t</code> object</li>
+<li>Call <code>cusparseDcsric02_bufferSize</code> 讓 cuSPARSE 估計計算 Factorization 所需的 Buffer 大小，然後分配 Buffer <code>d_buf</code> 空間</li>
+<li>Call <code>cusparseDcsric02_analysis</code> (analysis phase) 讓 cuSPARSE 分析 Matrix $A$ 的 Sparsity。</li>
+<li>Call <code>cusparseDcsric02</code> (solve phase) 進行 Factorization</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create info object for incomplete-cholesky factorization</span></span><br><span class="line">error_check(cusparseCreateCsric02Info(&amp;icinfo_A));</span><br><span class="line"><span class="comment">// Compute buffer size in computing ic factorization</span></span><br><span class="line">error_check(cusparseDcsric02_bufferSize(cusHandle, N, nz, </span><br><span class="line">    descr_A, d_A, d_rowIdx, d_colIdx, icinfo_A, &amp;i_temp_buf_size));</span><br><span class="line">buf_size = i_temp_buf_size;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create buffer</span></span><br><span class="line">error_check(cudaMalloc(&amp;d_buf, buf_size));</span><br><span class="line"><span class="comment">// Copy A</span></span><br><span class="line">error_check(cudaMemcpy(d_ic, d_A, nz * <span class="keyword">sizeof</span>(<span class="keyword">double</span>), cudaMemcpyDeviceToDevice));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perform incomplete-choleskey factorization: analysis phase</span></span><br><span class="line">error_check(cusparseDcsric02_analysis(cusHandle, N, nz,</span><br><span class="line">    descr_A, d_ic, d_rowIdx, d_colIdx, icinfo_A, CUSPARSE_SOLVE_POLICY_USE_LEVEL, d_buf));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perform incomplete-choleskey factorization: solve phase</span></span><br><span class="line">error_check(cusparseDcsric02(cusHandle, N, nz,</span><br><span class="line">    descr_A, d_ic, d_rowIdx, d_colIdx, icinfo_A, CUSPARSE_SOLVE_POLICY_USE_LEVEL, d_buf));</span><br></pre></td></tr></table></figure>
+<p>這邊我將 <code>d_A</code> 複製到 <code>d_ic</code> 是因為，cuSPARSE 在進行 Factorization 的時候會直接將結果覆寫到 Input array 上，因此這邊將 <code>d_A</code> 複製一份到 <code>d_ic</code>，將 Factorized 的 Lower triangular matrix 存到 <code>d_ic</code> 裡面。</p>
+<p>另外，根據 Document 的說法，<code>CUSPARSE_SOLVE_POLICY_USE_LEVEL</code> 有時會對計算進行稍微的優化，有時不會，因此這邊要設定 <code>NO_LEVEL</code> 或 <code>USE_LEVEL</code> 都可以，但是 Analysis phase 與 Solve phase 的設定一定要一致。</p>
+<p>接下來第三部份是估算 Conjugate gradient 所需的 Buffer 空間：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// --- Prepare for performing conjugate gradient ---</span></span><br><span class="line"><span class="comment">// Create info object for factorized matrix L, LT</span></span><br><span class="line">csrsv2Info_t info_L, info_U;</span><br><span class="line">error_check(cusparseCreateCsrsv2Info(&amp;info_L));</span><br><span class="line">error_check(cusparseCreateCsrsv2Info(&amp;info_U));</span><br></pre></td></tr></table></figure></p>
+<p>在 Algorithm 1 Line <code>9</code> 跟 <code>10</code> 有計算到 $L$ 與 $L^T$ 的 Inverse，但實際上 cuSPARSE 並沒有求 Inverse matrix 的 API，因此可以將這兩行看做求解兩個 Triangular sparse linear system：$Ly=r_k$、求 $y$ 與 $L^Tz_k=y$ 求 $z_k$。而求解 Triancular sparse linear system 可以使用 <code>cusparseDcsrsv2</code> 這個 API。因此首先我們需要建立兩個 <code>csrsv2Info_t</code>：</p>
+<ul>
+<li>利用 <code>info_L</code> 代表 $L$ (Lower triangular matrix)</li>
+<li>利用 <code>info_U</code> 代表 $L^T$ (Upper triangular matrix)</li>
+</ul>
+<p>接下來就是分別估算解 Triangular sparse linear system 所需的 Buffer 大小：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Compute buffer size in solving linear system</span></span><br><span class="line">error_check(cusparseDcsrsv2_bufferSize(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE, </span><br><span class="line">    N, nz, descr_L, d_ic, d_rowIdx, d_colIdx, info_L, &amp;i_temp_buf_size));</span><br><span class="line"></span><br><span class="line">u_temp_buf_size = i_temp_buf_size;</span><br><span class="line"></span><br><span class="line">error_check(cusparseDcsrsv2_bufferSize(cusHandle, CUSPARSE_OPERATION_TRANSPOSE,</span><br><span class="line">    N, nz, descr_L, d_ic, d_rowIdx, d_colIdx, info_U, &amp;i_temp_buf_size));</span><br><span class="line"></span><br><span class="line"><span class="comment">// check whether need more buffer</span></span><br><span class="line"><span class="keyword">if</span> (i_temp_buf_size &gt; u_temp_buf_size)</span><br><span class="line">&#123;</span><br><span class="line">    u_temp_buf_size = i_temp_buf_size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>除此之外，Conjugate gradient 有發生一次 Sparse Matrix-dense vector multiplication 在 Algorithm 1 Line <code>17</code> $q\gets Ap_k$，這個需要使用 cuSPARSE 的 Generic API <code>cusparseSpMV</code>，因此先回到第一部份宣告 Generic API 所需的 Objects：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// --- 1. Create cuSPARSE generic API objects ---</span></span><br><span class="line">cusparseSpMatDescr_t smat_A;</span><br><span class="line">error_check(cusparseCreateCsr(&amp;smat_A, N, N, nz, d_rowIdx, d_colIdx, d_A, CUSPARSE_INDEX_32I,</span><br><span class="line">    CUSPARSE_INDEX_32I, CUSPARSE_INDEX_BASE_ZERO, CUDA_R_64F));</span><br><span class="line"></span><br><span class="line">cusparseDnVecDescr_t dvec_p;</span><br><span class="line">error_check(cusparseCreateDnVec(&amp;dvec_p, N, d_p, CUDA_R_64F));</span><br><span class="line"></span><br><span class="line">cusparseDnVecDescr_t dvec_q;</span><br><span class="line">error_check(cusparseCreateDnVec(&amp;dvec_q, N, d_q, CUDA_R_64F));</span><br></pre></td></tr></table></figure></p>
+<p>建立一個 CSR Matrix $A$ 的 Descriptor，建立 Dense vector $p_k$ 與 $q$ 的 Descriptor。再回到第三部份完成剩下的部份，估算 Sparse Matrix-dense vector multiplication 所需的 Buffer 數量：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Compute buffer size for matrix-vector multiplication</span></span><br><span class="line">error_check(cusparseSpMV_bufferSize(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE, &amp;one, smat_A,</span><br><span class="line">    dvec_p, &amp;zero, dvec_q, CUDA_R_64F, CUSPARSE_CSRMV_ALG1, &amp;u_temp_buf_size2));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (u_temp_buf_size2 &gt; u_temp_buf_size)</span><br><span class="line">&#123;</span><br><span class="line">    u_temp_buf_size = u_temp_buf_size2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然後分配空間：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// re-allocate buffer</span></span><br><span class="line"><span class="keyword">if</span> (u_temp_buf_size &gt; buf_size)</span><br><span class="line">&#123;</span><br><span class="line">    buf_size = u_temp_buf_size;</span><br><span class="line">    cudaFree(d_buf);</span><br><span class="line">    error_check(cudaMalloc(&amp;d_buf, buf_size));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>這邊需要注意是，通常 Natrix-vector multiplication 會需要比 Incomplete cholesky factorization 與 Solving lienar system 還要更多的 Buffer。如果 Buffer 空間不夠時，cuSPARSE 會回傳 <code>CUSPARSE_STATUS_INTERNAL_ERROR</code>。</p>
+<p>分配完 Buffer 後，就可以先對 Triangular sparse linear system 進行 Analysis phase：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// analysis phase</span></span><br><span class="line">error_check(cusparseDcsrsv2_analysis(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE,</span><br><span class="line">    N, nz, descr_L, d_ic, d_rowIdx, d_colIdx, info_L, CUSPARSE_SOLVE_POLICY_USE_LEVEL, d_buf));</span><br><span class="line">error_check(cusparseDcsrsv2_analysis(cusHandle, CUSPARSE_OPERATION_TRANSPOSE,</span><br><span class="line">    N, nz, descr_L, d_ic, d_rowIdx, d_colIdx, info_U, CUSPARSE_SOLVE_POLICY_USE_LEVEL, d_buf));</span><br></pre></td></tr></table></figure></p>
+<p>這邊需要注意的是 <code>d_ic</code> 是 Lower triangular matrix，因此在分析 $L$ (Lower triangular matrix) 時要設定 Operation 為 <code>CUSPARSE_OPERATION_NON_TRANSPOSE</code>，但是在分析 $L^T$ (Upper triangular matrix) 時則要設為 <strong><code>CUSPARSE_OPERATION_TRANSPOSE</code></strong>，這個非常容易被忽略。</p>
+<p>所以到目前為止，計算 Conjugate gradient 的事前準備都已經完成了：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ICCGsolver::solve</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span> nz,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">double</span> *d_A, <span class="keyword">int</span> *d_rowIdx, <span class="keyword">int</span> *d_colIdx,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">double</span> *d_b, <span class="keyword">double</span> *d_guess)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    check_and_resize(N, nz);</span><br><span class="line">     </span><br><span class="line">    <span class="comment">// --- 1. Create cuSPARSE generic API objects ---</span></span><br><span class="line">    <span class="comment">// DONE</span></span><br><span class="line">     </span><br><span class="line">    <span class="comment">// --- 2. Perform incomplete cholesky factorization ---</span></span><br><span class="line">    <span class="comment">// DONE</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// --- 3. Prepare for performing conjugate gradient ---</span></span><br><span class="line">    <span class="comment">// DONE</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// --- 4. Perform conjugate gradient ---</span></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// --- 5. Finalize ---</span></span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> rTr &lt; tolrance; <span class="comment">// return true if converged</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下來第四部份就是按照 Algorithm 1 一行一行刻：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// x = 0</span></span><br><span class="line">error_check(cudaMemset(d_x, <span class="number">0</span>, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>)));</span><br><span class="line"><span class="comment">// r0 = b  (since x == 0, b - A*x = b)</span></span><br><span class="line">error_check(cudaMemcpy(d_r, d_b, N * <span class="keyword">sizeof</span>(<span class="keyword">double</span>), cudaMemcpyDeviceToDevice));</span><br></pre></td></tr></table></figure><br>Line <code>2</code>、<code>3</code> 初始化 $x_0$ 與 $r_0$。接下來就是 For 迴圈的內容：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(k = <span class="number">0</span>; k &lt; max_iter; ++k)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//TODO</span></span><br><span class="line">&#125;<span class="comment">//EndFor</span></span><br></pre></td></tr></table></figure></p>
+<p>Algorithm 1 Line <code>6</code>~<code>8</code>，計算 $|r_k|$，由於 r_k$ 是 Dense vector，因此可以使用 cuBLAS 的 API <a href="https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-nrm2"><code>cublasDnrm2</code></a> 計算：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// if ||rk|| &lt; tolerance</span></span><br><span class="line">error_check(cublasDnrm2(cubHandle, N, d_r, <span class="number">1</span>, &amp;rTr));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (rTr &lt; tolerance)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>如果誤差 <code>rTr</code> 已經比設定的 <code>tolerance</code> 還小就結束 Conjugate gradient。</p>
+<p>Algorithm 1 Line <code>9</code>、<code>10</code> 分別解出兩個 Triangular sparse linear system：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Solve L*y = rk, find y</span></span><br><span class="line">error_check(cusparseDcsrsv2_solve(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE, N, nz, &amp;one,</span><br><span class="line">    descr_L, d_ic, d_rowIdx, d_colIdx, info_L, d_r, d_y, CUSPARSE_SOLVE_POLICY_USE_LEVEL, d_buf));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Solve L^T*zk = y, find zk</span></span><br><span class="line">error_check(cusparseDcsrsv2_solve(cusHandle, CUSPARSE_OPERATION_TRANSPOSE, N, nz, &amp;one,</span><br><span class="line">    descr_L, d_ic, d_rowIdx, d_colIdx, info_U, d_y, d_z, CUSPARSE_SOLVE_POLICY_USE_LEVEL, d_buf));</span><br></pre></td></tr></table></figure></p>
+<p>這邊同樣 Solve phase 與 Analysis phase 的參數 <code>CUSPARSE_SOLVE_POLICY_USE_LEVEL</code> 必須一致。</p>
+<p>Algorithm 1 Line <code>11</code> 計算 $\rho_k=r^T_kz_k$，這邊是兩個 Dense vector 的內積，因此可以使用 cuBLAS 的 <a href="https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-dot"><code>cublasDdot</code></a>：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// rho_t = r&#123;k-1&#125; * z&#123;k-1&#125;</span></span><br><span class="line"><span class="keyword">rho_t</span> = rho;  </span><br><span class="line"><span class="comment">// rho = rk * zk</span></span><br><span class="line">error_check(cublasDdot(cubHandle, N, d_r, <span class="number">1</span>, d_z, <span class="number">1</span>, &amp;rho));</span><br></pre></td></tr></table></figure></p>
+<p>這邊還有一個重點就是，在計算 $\beta$ 的時候會需要 $\rho_{k-1}=r_{k-1}^Tz_{k-1}$，因此可以用一個變數 <code>rho_t</code> 把他暫存起來。</p>
+<p>Algorithm 1 Line <code>12</code>~<code>17</code>，當 $k=0$ 時直接 Assign $p_k\gets z_k$，可以使用 <a href="https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-copy"><code>cublasDcopy</code></a>；否則，先計算 $\beta$，再更新 $p_k$：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (k == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// pk = zk</span></span><br><span class="line">    error_check(cublasDcopy(cubHandle, N, d_z, <span class="number">1</span>, d_p, <span class="number">1</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// beta = (rk*zk) / (r&#123;k-1&#125;*z&#123;k-1&#125;)</span></span><br><span class="line">    beta = rho / <span class="keyword">rho_t</span>;</span><br><span class="line">    <span class="comment">// pk = zk + beta*p&#123;k-1&#125;</span></span><br><span class="line">    error_check(cublasDscal(cubHandle, N, &amp;beta, d_p, <span class="number">1</span>));</span><br><span class="line">    error_check(cublasDaxpy(cubHandle, N, &amp;one, d_z, <span class="number">1</span>, d_p, <span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Line <code>8</code> 計算 $\beta$ 後，先 Call <a href="https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-scal"><code>cublasDscal</code></a> 對 $p_{k-1}$ 進行 Scale $p_{k-1}\gets \beta p_{k-1}$， 在 Call <a href="https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-axpy"><code>cublasDaxpy</code></a> 計算 $p_k\gets 1\cdot z_k+p_{k-1}$。</p>
+<p>Algorithm 1 Line <code>18</code> 計算 Sparse matrix-dense vector multiplication，這邊需要使用 cuSPARSE 的 Generic API <a href="https://docs.nvidia.com/cuda/cusparse/index.html#cusparse-generic-function-spmv"><code>cusparseSpMV</code></a>：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// q = A*pk</span></span><br><span class="line">error_check(cusparseSpMV(cusHandle, CUSPARSE_OPERATION_NON_TRANSPOSE, &amp;one, smat_A,</span><br><span class="line">    dvec_p, &amp;zero, dvec_q, CUDA_R_64F, CUSPARSE_MV_ALG_DEFAULT, d_buf));</span><br></pre></td></tr></table></figure></p>
+<p>Algorithm 1 Line <code>19</code> 計算 $\alpha$，但在計算 $\alpha$ 前要先算出 $p_k^Tq$：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// alpha = (rk*zk) / (pk*q)</span></span><br><span class="line">error_check(cublasDdot(cubHandle, N, d_p, <span class="number">1</span>, d_q, <span class="number">1</span>, &amp;pTq));</span><br><span class="line">alpha = rho / pTq;</span><br></pre></td></tr></table></figure></p>
+<p>因此首先用 <a href="https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-dot"><code>cublasDdot</code></a> 計算 $p_k^Tq$，再計算出 $\alpha$。</p>
+<p>Algorithm 1 Line <code>20</code> 更新 $x_{k+1}$ 可以使用 <a href="https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-axpy"><code>cublasDaxpy</code></a> 計算 $x_{k+1}\gets \alpha p_k + x_k$<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// x&#123;k+1&#125; = xk + alpha*pk</span></span><br><span class="line">error_check(cublasDaxpy(cubHandle, N, &amp;alpha, d_p, <span class="number">1</span>, d_x, <span class="number">1</span>));</span><br></pre></td></tr></table></figure></p>
+<p>最後更新 Algorithm 1 Line <code>21</code> 更新 Residual $r_{k+1}$。這邊減法可以看作 $r_{k+1}\gets (-\alpha)q + r_k$，因此同樣使用 <a href="https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-axpy"><code>cublasDaxpy</code></a> 計算：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// r&#123;k+1&#125; = rk - alpha*q </span></span><br><span class="line"><span class="keyword">double</span> n_alpha = -alpha;</span><br><span class="line">error_check(cublasDaxpy(cubHandle, N, &amp;n_alpha, d_q, <span class="number">1</span>, d_r, <span class="number">1</span>));</span><br></pre></td></tr></table></figure></p>
+<p>到這邊第四部份就完成了。最後第五部份就是將 Buffer 之類的全部 Free 掉：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// free buffer</span></span><br><span class="line">cudaFree(d_buf);</span><br><span class="line"></span><br><span class="line"><span class="comment">// free objects</span></span><br><span class="line">error_check(cusparseDestroySpMat(smat_A));</span><br><span class="line">error_check(cusparseDestroyDnVec(dvec_p));</span><br><span class="line">error_check(cusparseDestroyDnVec(dvec_q));</span><br><span class="line">error_check(cusparseDestroyDnVec(dvec_x));</span><br><span class="line">error_check(cusparseDestroyCsric02Info(icinfo_A));</span><br><span class="line">error_check(cusparseDestroyCsrsv2Info(info_L));</span><br><span class="line">error_check(cusparseDestroyCsrsv2Info(info_U));</span><br></pre></td></tr></table></figure></p>
+<p>就完成了 Preconditioned conjugate gradient。</p>
+<p>試著執行了一下，結果 $N=1,000,000$ 的 Sparse linear system 只花了 $368$ 個 Iteration 誤差就收斂到小於 $10^{-12}$。</p>
+<p><img src="https://i.imgur.com/iX7VgCC.png" alt=""></p>
+<p>完整的 Code 可以在 Github 找到：<a href="https://github.com/Ending2015a/ICCG0_CUDA">Ending2015a/ICCG0_CUDA - github</a></p>
+]]></content>
+      <categories>
+        <category>Linear Algebra</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Tuto</tag>
+        <tag>Linear Algebra</tag>
+        <tag>Numerical Analysis</tag>
+        <tag>CUDA</tag>
+        <tag>cuBLAS</tag>
+        <tag>cuSPARSE</tag>
+        <tag>燃燒吧 GPU</tag>
+      </tags>
+  </entry>
 </search>
