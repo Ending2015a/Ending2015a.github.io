@@ -896,7 +896,7 @@ r_0 &= b
 <li>Level-2：Matrix-vector operations。例如，Matrix-vector multiplication 等等。</li>
 <li>Level-3：Matrix-matrix operations。例如，Matrix-matrix multiplication 等等。</li>
 </ul>
-<p>根據不同的資料型態，API 的名稱也會不一樣：<br>| Type | Notation <code>&lt;t&gt;</code> | Meaning |<br>|——|——|——-|<br>| <code>float</code> | ‘s’ or ‘S’ | Real single-precision |<br>| <code>double</code> | ‘d’ or ‘D’ | Real double-precision |<br>| <code>cuComplex</code> | ‘c’ or ‘C’ | Complex single-precision |<br>| <code>cuDoubleComplex</code> | ‘z’ or ‘Z’ | Complex double-precision |</p>
+<p>根據不同的資料型態，API 的名稱也會不一樣：<br>| Type | Notation <code>&lt;t&gt;</code> | Meaning |<br>| —— | —— | ——- |<br>| <code>float</code> | ‘s’ or ‘S’ | Real single-precision |<br>| <code>double</code> | ‘d’ or ‘D’ | Real double-precision |<br>| <code>cuComplex</code> | ‘c’ or ‘C’ | Complex single-precision |<br>| <code>cuDoubleComplex</code> | ‘z’ or ‘Z’ | Complex double-precision |</p>
 <div class="table-container">
 <table>
 <thead>
