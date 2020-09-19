@@ -961,8 +961,27 @@ r_0 &= b
 </div>
 <p>Level-3 的 Function <code>cublas&lt;t&gt;gemm</code> 計算 Matrix $A$ 與 Matrix $B$ 的矩陣乘法，$C\gets\alpha\text{OP}(A)\text{OP}(B)+\beta C$</p>
 <p><img src="https://i.imgur.com/4KbJWH4.png" alt=""></p>
-<p>Level-3 除了一般的 Matrix-matrix multiplication 之外，cuBLAS 還有提供額外的 API 給特殊的 Matrix 型態使用：</p>
-<p><code>cublasFillMode_t</code> 用來指定是 Upper triangle 還是 Lower triangle。<br>|<code>cublasFillMode_t</code>|Meaning|<br>|-|-|<br>|<code>CUBLAS_FILL_MODE_LOWER</code>|The lower part of the matrix is filled|<br>|<code>CUBLAS_FILE_MODE_UPPER</code>|The upper part of the matrix is filled|</p>
+<p>Level-3 除了一般的 Matrix-matrix multiplication 之外，cuBLAS 還有提供額外的 API 給特殊的 Matrix 型態使用：<br><code>cublasFillMode_t</code> 用來指定是 Upper triangle 還是 Lower triangle。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><code>cublasFillMode_t</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CUBLAS_FILL_MODE_LOWER</code></td>
+<td>The lower part of the matrix is filled</td>
+</tr>
+<tr>
+<td><code>CUBLAS_FILE_MODE_UPPER</code></td>
+<td>The upper part of the matrix is filled</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>例如 <code>cublas&lt;t&gt;symm</code>，計算 Symmetric matrix-matrix multiplication，如果你的 Matrix 是 Symmetric 就可以使用這個 API 來進行更有效率的計算，則 cuBLAS 在運算時其實只需要取一半的值 (Upper triangle 或是 Lower triangle) 出來就可以了，另外一半是對稱的，這樣在 GPU memory 的存取上會比較有效率。</p>
 <p><img src="https://i.imgur.com/cXQpf2O.png" alt=""></p>
 <p>另外還有像是 <code>cublas&lt;t&gt;trmm</code> 計算 Triangle matrix-matrix multiplication。</p>
