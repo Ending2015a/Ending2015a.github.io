@@ -896,7 +896,40 @@ r_0 &= b
 <li>Level-2：Matrix-vector operations。例如，Matrix-vector multiplication 等等。</li>
 <li>Level-3：Matrix-matrix operations。例如，Matrix-matrix multiplication 等等。</li>
 </ul>
-<p>根據不同的資料型態，API 的名稱也會不一樣：<br>| Type | Notation | Meaning |<br>| —— | —— | ——- |<br>| float | ‘s’ or ‘S’ | Real single-precision |<br>| double | ‘d’ or ‘D’ | Real double-precision |<br>| cuComplex | ‘c’ or ‘C’ | Complex single-precision |<br>| cuDoubleComplex | ‘z’ or ‘Z’ | Complex double-precision |</p>
+<p>根據不同的資料型態，API 的名稱也會不一樣：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Notation <code>&lt;t&gt;</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>float</td>
+<td>‘s’ or ‘S’</td>
+<td>Real single-precision</td>
+</tr>
+<tr>
+<td>double</td>
+<td>‘d’ or ‘D’</td>
+<td>Real double-precision</td>
+</tr>
+<tr>
+<td>cuComplex</td>
+<td>‘c’ or ‘C’</td>
+<td>Complex single-precision</td>
+</tr>
+<tr>
+<td>cuDoubleComplex</td>
+<td>‘z’ or ‘Z’</td>
+<td>Complex double-precision</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="table-container">
 <table>
 <thead>
