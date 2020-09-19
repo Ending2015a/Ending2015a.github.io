@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://i.imgur.com/hL1FiZD.png">
 <meta property="og:image" content="https://i.imgur.com/iX7VgCC.png">
 <meta property="article:published_time" content="2020-09-19T14:52:53.000Z">
-<meta property="article:modified_time" content="2020-09-19T15:56:28.965Z">
+<meta property="article:modified_time" content="2020-09-19T15:59:38.859Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Tuto">
@@ -263,7 +263,7 @@
               <span class="post-meta-item-text">發表於</span>
               
 
-              <time title="創建時間：2020-09-19 22:52:53 / 修改時間：23:56:28" itemprop="dateCreated datePublished" datetime="2020-09-19T22:52:53+08:00">2020-09-19</time>
+              <time title="創建時間：2020-09-19 22:52:53 / 修改時間：23:59:38" itemprop="dateCreated datePublished" datetime="2020-09-19T22:52:53+08:00">2020-09-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -379,15 +379,15 @@ x=A^{-1}b</script><p>然而，對於 Large-scale sparse matrix 而言 ($N$ 非�
 f'(x)=Ax-b \tag{1.3.2}</script><p>根據一階微分，我們能夠得出 Quadratic form：</p>
 <script type="math/tex; mode=display">
 f(x) = \frac{1}{2}x^TAx-b^Tx+c \tag{1.3.3}</script><p>則目標變成：找到 $x$ 使得 $f’(x)=\mathbf{0}$。也就是說，找到 $x$，使得 $f(x)$ 為極值，且若 $A$ 為 Symmetric positive definite matrix，則該極值一定會是最小值。</p>
-<p>證明方法非常簡單，假設 $x<em> $ 滿足 $Ax</em> = b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^<em> + e) &gt; f(x^</em>)$：</p>
+<p>證明方法非常簡單，假設 $x^* $ 滿足 $Ax^* = b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^* + e) &gt; f(x^*)$：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{aligned}
 f(x^* + e) 
     &= \frac{1}{2}(x^* + e)^TA(x^* + e)-b^T(x^* + e)+c\\
     &= \frac{1}{2}(x^*)^T A x^* + e^T\underbrace{Ax^*}_{=b}+\frac{1}{2}e^TAe-b^Tx^*-b^Te+c\\
     &= \underbrace{\left(\frac{1}{2}(x^*)^TAx^*-b^Tx^* + c\right)}_{=f(x^*)}+e^Tb+\frac{1}{2}e^TAe-b^Te\\
     &= f(x^*)+\frac{1}{2}e^TAe > f(x^*)
-\end{align}</script><p>由於 $A$ 是 Positive definite，且 $e\ne \mathbf{0}$，因此最後一項 $\frac{1}{2}e^TAe &gt; 0$，則可以得證當 $Ax^<em> =b$ 時，$f(x^</em>)$ 一定為最小值。因此我們將一個 Linear system 的問題變成了 Minimization problem：找到 $x$ 使得 minimize $f(x)$。</p>
+\end{aligned}</script><p>由於 $A$ 是 Positive definite，且 $e\ne \mathbf{0}$，因此最後一項 $\frac{1}{2}e^TAe &gt; 0$，則可以得證當 $Ax^<em> =b$ 時，$f(x^</em>)$ 一定為最小值。因此我們將一個 Linear system 的問題變成了 Minimization problem：找到 $x$ 使得 minimize $f(x)$。</p>
 <p>接著是要如何解這個 Minimization problem，一種方法就是使用 <strong>Steepest descent method</strong>。</p>
 <div class="note info">
             <p>這邊列出一些常用的 term：</p><ul><li>Error: $e_i=x_i-x^*$，寫成 Iterative form，$e_{i+1}=e_i+\alpha_i r_i$</li><li>Residual: $r_i=b-Ax_i=-f’(x_i)$。</li></ul><p>Residual 與 Error 的關係式 $r_i=b-Ax_i=Ax^<em>-Ax_i=A(x^</em>-x_i)=-Ae_i$</p>
