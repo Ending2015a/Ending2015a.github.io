@@ -499,6 +499,7 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
           </div>
 <p>特別感謝 <em>冠大大</em>、<em>王大大</em>。</p>
 <p>《夢魘のCUDA》是 CUDA Programming 系列，<strong>此系列不會介紹任何 CUDA 的基礎知識</strong>，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cuBLAS / cuSPARSE；除此之外，本篇也會講解如何使用這兩套 Library 實作出經典應用 —- Preconditioned Conjugate Gradient。之所以說是經典應用的原因是因為，cuSPARSE 幾乎是為了這個應用而誕生的。</p>
+<a id="more"></a>
 <h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><ul>
 <li><a href="https://en.wikipedia.org/wiki/Conjugate_gradient_method">Conjugate gradient method - wiki</a></li>
 </ul>
