@@ -566,7 +566,7 @@ x=A^{-1}b</script><p>然而，對於 Large-scale sparse matrix 而言 ($N$ 非�
 f'(x)=Ax-b \tag{1.3.2}</script><p>根據一階微分，我們能夠得出 Quadratic form：</p>
 <script type="math/tex; mode=display">
 f(x) = \frac{1}{2}x^TAx-b^Tx+c \tag{1.3.3}</script><p>則目標變成：找到 $x$ 使得 $f’(x)=\mathbf{0}$。也就是說，找到 $x$，使得 $f(x)$ 為極值，且若 $A$ 為 Symmetric positive definite matrix，則該極值一定會是最小值。</p>
-<p>證明方法非常簡單，假設 $x^<em> $ 滿足 $A{x</em>} = b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^<em> + e) &gt; f(x^</em>)$：</p>
+<p>證明方法非常簡單，假設 $x<em> $ 滿足 $Ax</em> = b$，我們只需證明添加上任意 Error $e\in \mathbb{R}^{N}\setminus {\mathbf{0}}$，一定滿足 $f(x^<em> + e) &gt; f(x^</em>)$：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 f(x^* + e) 
