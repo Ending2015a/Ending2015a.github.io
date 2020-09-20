@@ -494,7 +494,7 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
   <entry>
     <title>[Tuto] 夢魘のCUDA: 使用 Preconditioned Conjugate Gradient 輕鬆解決大型稀疏線性方程組</title>
     <url>/2020/09/19/preconditioned-conjugate-gradient/</url>
-    <content><![CDATA[<p><img src="https://i.imgur.com/Duz436p.png" width="60%"></p>
+    <content><![CDATA[<p><img src="https://i.imgur.com/Duz436p.png" width="60%"><br><em>圖片來源：<a href="http://fourier.eng.hmc.edu/e176/lectures/NM/node29.html">http://fourier.eng.hmc.edu/e176/lectures/NM/node29.html</a></em></p>
 <div class="note info">
             <p>閱讀難度：</p><ul><li>線性代數：✦✦✧✧✧ (高手)</li><li>程式設計：✦✦✧✧✧ (高手)</li></ul>
           </div>
