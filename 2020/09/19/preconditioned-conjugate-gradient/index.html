@@ -27,13 +27,14 @@
   </script>
 
 
-  <meta name="description" content="閱讀難度：線性代數：✦✦✧✧✧ (高手)程式設計：✦✦✧✧✧ (高手)            特別感謝 冠大大、王大大。 《夢魘のCUDA》是 CUDA Programming 系列，此系列不會介紹任何 CUDA 的基礎知識，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cu">
+  <meta name="description" content="閱讀難度：線性代數：✦✦✧✧✧ (高手)程式設計：✦✦✧✧✧ (高手)            特別感謝 冠大大、王大大。 《夢魘のCUDA》是 CUDA Programming 系列，此系列不會介紹任何 CUDA 的基礎知識，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library — cu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[Tuto] 夢魘のCUDA: 使用 Preconditioned Conjugate Gradient 輕鬆解決大型稀疏線性方程組">
 <meta property="og:url" content="https://ending2015a.github.io/2020/09/19/preconditioned-conjugate-gradient/index.html">
 <meta property="og:site_name" content="My Notes">
-<meta property="og:description" content="閱讀難度：線性代數：✦✦✧✧✧ (高手)程式設計：✦✦✧✧✧ (高手)            特別感謝 冠大大、王大大。 《夢魘のCUDA》是 CUDA Programming 系列，此系列不會介紹任何 CUDA 的基礎知識，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cu">
+<meta property="og:description" content="閱讀難度：線性代數：✦✦✧✧✧ (高手)程式設計：✦✦✧✧✧ (高手)            特別感謝 冠大大、王大大。 《夢魘のCUDA》是 CUDA Programming 系列，此系列不會介紹任何 CUDA 的基礎知識，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library — cu">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/Duz436p.png">
 <meta property="og:image" content="https://i.imgur.com/OK3pGcQ.png">
 <meta property="og:image" content="https://i.imgur.com/bjvovNI.png">
 <meta property="og:image" content="https://i.imgur.com/29vI4jy.png">
@@ -60,7 +61,7 @@
 <meta property="og:image" content="https://i.imgur.com/hL1FiZD.png">
 <meta property="og:image" content="https://i.imgur.com/iX7VgCC.png">
 <meta property="article:published_time" content="2020-09-19T14:52:53.000Z">
-<meta property="article:modified_time" content="2020-09-20T03:51:40.030Z">
+<meta property="article:modified_time" content="2020-09-20T04:11:42.743Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Tuto">
@@ -71,7 +72,7 @@
 <meta property="article:tag" content="cuSPARSE">
 <meta property="article:tag" content="燃燒吧 GPU">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/OK3pGcQ.png">
+<meta name="twitter:image" content="https://i.imgur.com/Duz436p.png">
 
 <link rel="canonical" href="https://ending2015a.github.io/2020/09/19/preconditioned-conjugate-gradient/">
 
@@ -269,7 +270,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-09-20 11:51:40" itemprop="dateModified" datetime="2020-09-20T11:51:40+08:00">2020-09-20</time>
+                <time title="修改時間：2020-09-20 12:11:42" itemprop="dateModified" datetime="2020-09-20T12:11:42+08:00">2020-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -313,11 +314,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div class="note info">
+        <p><img src="https://i.imgur.com/Duz436p.png"></p>
+<div class="note info">
             <p>閱讀難度：</p><ul><li>線性代數：✦✦✧✧✧ (高手)</li><li>程式設計：✦✦✧✧✧ (高手)</li></ul>
           </div>
 <p>特別感謝 <em>冠大大</em>、<em>王大大</em>。</p>
-<p>《夢魘のCUDA》是 CUDA Programming 系列，<strong>此系列不會介紹任何 CUDA 的基礎知識</strong>，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cuBLAS / cuSPARSE；除此之外，本篇也會講解如何使用這兩套 Library 實作出經典應用 —- Preconditioned Conjugate Gradient。之所以說是經典應用的原因是因為，cuSPARSE 幾乎是為了這個應用而誕生的。</p>
+<p>《夢魘のCUDA》是 CUDA Programming 系列，<strong>此系列不會介紹任何 CUDA 的基礎知識</strong>，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library — cuBLAS / cuSPARSE；除此之外，本篇也會講解如何使用這兩套 Library 實作出經典應用 — Preconditioned Conjugate Gradient。之所以說是經典應用的原因是因為，cuSPARSE 幾乎是為了這個應用而誕生的。</p>
 <a id="more"></a>
 <h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Conjugate_gradient_method">Conjugate gradient method - wiki</a></li>
@@ -396,7 +398,7 @@ f(x^* + e)
 \end{align*}</script><p>由於 $A$ 是 Positive definite，且 $e\ne \mathbf{0}$，因此最後一項 $\frac{1}{2}e^TAe &gt; 0$，則可以得證當 $Ax^* =b$ 時，$f(x^*)$ 一定為最小值。因此我們將一個 Linear system 的問題變成了 Minimization problem：找到 $x$ 使得 minimize $f(x)$。</p>
 <p>接著是要如何解這個 Minimization problem，一種方法就是使用 <strong>Steepest descent method</strong>。</p>
 <div class="note info">
-            <p>這邊列出一些常用的 term：</p><ul><li>Error: $e_i=x_i-x^*$，寫成 Iterative form，$e_{i+1}=e_i+\alpha_i r_i$</li><li>Residual: $r_i=b-Ax_i=-f’(x_i)$。</li></ul><p>Residual 與 Error 的關係式 $r_i=b-Ax_i=Ax^*-Ax_i=A(x^*-x_i)=-Ae_i$</p>
+            <p>這邊列出一些常用的 term：</p><ul><li>Error: $e_i=x_i-x^*$，寫成 Iterative form，$e_{i+1}=e_i+\alpha_i r_i$</li><li>Residual: $r_i=b-Ax_i=-f’(x_i)$</li></ul><p>Residual 與 Error 的關係式 </p><script type="math/tex; mode=display">r_i=b-Ax_i=Ax^\*-Ax_i=A(x^\*-x_i)=-Ae_i</script>
           </div>
 <p>首先從任意一點 $x_0$ 開始，選擇負梯度方向 $-f’(x_0)=r_0$ 前進適當步長 $\alpha_0$，這個步長必須能夠在負梯度方向上最小化下一個 Step 的值 $f(x_1)$，也就是 $\alpha_0=\arg\min f(x_1)=\arg\min f(x_{0}+\alpha_0 r_0)$，通常會使用 Line search 的方式求得。求得步長後，移動到下一個位置 $x_1=x_0 + \alpha_0 r_0$，求出下一個步長 $\alpha_1$，再移動到下一個位置 $x_2=x_1+\alpha_1 r_1$ …，重複動作直到找到最佳解為止。<br><img src="https://i.imgur.com/OK3pGcQ.png" alt=""></p>
 <p>至於求解步長 $\alpha_i$ 可以使用求極值 (導數為 $0$) 的方式求得：</p>
