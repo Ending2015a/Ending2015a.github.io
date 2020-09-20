@@ -27,12 +27,12 @@
   </script>
 
 
-  <meta name="description" content="推薦難度：線性代數：✦✦✧✧✧ (高手)程式設計：✦✦✧✧✧ (高手)            特別感謝 冠大大、王大大。 《夢魘のCUDA》是 CUDA Programming 系列，此系列不會介紹任何 CUDA 的基礎知識，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cu">
+  <meta name="description" content="閱讀難度：線性代數：✦✦✧✧✧ (高手)程式設計：✦✦✧✧✧ (高手)            特別感謝 冠大大、王大大。 《夢魘のCUDA》是 CUDA Programming 系列，此系列不會介紹任何 CUDA 的基礎知識，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[Tuto] 夢魘のCUDA: 使用 Preconditioned Conjugate Gradient 輕鬆解決大型稀疏線性方程組">
 <meta property="og:url" content="https://ending2015a.github.io/2020/09/19/preconditioned-conjugate-gradient/index.html">
 <meta property="og:site_name" content="My Notes">
-<meta property="og:description" content="推薦難度：線性代數：✦✦✧✧✧ (高手)程式設計：✦✦✧✧✧ (高手)            特別感謝 冠大大、王大大。 《夢魘のCUDA》是 CUDA Programming 系列，此系列不會介紹任何 CUDA 的基礎知識，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cu">
+<meta property="og:description" content="閱讀難度：線性代數：✦✦✧✧✧ (高手)程式設計：✦✦✧✧✧ (高手)            特別感謝 冠大大、王大大。 《夢魘のCUDA》是 CUDA Programming 系列，此系列不會介紹任何 CUDA 的基礎知識，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cu">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/OK3pGcQ.png">
 <meta property="og:image" content="https://i.imgur.com/bjvovNI.png">
@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://i.imgur.com/hL1FiZD.png">
 <meta property="og:image" content="https://i.imgur.com/iX7VgCC.png">
 <meta property="article:published_time" content="2020-09-19T14:52:53.000Z">
-<meta property="article:modified_time" content="2020-09-19T16:59:44.176Z">
+<meta property="article:modified_time" content="2020-09-20T03:51:40.030Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Tuto">
@@ -269,7 +269,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-09-20 00:59:44" itemprop="dateModified" datetime="2020-09-20T00:59:44+08:00">2020-09-20</time>
+                <time title="修改時間：2020-09-20 11:51:40" itemprop="dateModified" datetime="2020-09-20T11:51:40+08:00">2020-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -314,7 +314,7 @@
 
       
         <div class="note info">
-            <p>推薦難度：</p><ul><li>線性代數：✦✦✧✧✧ (高手)</li><li>程式設計：✦✦✧✧✧ (高手)</li></ul>
+            <p>閱讀難度：</p><ul><li>線性代數：✦✦✧✧✧ (高手)</li><li>程式設計：✦✦✧✧✧ (高手)</li></ul>
           </div>
 <p>特別感謝 <em>冠大大</em>、<em>王大大</em>。</p>
 <p>《夢魘のCUDA》是 CUDA Programming 系列，<strong>此系列不會介紹任何 CUDA 的基礎知識</strong>，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library —- cuBLAS / cuSPARSE；除此之外，本篇也會講解如何使用這兩套 Library 實作出經典應用 —- Preconditioned Conjugate Gradient。之所以說是經典應用的原因是因為，cuSPARSE 幾乎是為了這個應用而誕生的。</p>
