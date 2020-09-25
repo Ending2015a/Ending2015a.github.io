@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>[Note] Position Based Fluids</title>
-    <url>/2020/09/02/position-based-fluids-note/</url>
+    <url>/Ending2015a/49786/</url>
     <content><![CDATA[<p><img src="https://i.imgur.com/k5HI4sV.png" alt=""></p>
 <blockquote>
 <p>原論文：M.Macklin and M. Müller. Position Based Fluids. ACM Transactions on Graphics, 2013.</p>
@@ -126,7 +126,7 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
   </entry>
   <entry>
     <title>[Note] AuTO: Scaling Deep Reinforcement Learnign for Datacenter-Scale Automatic Traffic Optimization</title>
-    <url>/2020/09/02/auto-note/</url>
+    <url>/Ending2015a/41710/</url>
     <content><![CDATA[<p><img src="https://i.imgur.com/xLpxJlN.png" alt=""></p>
 <blockquote>
 <p>原論文：Li Chen, J. Lingys, Kai Chen and Feng Liu. AuTO: Scaling Deep Reinforcement Learnign for Datacenter-Scale Automatic Traffic Optimization. SIGCOMM 2018.</p>
@@ -335,7 +335,7 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
   </entry>
   <entry>
     <title>[Note] 神的語言 Metaprogramming: one_of</title>
-    <url>/2020/09/01/cpp-metaprogramming-1/</url>
+    <url>/Ending2015a/58824/</url>
     <content><![CDATA[<h2 id="發想"><a href="#發想" class="headerlink" title="發想"></a>發想</h2><p>最近在寫程式的時候遇到一個情景，讓我非常困擾。<br>下面這個情況我不需要多加解釋，應該很多人也都有遇過類似這種困擾。</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test_status</span><span class="params">(STATUS_t unknown_status)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(unknown_status == STATUS_1 || unknown_status == STATUS_3 || unknown_status == STATUS_5 || unknown_status == STATUS_7)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// do some stuff</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(unknwon_status == STATUS_2 || unknown_status == STATUS_3 || unknown_status == STATUS_4)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// do some stuff</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(unknwon_status == STATUS_5 || unknwon_status == STATUS_6 || unknwon_status == STATUS_9 || unknwon_status == STATUS_11 || unknwon_status == STATUS_27 || unknwon_status == STATUS_38)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//do some stuff</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
@@ -493,7 +493,7 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
   </entry>
   <entry>
     <title>[Tuto] 夢魘のCUDA: 使用 Preconditioned Conjugate Gradient 輕鬆解決大型稀疏線性方程組</title>
-    <url>/2020/09/19/preconditioned-conjugate-gradient/</url>
+    <url>/Ending2015a/52045/</url>
     <content><![CDATA[<p><img src="https://i.imgur.com/Duz436p.png" width="60%"><br><em>圖片來源：<a href="http://fourier.eng.hmc.edu/e176/lectures/NM/node29.html">http://fourier.eng.hmc.edu/e176/lectures/NM/node29.html</a></em></p>
 <div class="note info">
             <p>閱讀難度：</p><ul><li>線性代數：✦✦✧✧✧ (高手)</li><li>程式設計：✦✦✧✧✧ (高手)</li></ul>
