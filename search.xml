@@ -494,7 +494,11 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
   <entry>
     <title>[Note] Quantum Computation and Quantum Information - Chapter 2: Introduction to quantum mechanics</title>
     <url>/Ending2015a/55689/</url>
-    <content><![CDATA[<h1 id="Quantum-Computation-and-Quantum-Information-Chapter-2-Introduction-to-quantum-mechanics-Note"><a href="#Quantum-Computation-and-Quantum-Information-Chapter-2-Introduction-to-quantum-mechanics-Note" class="headerlink" title="Quantum Computation and Quantum Information - Chapter 2: Introduction to quantum mechanics - Note"></a>Quantum Computation and Quantum Information - Chapter 2: Introduction to quantum mechanics - Note</h1><h2 id="2-1-Linear-algebra"><a href="#2-1-Linear-algebra" class="headerlink" title="2.1 Linear algebra"></a>2.1 Linear algebra</h2><div class="table-container">
+    <content><![CDATA[<p>上課筆記，原文書:</p>
+<blockquote>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+</blockquote>
+<h2 id="2-1-Linear-algebra"><a href="#2-1-Linear-algebra" class="headerlink" title="2.1 Linear algebra"></a>2.1 Linear algebra</h2><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -531,10 +535,18 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
 <td>$A^T$</td>
 <td>Transpose of the $A$ matrix</td>
 </tr>
+<tr>
+<td>$A^\dagger$</td>
+<td>Hermitian conjugate or adjoint of the $A$ matrix, $A^\dagger=(A^T)^*$. $\left[\begin{matrix}a &amp; b\\ c &amp; d\end{matrix}\right]^\dagger = \left[\begin{matrix} a^* &amp; c^*\\b^* &amp; d^*\end{matrix}\right]$</td>
+</tr>
+<tr>
+<td>$\langle \varphi\vert A\vert\psi \rangle$</td>
+<td>Inner product between $\vert\varphi\rangle$ and $A\vert\psi\rangle$. <br>Equivalently, inner product between $A^\dagger\vert\varphi\rangle$ and $\vert\psi\rangle$.</td>
+</tr>
 </tbody>
 </table>
 </div>
-<p> $A^\dagger$ | Hermitian conjugate or adjoint of the $A$ matrix, $A^\dagger=(A^T)^<em>$. $\left[\begin{matrix}a &amp; b\\ c &amp; d\end{matrix}\right]^\dagger = \left[\begin{matrix} a^</em> &amp; c^<em>\\b^</em> &amp; d^*\end{matrix}\right]$ |<br>| $\langle \varphi\vert A\vert\psi \rangle$ | Inner product between $\vert\varphi\rangle$ and $A\vert\psi\rangle$. <br>Equivalently, inner product between $A^\dagger\vert\varphi\rangle$ and $\vert\psi\rangle$. |</p>
+<a id="more"></a>
 <h3 id="2-1-1-Bases-and-linear-independence"><a href="#2-1-1-Bases-and-linear-independence" class="headerlink" title="2.1.1 Bases and linear independence"></a>2.1.1 Bases and linear independence</h3><ul>
 <li>Spanning set：a set of vectors $\vert v_1\rangle,\dots,\vert v_n\rangle$ such that any vector $\vert v\rangle$ in the vector space can be written as a linear combination $\vert v \rangle=\sum_i a_i\vert v_i\rangle$ of vectors in that set.</li>
 <li>A set of non-zero vectors $\vert v_1 \rangle, \dots, \vert v_n\rangle$ are <em>lineraly dependent</em> if there exists a set of complex numbers $a_1,\dots, a_n$ with $a_i\ne 0$ for at least one value of $i$, such that<script type="math/tex; mode=display">
@@ -547,13 +559,13 @@ A\left(\sum_i a_i\vert v_i\rangle\right)=\sum_i a_i A\vert v_i\rangle</script></
 A\vert v_j \rangle=\sum_i A_{ij} \vert w_i\rangle</script></li>
 </ul>
 <h3 id="2-1-3-The-Pauli-matrics"><a href="#2-1-3-The-Pauli-matrics" class="headerlink" title="2.1.3 The Pauli matrics"></a>2.1.3 The Pauli matrics</h3><script type="math/tex; mode=display">
-\begin{eqnarray}
+\begin{eqnarray*}
 \sigma_0 \equiv I \equiv \left[\begin{matrix} 1 & 0 \\0 & 1\end{matrix}\right] \quad & \sigma_1\equiv\sigma_x\equiv X\equiv \left[\begin{matrix} 0 & 1\\ 1 & 0 \end{matrix}\right]\\
 \sigma_2\equiv\sigma_y\equiv Y\equiv \left[\begin{matrix} 0 & -i\\ i & 0 \end{matrix}\right] \quad & \sigma_3\equiv\sigma_z\equiv Z\equiv\left[\begin{matrix}1&0\\0&-1\end{matrix}\right]
-\end{eqnarray}</script><p>The $X$ matrix is often known as the quantum <code>NOT</code> gate, by analogy to the classical <code>NOT</code> gate:</p>
+\end{eqnarray*}</script><p>The $X$ matrix is often known as the quantum <code>NOT</code> gate, by analogy to the classical <code>NOT</code> gate:</p>
 <ul>
 <li>$X\vert 0\rangle=\vert 1\rangle$, $X\vert 1\rangle=\vert 0\rangle$</li>
-<li>$X\vert +\rangle=\vert +\rangle$, $X\vert -\rangle=(-1)\vert -\rangle$<br>where $\vert+\rangle=\frac{1}{\sqrt{2}}(\vert 0\rangle + \vert 1\rangle)$, and $\vert-\rangle=\frac{1}{\sqrt{2}}(\vert 0\rangle - \vert 1\rangle)$</li>
+<li>$X\vert +\rangle=\vert +\rangle$, $X\vert -\rangle=(-1)\vert -\rangle$<br><br>where $\vert+\rangle=\frac{1}{\sqrt{2}}(\vert 0\rangle + \vert 1\rangle)$, and $\vert-\rangle=\frac{1}{\sqrt{2}}(\vert 0\rangle - \vert 1\rangle)$</li>
 </ul>
 <p>The $X$ and $Z$ are also sometimes referred toas the <em>bit flip</em> and <em>phase flip</em> matrices. $Z\vert 1\rangle=(-1)\vert 1\rangle$, $-1$ is known as a <em>phase factor</em>.</p>
 <h3 id="2-1-4-Inner-products"><a href="#2-1-4-Inner-products" class="headerlink" title="2.1.4 Inner products"></a>2.1.4 Inner products</h3><ol>
@@ -622,7 +634,7 @@ A\otimes B = \underbrace{\left.\left[
 <p>待補</p>
 </blockquote>
 <h2 id="2-2-The-postulates-of-quantum-mechanics"><a href="#2-2-The-postulates-of-quantum-mechanics" class="headerlink" title="2.2 The postulates of quantum mechanics"></a>2.2 The postulates of quantum mechanics</h2><h3 id="2-2-1-State-space"><a href="#2-2-1-State-space" class="headerlink" title="2.2.1 State space"></a>2.2.1 State space</h3><div class="note success">
-            <p><strong>Postulate 1</strong>: Associated to any isolated physical system is a complex vector space with inner product (that is, a ++Hilbert space++) known as the <em>state space</em> of the system. The system is completely described by its <em>state vector</em>, which is a ++unit vector++ in the system’s state space.</p>
+            <p><strong>Postulate 1</strong>: Associated to any isolated physical system is a complex vector space with inner product (that is, a <u>Hilbert space</u>) known as the <em>state space</em> of the system. The system is completely described by its <em>state vector</em>, which is a <u>unit vector</u> in the system’s state space.</p>
           </div>
 <ul>
 <li>A <em>qubit</em> has a two-dimensional state space.</li>
@@ -712,11 +724,11 @@ E_m\equiv M^\dagger_mM_m</script></li>
 </ul>
 <p>Example: If we want to distinguish $\{\vert 0\rangle, \vert + \rangle\}$. We can set measurement operations to:</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{align*}
 E_1 &= \frac{\sqrt{2}}{1+\sqrt{2}}\vert 1\rangle\langle 1\vert\\
 E_2 &= \frac{\sqrt{2}}{1+\sqrt{2}}\vert -\rangle\langle -\vert\\
-E_3 &= Id-E_1-E_2 \quad \text{(Should check if E_3 is a positive operator)}
-\end{align}</script><p>Since $\vert 0\rangle$ is orthogonal to the measurement $E_1$, that is $\langle 0\vert E_1\vert 0\rangle=0$. Also, $\vert+\rangle$ is orthogonal to the measurement $E_2$, that is $\langle +\vert E_2\vert +\rangle=0$:</p>
+E_3 &= Id-E_1-E_2 \quad \text{(Should check if $E_3$ is a positive operator)}
+\end{align*}</script><p>Since $\vert 0\rangle$ is orthogonal to the measurement $E_1$, that is $\langle 0\vert E_1\vert 0\rangle=0$. Also, $\vert+\rangle$ is orthogonal to the measurement $E_2$, that is $\langle +\vert E_2\vert +\rangle=0$:</p>
 <ol>
 <li>If we see outcome 1, it must be $\vert+\rangle$.</li>
 <li>If we see outcome 2, it must be $\vert 0\rangle$.</li>
