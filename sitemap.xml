@@ -81,20 +81,6 @@
   </url>
   
   <url>
-    <loc>https://ending2015a.github.io/tags/Deep-Learning/</loc>
-    <lastmod>2020-11-08</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ending2015a.github.io/tags/Reinforcement-Learning/</loc>
-    <lastmod>2020-11-08</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ending2015a.github.io/tags/Paper-Note/</loc>
     <lastmod>2020-11-08</lastmod>
     <changefreq>daily</changefreq>
@@ -138,6 +124,20 @@
   
   <url>
     <loc>https://ending2015a.github.io/tags/Quantum-Algorithm/</loc>
+    <lastmod>2020-11-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ending2015a.github.io/tags/Deep-Learning/</loc>
+    <lastmod>2020-11-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ending2015a.github.io/tags/Reinforcement-Learning/</loc>
     <lastmod>2020-11-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -230,13 +230,6 @@
 
   
   <url>
-    <loc>https://ending2015a.github.io/categories/Deep-Learning/</loc>
-    <lastmod>2020-11-08</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ending2015a.github.io/categories/Computer-Graphics/</loc>
     <lastmod>2020-11-08</lastmod>
     <changefreq>daily</changefreq>
@@ -245,6 +238,13 @@
   
   <url>
     <loc>https://ending2015a.github.io/categories/Quantum-Computing/</loc>
+    <lastmod>2020-11-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ending2015a.github.io/categories/Deep-Learning/</loc>
     <lastmod>2020-11-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
