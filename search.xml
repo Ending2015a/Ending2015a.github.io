@@ -125,6 +125,56 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
       </tags>
   </entry>
   <entry>
+    <title>[Note] Quantum Computation and Quantum Information - Chapter 3: Introduction to compuer science</title>
+    <url>/Ending2015a/51732/</url>
+    <content><![CDATA[<p>上課筆記，原文書:</p>
+<blockquote>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="3-1-Models-for-computation"><a href="#3-1-Models-for-computation" class="headerlink" title="3.1 Models for computation"></a>3.1 Models for computation</h2><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="3-1-1-Turing-machines"><a href="#3-1-1-Turing-machines" class="headerlink" title="3.1.1 Turing machines"></a>3.1.1 Turing machines</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="3-1-2-Circuits"><a href="#3-1-2-Circuits" class="headerlink" title="3.1.2 Circuits"></a>3.1.2 Circuits</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h2 id="3-2-The-analysis-of-computational-problems"><a href="#3-2-The-analysis-of-computational-problems" class="headerlink" title="3.2 The analysis of computational problems"></a>3.2 The analysis of computational problems</h2><h3 id="3-2-1-How-to-quantify-computational-resources"><a href="#3-2-1-How-to-quantify-computational-resources" class="headerlink" title="3.2.1 How to quantify computational resources"></a>3.2.1 How to quantify computational resources</h3><ul>
+<li>$f(n)$ is $O(g(n))$: $~~\exists~c&gt;0, n_0&gt;0,~\text{s.t.}~0<f(n)\le cg(n),~\forall~n>n_0$</li>
+<li>$f(n)$ is $\Omega(g(n))$: $~~\exists~c&gt;0, n_0&gt;0,~\text{s.t.}~0<cg(n)\le f(n),~\forall~n>n_0$</li>
+<li>$f(n)$ is $\Theta(g(n))$: $~~\exists~c_1&gt;0, c_2&gt;0, n_0&gt;0,~\text{s.t.}~0<c_1g(n)\le f(n)\le c_2g(n),~\forall~n>n_0$<ul>
+<li>$f(n)$ is both $O(g(n))$ and $\Omega(g(n))$</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-2-Computational-complexity"><a href="#3-2-2-Computational-complexity" class="headerlink" title="3.2.2 Computational complexity"></a>3.2.2 Computational complexity</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="3-2-3-Decision-problems-and-the-complexity-classes-mathbf-P-and-mathbf-NP"><a href="#3-2-3-Decision-problems-and-the-complexity-classes-mathbf-P-and-mathbf-NP" class="headerlink" title="3.2.3 Decision problems and the complexity classes $\mathbf{P}$ and $\mathbf{NP}$"></a>3.2.3 Decision problems and the complexity classes $\mathbf{P}$ and $\mathbf{NP}$</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="3-2-4-A-plethora-of-complexity-classes"><a href="#3-2-4-A-plethora-of-complexity-classes" class="headerlink" title="3.2.4 A plethora of complexity classes"></a>3.2.4 A plethora of complexity classes</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="3-2-5-Energy-and-computation"><a href="#3-2-5-Energy-and-computation" class="headerlink" title="3.2.5 Energy and computation"></a>3.2.5 Energy and computation</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h2 id="3-3-Perspectives-on-computer-science"><a href="#3-3-Perspectives-on-computer-science" class="headerlink" title="3.3 Perspectives on computer science"></a>3.3 Perspectives on computer science</h2><blockquote>
+<p>待補</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Quantum Computing</category>
+      </categories>
+      <tags>
+        <tag>Note</tag>
+        <tag>Quantum Computing</tag>
+        <tag>Quantum Algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[Note] AuTO: Scaling Deep Reinforcement Learnign for Datacenter-Scale Automatic Traffic Optimization</title>
     <url>/Ending2015a/41710/</url>
     <content><![CDATA[<p><img src="https://i.imgur.com/xLpxJlN.png" alt=""></p>
@@ -331,6 +381,368 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
         <tag>Paper Note</tag>
         <tag>Datacenter Management</tag>
         <tag>Traffic Optimization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[Note] Quantum Computation and Quantum Information - Chapter 4: Quantum Circuits</title>
+    <url>/Ending2015a/56696/</url>
+    <content><![CDATA[<p>上課筆記，原文書:</p>
+<blockquote>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+</blockquote>
+<h2 id="4-1-Quantum-algorithm"><a href="#4-1-Quantum-algorithm" class="headerlink" title="4.1 Quantum algorithm"></a>4.1 Quantum algorithm</h2><p><img src="https://i.imgur.com/nACul9I.png" alt=""></p>
+<a id="more"></a>
+<p>There are mainly two classes of algorithms:</p>
+<ol>
+<li>Based on Shor’s quantum Fourier transform, e.g. shor’s algorithm (factoring)<ul>
+<li>exponential speedup</li>
+</ul>
+</li>
+<li>Based upon Grover’s algorithm (search algorithm)<ul>
+<li>quadratic speedup</li>
+</ul>
+</li>
+</ol>
+<h2 id="4-2-Single-qubit-operations"><a href="#4-2-Single-qubit-operations" class="headerlink" title="4.2 Single qubit operations"></a>4.2 Single qubit operations</h2><p>A single qubit: $\vert \psi\rangle=a\vert0\rangle+b\vert1\rangle$, where $a,b \in \mathbb{C}$ and $\vert a\vert^2+\vert b\vert^2=1$.</p>
+<p>Quantum gates (operations):</p>
+<ul>
+<li>Pauli matrices:<script type="math/tex; mode=display">
+X\equiv\left[\begin{matrix}
+0 & 1\\
+1 & 0
+\end{matrix}\right];\quad
+Y\equiv\left[\begin{matrix}
+0 & -i\\
+i & 0
+\end{matrix}\right];\quad
+Z\equiv\left[\begin{matrix}
+1 & 0\\
+0 & -1
+\end{matrix}\right]</script></li>
+<li>Hadamard gate:<script type="math/tex; mode=display">
+H\equiv\frac{1}{\sqrt{2}}\left[\begin{matrix}
+1 & 1\\
+1 & -1
+\end{matrix}\right]=(X+Z)/\sqrt{2}</script></li>
+<li>Phase gate:<script type="math/tex; mode=display">
+S\equiv\left[\begin{matrix}
+1 & 0\\
+0 & i
+\end{matrix}\right]=T^2</script></li>
+<li>$\pi/8$ gate:<script type="math/tex; mode=display">
+T\equiv\left[\begin{matrix}
+1 & 0\\
+0 & \exp(i\pi/4)
+\end{matrix}\right]=
+\exp(i\pi/8)\left[\begin{matrix}
+\exp(-i\pi/8) & 0\\
+0 & \exp(i\pi/8)
+\end{matrix}\right]</script></li>
+</ul>
+<p><img src="https://i.imgur.com/odEIVnM.png" alt=""></p>
+<p>Bloch sphere representation: </p>
+<ul>
+<li>A single qubit can be visualized as a point $(\theta, \varphi)$ on the unit sphere.<script type="math/tex; mode=display">
+\vert \psi\rangle = \cos(\theta/2)\vert 0\rangle + e^{i\varphi}\sin(\theta/2)\vert 1\rangle\</script></li>
+<li>Bloch vector: $(\cos\varphi\sin\theta, \sin\varphi\sin\theta, \cos\theta)$</li>
+</ul>
+<p>Exponentiating Pauli matrices gives <em>rotation operators</em> about the $\hat{x}$, $\hat{y}$ and $\hat{z}$ axes:</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+R_x(\theta) &\equiv e^{-i\theta X/2}=\cos\frac{\theta}{2}I-i\sin\frac{\theta}{2}X=\left[\begin{matrix}
+\cos\frac{\theta}{2} & -i\sin\frac{\theta}{2}\\
+-i\sin\frac{\theta}{2} & \cos\frac{\theta}{2}
+\end{matrix}\right]\\
+R_y(\theta) &\equiv e^{-i\theta Y/2}=\cos\frac{\theta}{2}I-i\sin\frac{\theta}{2}Y=\left[\begin{matrix}
+\cos\frac{\theta}{2} & -\sin\frac{\theta}{2}\\
+\sin\frac{\theta}{2} & \cos\frac{\theta}{2}
+\end{matrix}\right]\\
+R_z(\theta) &\equiv e^{-i\theta Z/2}=\cos\frac{\theta}{2}I-i\sin\frac{\theta}{2}Z=\left[\begin{matrix}
+e^{-i\theta/2} & 0\\
+0 & e^{i\theta/2}
+\end{matrix}\right]
+\end{align*}</script><div class="note info">
+            <p><strong>Exercise 4.2</strong>: Let $x$ be a real number and $A$ a matrix such that $A^2=I$. Show that</p><script type="math/tex; mode=display">e^{iAx}=\cos(x)I +i\sin(x)A.</script><p><em>Proof</em>: Recall that the taylor series</p><script type="math/tex; mode=display">e^x=\sum^\infty_{n=0}\frac{x^n}{n!}, \quad\sin(x)=\sum^\infty_{n=0}\frac{(-1)^n}{(2n+1)!}x^{2n+1}, \quad\cos(x)=\sum^\infty_{n=0}\frac{(-1)^n}{(2n)!}x^{2n}</script><p>For $A^2=I$, </p><script type="math/tex; mode=display">\begin{align*}e^{iAx}&=\sum_n\frac{(iAx)^n}{n!}=\sum_{n\in \text{even}}\frac{(ix)^n}{n!}I+\sum_{n\in\text{odd}}\frac{(ix)^n}{n!}A\\    &= \cos(x)I+i\sin(x)A\end{align*}</script>
+          </div>
+<p>If $\hat{n}=(n_x,n_y, n_z)$ is a real unit vector in three dimensions then we generalize the previous definitions by defining a rotation by $\theta$ about the $\hat{n}$ axis by the equation</p>
+<script type="math/tex; mode=display">
+R_{\hat{n}}(\theta)\equiv e^{-i\theta\hat{n}\cdot\vec{\sigma}/2}=\cos\left(\frac{\theta}{2}\right)I-i\sin\left(\frac{\theta}{2}\right)(n_xX+n_yY+n_zZ),</script><p>where $\vec{\sigma}$ denotes the three component vector $(X,Y,Z)$ of Pauli matrices.</p>
+<p>Operation function for diagonalizable matrix:<br>Let $A$ be an diagonalizable matrix $A=\sum_\lambda \lambda\vert \psi_\lambda\rangle\langle\psi_\lambda\vert$, an operation function $f: \mathbb{C}\to\mathbb{C}$. Then</p>
+<script type="math/tex; mode=display">
+f(A)=\sum_\lambda f(\lambda)\vert \psi_\lambda\rangle\langle\psi_\lambda\vert</script><p>For example, a diagonalizable matrix $Z=\vert 0\rangle\langle 0\vert - \vert 1\rangle\langle 1\vert=\left[\begin{matrix}1&amp;0\\0&amp;-1\end{matrix}\right]$, an operation function $f(x)=e^{\theta x}$. Then</p>
+<script type="math/tex; mode=display">
+f(Z)=e^{\theta Z}= e^\theta\vert 0\rangle\langle 0\vert + e^{-\theta}\vert 1\rangle\langle 1\vert=\left[\begin{matrix}e^\theta&0\\0&e^{-\theta}\end{matrix}\right].</script><p>For example, $f(x)=\sum_{n\ge0}a_nx^n$ (Taylor expantion).</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+f(A) &= \sum_\lambda f(\lambda)\vert \psi_\lambda\rangle\langle \psi_\lambda\vert = \sum_\lambda\sum_n a_n\lambda^n\vert \psi_\lambda\rangle\langle\psi_\lambda\vert\\
+    &= \sum_n a_n\sum_\lambda \lambda^n\vert\psi_\lambda\rangle\langle\psi_\lambda\vert = \sum_n a_n A^n
+\end{align*}</script><div class="note success">
+            <p><strong>Theorem 4.1</strong>: ($Z$-$Y$ <strong>decomposition for a single qubit</strong>) Suppose $U$ is a unitary operation on a single qubit. Then there exist real numbers $\alpha, \beta, \gamma$ and $\delta$ such that</p><script type="math/tex; mode=display">U=e^{i\alpha}R_z(\beta)R_y(\gamma)R_z(\delta)</script><p><em>Proof</em>: Let a unitary matrix $U=\left[\begin{matrix}a&amp;c\\b&amp;d\end{matrix}\right]$</p><script type="math/tex; mode=display">\begin{align*}\vert a\vert^2+\vert b\vert^2=1 &\Rightarrow a\equiv e^{i\phi_1}\cos\frac{\gamma}{2},\quad b\equiv e^{i\phi_2}\sin\frac{\gamma}{2}\\\vert a\vert^2+\vert c\vert^2=1 &\Rightarrow c\equiv -e^{i\phi_3}\sin\frac{\gamma}{2}\\\vert c\vert^2+\vert d\vert^2=1 &\Rightarrow d\equiv e^{i\phi_4}\cos\frac{\gamma}{2}\\a^*c+b^*d=0 &\Rightarrow -e^{i(\phi_3-\phi_1)}+e^{i(\phi_4-\phi_2)}=0\\&\Rightarrow\phi_3-\phi_1=\phi_4-\phi_2\equiv \beta\end{align*}</script><p>Another independent variables:</p><script type="math/tex; mode=display">\phi_1+\phi_3\equiv2\alpha-\delta,\quad \phi_2+\phi_4\equiv 2\alpha+\delta</script><script type="math/tex; mode=display">\Rightarrow U=\left[ \begin{matrix}e^{i(\alpha-\beta/2-\delta/2)}\cos\frac{\gamma}{2} & -e^{i(\alpha-\beta/2+\delta/2)}\sin\frac{\gamma}{2}\\e^{i(\alpha+\beta/2-\delta/2)}\sin\frac{\gamma}{2} & e^{i(\alpha+\beta/2+\delta/2)}\cos\frac{\gamma}{2}\end{matrix}\right]</script>
+          </div>
+<div class="note success">
+            <p>Corollery 4.2: Suppose $U$ is a unitary gate on a single qubit. Then there exist unitary operators $A$, $B$, $C$ on a single qubit such that $ABC=I$ and $U=e^{i\alpha}AXBXC$, where $\alpha$ is some overall phase factor.</p><p><em>Proof</em>: For $Z$-$Y$ decomposition of $U$, $U=e^{i\alpha}R_z(\beta)R_y(\gamma)R_z(\delta)$. Let</p><script type="math/tex; mode=display">\begin{align*}A &\equiv R_z(\beta)R_y(\frac{\gamma}{2})\\B &\equiv R_y(-\frac{\gamma}{2})R_z(\frac{-(\delta+\beta)}{2})\\C &\equiv R_z(\frac{\delta-\beta}{2})\end{align*}</script><p>Check that</p><script type="math/tex; mode=display">\begin{align*}ABC &= R_z(\beta)R_y(\frac{\gamma}{2})R_y(-\frac{\gamma}{2})R_z(\frac{-(\delta+\beta)}{2})R_z(\frac{\delta-\beta}{2})\\    &= R_z(\beta)R_y(0)R_z(-\beta)\\    &= I\end{align*}</script><p>Let $f(x)=\sum_na_nx^n$, we show that $Xf(Y)X=f(-Y)$:</p><ol><li>$XY=-YX~\Rightarrow XYX=-Y$</li><li>$Xf(Y)X=X\sum_na_nY^nX=\sum_n a_n(XYX)^n=\sum_na_n(-Y)^n=f(-Y)$</li></ol><p>Similar for $Xf(Z)X=f(-Z)$. Then we have </p><script type="math/tex; mode=display">XBX=XR_y(-\frac{\gamma}{2})XXR_z(-\frac{\delta+\beta}{2})X=R_y(\frac{\gamma}{2})R_z(\frac{\delta+\beta}{2})</script><p>Hence,</p><script type="math/tex; mode=display">\begin{align*}e^{i\alpha} AXBXC &= e^{i\alpha}R_z(\beta)R_y(\frac{\gamma}{2})R_y(\frac{\gamma}{2})R_z(\frac{\delta+\beta}{2})R_z(\frac{\delta-\beta}{2})\\    &= e^{i\alpha}R_z(\beta)R_y(\gamma)R_z(\delta)\\    &= U\end{align*}</script>
+          </div>
+<h2 id="4-3-Controlled-operations"><a href="#4-3-Controlled-operations" class="headerlink" title="4.3 Controlled operations"></a>4.3 Controlled operations</h2><ul>
+<li>controlled operation: If $A$ is true, then do $B$.</li>
+<li>controlled-NOT (CNOT): If $c=1$, the target $\vert t\rangle$ flipped, $\vert c\rangle\vert t\rangle\to\vert c\rangle\vert t\oplus c\rangle$<script type="math/tex; mode=display">
+\left[\begin{matrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 0 & 1\\
+0 & 0 & 1 & 0
+\end{matrix}\right]=
+\left[\begin{matrix}
+I & 0\\
+0 & X 
+\end{matrix}\right]</script><img src="https://i.imgur.com/MOT5gF0.png" width="300px"></li>
+</ul>
+<ul>
+<li>controlled-$U$: If $c=1$, apply unitary $U$ to the target $\vert t\rangle$. $\vert c\rangle\vert t\rangle\to\vert c\rangle U^c\vert t\rangle$.<script type="math/tex; mode=display">
+\left[\begin{matrix}
+I & 0\\
+0 & U
+\end{matrix}\right]</script><img src="https://i.imgur.com/xs4UlXV.png" width="300px"></li>
+</ul>
+<ul>
+<li>controlled-$Z$:<script type="math/tex; mode=display">
+\left[\begin{matrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & -1
+\end{matrix}\right]</script><img src="https://i.imgur.com/TFbXW5C.png" width="600px"></li>
+</ul>
+<ul>
+<li>SWAP gate: $\vert a\rangle\vert b\rangle \to \vert b\rangle\vert a\rangle$<script type="math/tex; mode=display">
+\left[\begin{matrix}
+1 & 0 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 0 & 1
+\end{matrix}\right]</script><img src="https://i.imgur.com/IjSI2rK.png" width="300px"></li>
+</ul>
+<ul>
+<li>Toffoli gate (CCNOT):<ul>
+<li>Universal for classical circuit (but not for quantum circuit)</li>
+<li>reversible<br><img src="https://i.imgur.com/OensqGf.png" width="300px"></li>
+</ul>
+</li>
+</ul>
+<p>How to construct controlled-$U$ operation for arbitrary single qubit? By Corollary 4.2, $U=e^{i\alpha}AXBXC$:</p>
+<ol>
+<li><p>Apply phase shift $e^{i\alpha}$:</p>
+<script type="math/tex; mode=display">
+\vert 00\rangle \to \vert 00\rangle, \quad\vert 01\rangle\to\vert 01\rangle, \quad \vert 10\rangle\to e^{i\alpha}\vert 10\rangle, \quad \vert 11\rangle\to e^{i\alpha}\vert 11\rangle</script><p><img src="https://i.imgur.com/4aU6v9S.png" width="600px"></p>
+</li>
+<li><p>(CNOT$=$controlled-$X$)</p>
+<ul>
+<li>If $c=0$, $ABC=I$</li>
+<li>If $c=1$, $e^{i\alpha}AXBXCX=U$<br><img src="https://i.imgur.com/5lqZXsq.png" width="600px"></li>
+</ul>
+</li>
+</ol>
+<p>Conditioning multiple qubits: Suppose we have $n+k$ qubits, and $U$ is a $k$ qubit unitary operator. Then we define the controlled operation $C^n(U)$ by the eqution</p>
+<script type="math/tex; mode=display">
+C^n(U)\vert x_1x_2\dots x_n\rangle\vert \psi\rangle=\vert x_1x_2\dots x_n\rangle U^{x_1x_2\dots x_n}\vert\psi\rangle</script><p><img src="https://i.imgur.com/UnxIZxq.png" alt=""></p>
+<h2 id="4-4-Measurement"><a href="#4-4-Measurement" class="headerlink" title="4.4 Measurement"></a>4.4 Measurement</h2><blockquote>
+<p>待補</p>
+</blockquote>
+<h2 id="4-5-Universal-quantum-gates"><a href="#4-5-Universal-quantum-gates" class="headerlink" title="4.5 Universal quantum gates"></a>4.5 Universal quantum gates</h2><blockquote>
+<p>待補</p>
+</blockquote>
+<h2 id="4-6-Summary-of-the-quantum-circuit-model-of-computation"><a href="#4-6-Summary-of-the-quantum-circuit-model-of-computation" class="headerlink" title="4.6 Summary of the quantum circuit model of computation"></a>4.6 Summary of the quantum circuit model of computation</h2><blockquote>
+<p>待補</p>
+</blockquote>
+<h2 id="4-7-Simulation-of-quantum-systems"><a href="#4-7-Simulation-of-quantum-systems" class="headerlink" title="4.7 Simulation of quantum systems"></a>4.7 Simulation of quantum systems</h2><blockquote>
+<p>待補</p>
+</blockquote>
+<h2 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h2><h3 id="Quantum-oracle"><a href="#Quantum-oracle" class="headerlink" title="Quantum oracle"></a>Quantum oracle</h3><blockquote>
+<p>Please refer to Section 6.1.1 The oracle</p>
+</blockquote>
+<p>Oracle: Blackbox for $f(x)$</p>
+<p>Classical oracle: used in a classical circuit<br>Quantum oracle: quantum superposition</p>
+<ul>
+<li>Example: $U_f(\vert x_1\rangle\vert y_1\rangle + \vert x_2\rangle \vert y_2\rangle)=\vert x_1\rangle \vert y_1\oplus f(x_1)\rangle + \vert x_2\rangle\vert y_2\oplus f(x_2)\rangle$</li>
+</ul>
+<p><img src="https://i.imgur.com/aV2BnxT.png" alt=""></p>
+<ul>
+<li>Classical query complexity is also a big research area</li>
+<li>Gap between quantum query complexity v.s. classical query complexity?</li>
+</ul>
+<h3 id="Deutsch’s-algorithm"><a href="#Deutsch’s-algorithm" class="headerlink" title="Deutsch’s algorithm"></a>Deutsch’s algorithm</h3><blockquote>
+<p>Please refer to Section 1.4.3 Deutsch’s algorithm</p>
+</blockquote>
+<p><strong>Problem</strong>: Compute $f(0)+f(1)$ for some $f:\{0, 1\}\to\{0, 1\}$ (with $f$ given as a blackbox)</p>
+<p>Classical: need two quries, find $f(0)$ and $f(1)$, then compute $f(0)+f(1)$<br>Quantum: Only one query:</p>
+<p><img src="https://i.imgur.com/DLBZoOn.png" alt=""></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_1\rangle &= (H\vert 0\rangle) \otimes (HX\vert 0\rangle)\\
+    &= \vert+\rangle \otimes \vert -\rangle\\
+    &= \frac{1}{\sqrt 2}\left(\vert 0\rangle \otimes \vert -\rangle + \vert 1\rangle \otimes \vert -\rangle\right)\\
+\end{align*}</script><p>Note that:</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+U_f \vert x\rangle \otimes \vert -\rangle &= \vert x\rangle\otimes \frac{1}{\sqrt 2}(\vert 0\oplus f(x)\rangle-\vert 1\oplus f(x)\rangle)\\
+    &= \vert x\rangle \otimes \begin{cases}
+        \vert -\rangle, &f(x)=0\\
+        -\vert-\rangle, &f(x)=1
+        \end{cases}\\
+    &= (-1)^{f(x)}\vert x\rangle \otimes \vert -\rangle\\
+\end{align*}</script><p>Then, </p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_2\rangle &= U_f\frac{1}{\sqrt 2}(\vert 0\rangle\otimes \vert-\rangle + \vert1\rangle\otimes\vert-\rangle)\\
+    &= \frac{1}{\sqrt 2}\left( (-1)^{f(0)}\vert 0\rangle\otimes\vert -\rangle + (-1)^{f(1)}\vert 1\rangle\otimes \vert-\rangle\right)\\
+    &=\frac{1}{\sqrt 2} \underbrace{(-1)^{f(0)}}_{\text{global phase}}\left(\vert 0\rangle\otimes\vert-\rangle+\overbrace{(-1)^{f(1)-f(0)}}^{\text{relative phase}}\vert 1\rangle\otimes\vert-\rangle\right)\\
+    &= (-1)^{f(0)}\left( \begin{cases}
+            \vert +\rangle, &\text{if }f(0)=f(1)~\\
+            \vert -\rangle, &\text{if }f(0)\ne f(1)~
+        \end{cases} \right)\otimes \vert -\rangle\\
+        ~\\
+\vert \psi_3\rangle &= (-1)^{f(0)}\begin{cases}
+            \vert 0\rangle, &\text{if }f(0)=f(1)~\\
+            \vert 1\rangle, &\text{if }f(0)\ne f(1)~
+        \end{cases}\left(\right)\otimes \vert -\rangle
+\end{align*}</script><p>Measurement:</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+0, &\text{if } f(0)=f(1)\\
+1, &\text{if } f(0)\ne f(1)
+\end{cases}</script><h3 id="Deutsch－Jozsa-algorithm"><a href="#Deutsch－Jozsa-algorithm" class="headerlink" title="Deutsch－Jozsa algorithm"></a>Deutsch－Jozsa algorithm</h3><blockquote>
+<p>Please refer to Section 1.4.4 The Deutsch-Jozsa algorithm</p>
+</blockquote>
+<p><strong>Problem</strong>: Given an black box quantum computer known as an oracle that implements some function $f:\{0,1\}^n\to\{0,1\}$. We are probmised that the function is either constant (0 on all outputs or 1 on all outputs, $f(x)=0, \forall x$, or $f(x)=1, \forall x$) or balanced (returns 1 for half of the input domain and 0 for the other half). The task then is to determine if $f$ is constant or balanced by using the oracle.</p>
+<p>Classical query complexity depends on details:</p>
+<ul>
+<li>If we want to solve with no error, need $2^n/2+1$ queries. Even if $f(x)$ is balanced, the first $2^n/2$ queries might be all zero.</li>
+<li>Using randomized algorithm only want constant (say less than $1/3$) error $\Rightarrow$ only need constant queries. Low probability that random queries or balanced $f$ all match.</li>
+</ul>
+<p>Quantum query, perfect with $1$ query:</p>
+<p><img src="https://i.imgur.com/VXXcUdM.png" alt=""></p>
+<p>Note that:</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+H^{\otimes n} (\vert 0\rangle)^n&=\vert +\rangle^{\otimes n}\\
+    &= \frac{1}{\sqrt {2^n}}(\vert 0\rangle+\vert 1\rangle)\otimes(\vert 0\rangle+\vert 1\rangle)\otimes\cdots\otimes(\vert 0\rangle+\vert 1\rangle)\\
+    &= \frac{1}{\sqrt {2^n}}(\vert00\dots0\rangle+\cdots+\vert11\dots1\rangle)\\
+    &= \frac{1}{\sqrt {2^n}}\sum_{x\in\{0,1\}^n}\vert x\rangle
+\end{align*}</script><p>Then,</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_1\rangle 
+    &= (H^{\otimes n}\otimes HX)\vert 0\rangle^{\otimes n}\otimes \vert 0\rangle\\
+    &= \sum_{x\in\{0,1\}^n}\frac{1}{\sqrt {2^n}}\vert x\rangle \otimes \vert -\rangle
+\end{align*}</script><p>Recall from Deutsch’s algorithm $U_f \vert x\rangle \otimes \vert -\rangle = (-1)^{f(x)}\vert x\rangle \otimes \vert -\rangle$,</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_2\rangle &= U_f(\sum_{x\in\{0,1\}^n}\frac{1}{\sqrt {2^n}}\vert x\rangle \otimes \vert -\rangle)\\
+    &= \sum_{x\in\{0,1\}^n}\frac{(-1)^{f(x)}}{\sqrt {2^n}}\vert x\rangle \otimes \vert -\rangle
+\end{align*}</script><p>How about $H^{\otimes n}\vert x\rangle$? On one qubit ($n=1$):</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+&\begin{cases}
+H\vert 0 \rangle = \frac{1}{\sqrt 2}(\vert 0\rangle+\vert 1\rangle)\\
+H\vert 1 \rangle = \frac{1}{\sqrt 2}(\vert 0\rangle-\vert 1\rangle)
+\end{cases}\\
+\Rightarrow& ~H\vert x \rangle = \frac{1}{\sqrt 2}\sum_{z\in\{0,1\}}(-1)^{xz}\vert z\rangle
+\end{align*}</script><p>On multiple qubits:</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+H^{\otimes n}\vert x_1x_2\dots x_n\rangle
+    &=\sum_{z_1,z_2,\dots,z_n\in\{0,1\}}\frac{(-1)^{x_1z_1+x_2z_2+\dots+x_nz_n}}{\sqrt {2^n}}\vert z_1z_2\dots z_n\rangle\\
+    &= \sum_{z\in\{0,1\}^n}\frac{(-1)^{x\cdot z}}{\sqrt{2^n}}\vert z\rangle
+\end{align*}</script><p>Then,</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_3\rangle &= (H^{\otimes n}\otimes I)\vert \psi_2\rangle\\
+    &=(H^{\otimes n}\otimes I)\sum_{x\in\{0,1\}^n} \frac{(-1)^{f(x)}}{\sqrt{2^n}}\vert x\rangle \otimes \vert -\rangle\\
+    &= \sum_{z\in\{0,1\}^n}\left( \sum_{x\in\{0,1\}^n} \frac{(-1)^{x\cdot z+f(x)}}{2^n} \right)\vert z\rangle \otimes \vert -\rangle 
+\end{align*}</script><p>Amplitude for $z=0^n$ on first register $x\cdot z=0 \Rightarrow \text{amp}=\sum_{x\in\{0,1\}^n}\frac{(-1)^{f(x)}}{2^n}$. </p>
+<script type="math/tex; mode=display">
+\begin{cases}
+\text{amp}=1 & \text{if $f(x)$ is constant, $f(x)=0, \forall x$}\\
+\text{amp}=-1 & \text{if $f(x)$ is constant, $f(x)=1, \forall x$}\\
+\text{amp}=0 & \text{if $f(x)$ is balanced, # of $f(x)=0$ equals to # of $f(x)=1$}
+\end{cases}</script><p>$\vert\text{amp}\vert^2=\text{Probability}$<br>Measurement:</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+z=0^n, &\text{if $f(x)$ is constant}\\
+z\ne0^n, &\text{if $f(x)$ is balanced}
+\end{cases}</script><h3 id="Bernstain－Vazirani-algorithm"><a href="#Bernstain－Vazirani-algorithm" class="headerlink" title="Bernstain－Vazirani algorithm"></a>Bernstain－Vazirani algorithm</h3><blockquote>
+<p>Not on book</p>
+</blockquote>
+<p><strong>Problem</strong>: Given an oracle that implements a function $f:\{0,1\}^n\to\{0,1\}$ in which $f(x)$ is promised to be the dot product between $x$ and a secret string $s\in\{0,1\}^n$ module $2$, $f(x)=x\cdot s=x_1\cdot s_1+x_2\cdot s_2+\cdots +x_n\cdot s_n\mod 2$, find $s$</p>
+<p>Classical: need $n$ queries: $s=s_1s_2\dots s_n$</p>
+<ul>
+<li>Get $s_1$ by query $x=100\dots0$</li>
+<li>Get $s_2$ by query $x=010\dots0$</li>
+<li>… learn $s$ in $n$ queries</li>
+<li>Claim: Can’t do better even with random algorithm because each query only gives one bit of information on $s$.</li>
+</ul>
+<p>Quantum: $1$ query. The algorithm is almost the same as Deutsch－Jozsn algorithm.</p>
+<p><img src="https://i.imgur.com/6ple5iU.png" alt=""></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_3\rangle &= \sum_{z\in\{0,1\}^n}\sum_{x\in\{0,1\}^n} \frac{(-1)^{z\cdot x + f(x)}}{2^n} \vert z\rangle\\
+    &= \sum_{z\in\{0,1\}^n}\sum_{x\in\{0,1\}^n} \frac{(-1)^{z\cdot x + s\cdot x}}{2^n} \vert z\rangle\\
+    &= \sum_{z\in\{0,1\}^n}\sum_{x\in\{0,1\}^n} \frac{(-1)^{(z\oplus s)\cdot x}}{2^n} \vert z\rangle\\
+\end{align*}</script><p>Claim that $\sum_{x\in\{0,1\}^n} \frac{1}{2^n}(-1)^{(z\oplus s)\cdot x} \vert z\rangle=\delta_{z\cdot s}$.</p>
+<p>Proof:</p>
+<ul>
+<li>When $z=s$, $z\oplus s=0\Rightarrow\sum_{x\in\{0,1\}^n} \frac{1}{2^n}(-1)^{(z\oplus s)\cdot x}=\sum_{x\in\{0,1\}^n}\frac{1}{2^n}=1$.</li>
+<li>When $z\ne s$, $\vert \psi_3\rangle$ normalized $\Rightarrow$ all $z\ne s$ terms $=0$ (can also check cancellation)</li>
+</ul>
+<script type="math/tex; mode=display">
+\Rightarrow \vert\psi_3\rangle=\sum_{z\in\{0,1\}^n}\delta_{z\cdot s}\vert z\rangle=\vert s\rangle</script><p>Measurement result is $s$.</p>
+<h3 id="Simon’s-problem"><a href="#Simon’s-problem" class="headerlink" title="Simon’s problem"></a>Simon’s problem</h3><blockquote>
+<p>Please refer to Section 5.4.3 The hidden subgroup problem</p>
+</blockquote>
+<p><strong>Problem</strong>: Given an oracle $f:\{0,1\}^n\to\{0,1\}^n$, promised to satisfy the property that, for some $s\in\{0,1\}^n, s\ne 0^n$ and all $x,y\in\{0, 1\}^n$, $f(x)=f(x\oplus s)$. Find $s$.</p>
+<p>Example: if $n=3$, the following is the function $f(x)$:<br>|$x$|000|001|010|011|100|101|110|111|<br>|-|-|-|-|-|-|-|-|-|<br>|$f(x)$|101|010|000|110|000|110|101|010|<br>The answer is $s=110$.</p>
+<p>Classical: How many random classical queries needed to find a “collision”? $2^{n-1}$ possible outputs. $\sim\frac{1}{2^{n-1}}$ probability a pair is a collision.</p>
+<ul>
+<li>$O(2^n)$ probabilities $\Rightarrow$ $O(\sqrt{2^n})=O(2^{\frac{n}{2}})$ queries to find a collision with constant probability.</li>
+<li>Lowerbound also $\Omega(2^\frac{n}{2})$</li>
+<li>$\Rightarrow$ classical complexity $\Theta(2^\frac{n}{2})$</li>
+</ul>
+<p>Quantum complexity: $O(n)$ queries</p>
+<p><img src="https://i.imgur.com/DEFpZR7.png" alt=""></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_1\rangle &= \frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert 0\rangle\\
+\vert \psi_2\rangle &= \frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert f(x)\rangle
+\end{align*}</script><p>On measuring second register: uniformly random $f(x)$ collapse the first register into corresponding preimages:</p>
+<script type="math/tex; mode=display">
+\vert \psi_3\rangle = \frac{1}{\sqrt 2}(\vert x\rangle + \vert x+2\rangle)</script><script type="math/tex; mode=display">
+\vert \psi_4\rangle = \frac{1}{\sqrt 2}\frac{1}{\sqrt{2^n}}\sum_{z\in\{0,1\}^n}\left( (-1)^{x\cdot z}+(-1)^{(x\oplus s)\cdot z} \right)\vert z\rangle</script><p>Measurement:</p>
+<ol>
+<li>non-zero amplitude $\Rightarrow$ $x\cdot z=(x\oplus s)\cdot z \Rightarrow s\cdot z=0$</li>
+<li>Will get a “uniformly” random $z$ such that $s\cdot z=0$ (there are $2^{n-1}$ such z)</li>
+<li>Do this $k$ times, get $z_1, z_2, \dots, z_k$.<br>(informal) each $z_i$ gives one bit of information on $s$, need $O(n)$ $z_i$ to solve:<script type="math/tex; mode=display">
+\begin{eqnarray*}
+s\cdot &z_1=0 &~~\Rightarrow~ &s_1z_{11}+s_2z_{12}+\cdots+s_nz_{1n}&=0\\
+s\cdot &z_2=0 &~~\Rightarrow~ &s_1z_{21}+s_2z_{22}+\cdots+s_nz_{2n}&=0\\
+&\vdots\\
+s\cdot &z_k=0 &~~\Rightarrow~ &s_1z_{n1}+s_2z_{n2}+\cdots+s_nz_{kn}&=0
+\end{eqnarray*}</script></li>
+<li>$k$ linear equations on $(s_1,s_2,\dots,s_n)$. $n$ Linearly independent equations $\Rightarrow$ solve $s$</li>
+<li>Good probability to determine $s$ with $k=O(n)$ random equations.</li>
+</ol>
+<p>Birthday paradox: How many people in a room such that the probability of “a pair of people has same birthday” $\sim 50\%$ ?</p>
+<ul>
+<li>$365$ possible birthday $\Rightarrow$ $23$ people suffice.</li>
+<li>Number of pairs $\sim N^2$ $\Rightarrow$ $\sqrt{365}$ to find collision</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Quantum Computing</category>
+      </categories>
+      <tags>
+        <tag>Note</tag>
+        <tag>Quantum Computing</tag>
+        <tag>Quantum Algorithm</tag>
+        <tag>Quantum Circuits</tag>
       </tags>
   </entry>
   <entry>
