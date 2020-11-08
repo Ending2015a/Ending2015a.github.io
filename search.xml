@@ -699,7 +699,38 @@ z\ne0^n, &\text{if $f(x)$ is balanced}
 <p>Please refer to Section 5.4.3 The hidden subgroup problem</p>
 </blockquote>
 <p><strong>Problem</strong>: Given an oracle $f:\{0,1\}^n\to\{0,1\}^n$, promised to satisfy the property that, for some $s\in\{0,1\}^n, s\ne 0^n$ and all $x,y\in\{0, 1\}^n$, $f(x)=f(x\oplus s)$. Find $s$.</p>
-<p>Example: if $n=3$, the following is the function $f(x)$:<br>|$x$|000|001|010|011|100|101|110|111|<br>|-|-|-|-|-|-|-|-|-|<br>|$f(x)$|101|010|000|110|000|110|101|010|<br>The answer is $s=110$.</p>
+<p>Example: if $n=3$, the following is the function $f(x)$:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>$x$</th>
+<th>000</th>
+<th>001</th>
+<th>010</th>
+<th>011</th>
+<th>100</th>
+<th>101</th>
+<th>110</th>
+<th>111</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$f(x)$</td>
+<td>101</td>
+<td>010</td>
+<td>000</td>
+<td>110</td>
+<td>000</td>
+<td>110</td>
+<td>101</td>
+<td>010</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The answer is $s=110$.</p>
 <p>Classical: How many random classical queries needed to find a “collision”? $2^{n-1}$ possible outputs. $\sim\frac{1}{2^{n-1}}$ probability a pair is a collision.</p>
 <ul>
 <li>$O(2^n)$ probabilities $\Rightarrow$ $O(\sqrt{2^n})=O(2^{\frac{n}{2}})$ queries to find a collision with constant probability.</li>
