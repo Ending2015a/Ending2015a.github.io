@@ -745,7 +745,7 @@ z\ne0^n, &\text{if $f(x)$ is balanced}
 \vert \psi_2\rangle &= \frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert f(x)\rangle
 \end{align*}</script><p>On measuring second register: uniformly random $f(x)$ collapse the first register into corresponding preimages:</p>
 <script type="math/tex; mode=display">
-\vert \psi_3\rangle = \frac{1}{\sqrt 2}(\vert x\rangle + \vert x+s\rangle)</script><script type="math/tex; mode=display">
+\vert \psi_3\rangle = \frac{1}{\sqrt 2}(\vert x\rangle + \vert x\oplus s\rangle)</script><script type="math/tex; mode=display">
 \vert \psi_4\rangle = \frac{1}{\sqrt 2}\frac{1}{\sqrt{2^n}}\sum_{z\in\{0,1\}^n}\left( (-1)^{x\cdot z}+(-1)^{(x\oplus s)\cdot z} \right)\vert z\rangle</script><p>Measurement:</p>
 <ol>
 <li>non-zero amplitude $\Rightarrow$ $x\cdot z=(x\oplus s)\cdot z \Rightarrow s\cdot z=0$</li>
