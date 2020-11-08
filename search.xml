@@ -376,9 +376,9 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
       </categories>
       <tags>
         <tag>Note</tag>
-        <tag>Paper Note</tag>
         <tag>Deep Learning</tag>
         <tag>Reinforcement Learning</tag>
+        <tag>Paper Note</tag>
         <tag>Datacenter Management</tag>
         <tag>Traffic Optimization</tag>
       </tags>
@@ -741,7 +741,7 @@ z\ne0^n, &\text{if $f(x)$ is balanced}
 <p><img src="https://i.imgur.com/KuPGt93.png" alt=""></p>
 <script type="math/tex; mode=display">
 \begin{align*}
-\vert \psi_1\rangle &= \frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert 0\rangle\\
+\vert \psi_1\rangle &= \frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert 0\rangle^{\otimes n}\\
 \vert \psi_2\rangle &= \frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert f(x)\rangle
 \end{align*}</script><p>On measuring second register: uniformly random $f(x)$ collapse the first register into corresponding preimages:</p>
 <script type="math/tex; mode=display">
