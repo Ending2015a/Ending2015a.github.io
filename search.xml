@@ -1015,7 +1015,7 @@ A\vert v_j \rangle=\sum_i A_{ij} \vert w_i\rangle</script></li>
 <li>$(\cdot,\cdot)$ is linear in the second argument,<script type="math/tex; mode=display">
 \left(\vert v\rangle, \sum_i\lambda_i\vert w_i\rangle\right)=\sum_i\lambda_i\left(\vert v\rangle, \vert w_i\rangle\right)</script></li>
 <li>$\left(\vert v\rangle, \vert w\rangle\right)=\left(\vert w\rangle, \vert v\rangle\right)^*$</li>
-<li>$\left(\vert v\rangle, \vert w\rangle\right)\ge 0$ with equality if and only if $\vert v\rangle=0$</li>
+<li>$\left(\vert v\rangle, \vert v\rangle\right)\ge 0$ with equality if and only if $\vert v\rangle=0$</li>
 </ol>
 <p>Let $\vert w\rangle=\sum_i w_i\vert i \rangle$ and $\vert v\rangle=\sum_j v_j\vert j \rangle$ be representations of vectprs $\vert w\rangle$ and $\vert v \rangle$ with respect to some orthonormal basis $\vert i\rangle$. Then, since $\langle i\vert j\rangle=\delta_{ij}$,</p>
 <script type="math/tex; mode=display">
