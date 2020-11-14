@@ -142,9 +142,9 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
 <p>待補</p>
 </blockquote>
 <h2 id="3-2-The-analysis-of-computational-problems"><a href="#3-2-The-analysis-of-computational-problems" class="headerlink" title="3.2 The analysis of computational problems"></a>3.2 The analysis of computational problems</h2><h3 id="3-2-1-How-to-quantify-computational-resources"><a href="#3-2-1-How-to-quantify-computational-resources" class="headerlink" title="3.2.1 How to quantify computational resources"></a>3.2.1 How to quantify computational resources</h3><ul>
-<li>$f(n)$ is $O(g(n))~\Rightarrow~\exists~c&gt;0, n_0&gt;0,$$ \text{s.t.} 0<f(n)\le cg(n), \forall n>n_0$</li>
-<li>$f(n)$ is $\Omega(g(n))\quad\Rightarrow\quad\exists~c&gt;0, n_0&gt;0,$$ \text{s.t.} 0<cg(n)\le f(n), \forall n>n_0$</li>
-<li>$f(n)$ is $\Theta(g(n))\quad\Rightarrow\quad\exists~c_1&gt;0, c_2&gt;0, n_0&gt;0,$$ \text{s.t.} 0<c_1g(n)\le f(n)\le c_2g(n), \forall n>n_0$<ul>
+<li>$f(n)$ is $O(g(n))~\Rightarrow~\exists~c&gt;0, n_0&gt;0, ~\text{s.t.}~ 0 &lt; f(n) \le cg(n), \forall n&gt;n_0$</li>
+<li>$f(n)$ is $\Omega(g(n))~\Rightarrow~\exists~c&gt;0, n_0&gt;0, ~\text{s.t.}~ 0 &lt; cg(n)\le f(n), \forall n&gt;n_0$</li>
+<li>$f(n)$ is $\Theta(g(n))~\Rightarrow~\exists~c_1&gt;0, c_2&gt;0, n_0&gt;0, ~\text{s.t.}~ 0 &lt; c_1g(n)\le f(n)\le c_2g(n), \forall n&gt;n_0$<ul>
 <li>$f(n)$ is both $O(g(n))$ and $\Omega(g(n))$</li>
 </ul>
 </li>
@@ -376,9 +376,9 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
       </categories>
       <tags>
         <tag>Note</tag>
-        <tag>Paper Note</tag>
         <tag>Deep Learning</tag>
         <tag>Reinforcement Learning</tag>
+        <tag>Paper Note</tag>
         <tag>Datacenter Management</tag>
         <tag>Traffic Optimization</tag>
       </tags>
