@@ -600,10 +600,10 @@ U_f \vert x\rangle \otimes \vert -\rangle &= \vert x\rangle\otimes \frac{1}{\sqr
             \vert -\rangle, &\text{if }f(0)\ne f(1)~
         \end{cases} \right)\otimes \vert -\rangle\\
         ~\\
-\vert \psi_3\rangle &= (-1)^{f(0)}\begin{cases}
+\vert \psi_3\rangle &= (-1)^{f(0)}\left( \begin{cases}
             \vert 0\rangle, &\text{if }f(0)=f(1)~\\
             \vert 1\rangle, &\text{if }f(0)\ne f(1)~
-        \end{cases}\left(\right)\otimes \vert -\rangle
+        \end{cases}\right)\otimes \vert -\rangle
 \end{align*}</script><p>Measurement:</p>
 <script type="math/tex; mode=display">
 \begin{cases}
