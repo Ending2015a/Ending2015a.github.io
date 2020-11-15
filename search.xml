@@ -664,7 +664,8 @@ H^{\otimes n}\vert x_1x_2\dots x_n\rangle
 \text{amp}=1 & \text{if $f(x)$ is constant, $f(x)=0, \forall x$}\\
 \text{amp}=-1 & \text{if $f(x)$ is constant, $f(x)=1, \forall x$}\\
 \text{amp}=0 & \text{if $f(x)$ is balanced, # of $f(x)=0$ equals to # of $f(x)=1$}
-\end{cases}</script><p>$\vert\text{amp}\vert^2=\text{Probability}$<br>Measurement:</p>
+\end{cases}</script><p>$\vert\text{amp}\vert^2=\text{Probability}$</p>
+<p>Measurement:</p>
 <script type="math/tex; mode=display">
 \begin{cases}
 z=0^n, &\text{if $f(x)$ is constant}\\
