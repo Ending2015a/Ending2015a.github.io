@@ -573,7 +573,8 @@ C^n(U)\vert x_1x_2\dots x_n\rangle\vert \psi\rangle=\vert x_1x_2\dots x_n\rangle
 <p>Please refer to Section 1.4.3 Deutsch’s algorithm</p>
 </blockquote>
 <p><strong>Problem</strong>: Compute $f(0)+f(1)$ for some $f:\{0, 1\}\to\{0, 1\}$ (with $f$ given as a blackbox)</p>
-<p>Classical: need two quries, find $f(0)$ and $f(1)$, then compute $f(0)+f(1)$<br>Quantum: Only one query:</p>
+<p>Classical: need two quries, find $f(0)$ and $f(1)$, then compute $f(0)+f(1)$</p>
+<p>Quantum: Only one query:</p>
 <p><img src="https://i.imgur.com/DLBZoOn.png" alt=""></p>
 <script type="math/tex; mode=display">
 \begin{align*}
