@@ -664,7 +664,7 @@ H^{\otimes n}\vert x_1x_2\dots x_n\rangle
 \begin{cases}
 \text{amp}=1 & \text{if $f(x)$ is constant, $f(x)=0, \forall x$}\\
 \text{amp}=-1 & \text{if $f(x)$ is constant, $f(x)=1, \forall x$}\\
-\text{amp}=0 & \text{if $f(x)$ is balanced, # of $f(x)=0$ equals to # of $f(x)=1$}
+\text{amp}=0 & \text{if $f(x)$ is balanced, $\Big\vert \{x\vert f(x)=0, \forall x\}\Big\vert=\Big\vert \{x\vert f(x)=1, \forall x\}\Big\vert$}
 \end{cases}</script><p>$\vert\text{amp}\vert^2=\text{Probability}$</p>
 <p>Measurement:</p>
 <script type="math/tex; mode=display">
