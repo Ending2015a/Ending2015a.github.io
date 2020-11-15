@@ -674,7 +674,7 @@ z\ne0^n, &\text{if $f(x)$ is balanced}
 \end{cases}</script><h3 id="Bernstain－Vazirani-algorithm"><a href="#Bernstain－Vazirani-algorithm" class="headerlink" title="Bernstain－Vazirani algorithm"></a>Bernstain－Vazirani algorithm</h3><blockquote>
 <p>Not on book</p>
 </blockquote>
-<p><strong>Problem</strong>: Given an oracle that implements a function $f:\{0,1\}^n\to\{0,1\}$ in which $f(x)$ is promised to be the dot product between $x$ and a secret string $s\in\{0,1\}^n$ module $2$, $f(x)=x\cdot s=x_1\cdot s_1+x_2\cdot s_2+\cdots +x_n\cdot s_n\mod 2$, find $s$</p>
+<p><strong>Problem</strong>: Given an oracle that implements a function $f:\{0,1\}^n\to\{0,1\}$ in which $f(x)$ is promised to be the dot product between $x$ and a secret string $s\in\{0,1\}^n$ module $2$, $f(x)=x\cdot s=x_1\cdot s_1+x_2\cdot s_2+\cdots +x_n\cdot s_n\mod 2$, find $s$.</p>
 <p>Classical: need $n$ queries: $s=s_1s_2\dots s_n$</p>
 <ul>
 <li>Get $s_1$ by query $x=100\dots0$</li>
