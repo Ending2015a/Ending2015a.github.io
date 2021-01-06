@@ -37,7 +37,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/gA4WWCP.png">
 <meta property="article:published_time" content="2021-01-06T09:26:32.000Z">
-<meta property="article:modified_time" content="2021-01-06T09:32:58.737Z">
+<meta property="article:modified_time" content="2021-01-06T11:18:10.879Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="Note">
 <meta property="article:tag" content="Quantum Computing">
@@ -241,7 +241,7 @@
               <span class="post-meta-item-text">發表於</span>
               
 
-              <time title="創建時間：2021-01-06 17:26:32 / 修改時間：17:32:58" itemprop="dateCreated datePublished" datetime="2021-01-06T17:26:32+08:00">2021-01-06</time>
+              <time title="創建時間：2021-01-06 17:26:32 / 修改時間：19:18:10" itemprop="dateCreated datePublished" datetime="2021-01-06T17:26:32+08:00">2021-01-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -310,7 +310,7 @@
             <p>Let $\vert \psi\rangle = \frac{1}{\sqrt2}(\vert 0\rangle\otimes\vert 0\rangle+\vert 1\rangle\otimes\vert 1\rangle)$</p><p>(a) Calculate $\langle \psi\vert Z\otimes (X+Z)/\sqrt2\vert \psi\rangle$</p><p>(b) What are the eigenvalues of $(X+Z)/\sqrt2$ and $Z\otimes (X+Z)/\sqrt2$?</p><p>(c) Suppose Alice is holding the first part of $\vert \psi\rangle$ and Bob is holding the second part. If Alice measures $Z$ on her part and Bob measures $(X+Z)/\sqrt2$,what is the probabilities that their measurements have the same outcome?</p>
           </div>
 <div class="note success">
-            <p>(a)<br>Because $(X+Z)/\sqrt2 = H$</p><script type="math/tex; mode=display">\begin{align*}\langle \psi\vert Z\otimes H\vert \psi\rangle = \langle \psi\vert \left( \frac{1}{\sqrt2}(\vert 0\rangle \otimes \vert +\rangle -\vert 1\rangle \otimes \vert -\rangle)\right) = \frac{1}{2}(\frac{1}{\sqrt2}+\frac{1}{\sqrt2})=\frac{1}{\sqrt2}\end{align*}</script><p>(b)</p><ul><li>$(X+Z)/\sqrt2=H \Rightarrow \lambda=\pm 1$</li><li>$Z\otimes H \Rightarrow \lambda=\pm 1$</li></ul><p>(c)<br>Outcome table ($\lambda$)<br>|$Z\otimes I$ | $I\otimes (X+Z)/\sqrt2$ | $Z\otimes (X+Z)/\sqrt2$|<br>|-|-|-|<br>|$+1$|$+1$|$+1$|<br>|$+1$|$-1$|$-1$|<br>|$-1$|$+1$|$-1$|<br>|$-1$|$-1$|$+1$|</p><p>Let $Pr(+)$ and $Pr(-)$ denotes Alice and Bob get the same outcome and different outcomes.</p><script type="math/tex; mode=display">\begin{align*}\begin{cases}    Pr(+)+Pr(-)=1\\    \langle Z\otimes (X+Z)/\sqrt2\rangle = Pr(+)(+1)+Pr(-)(-1)= \displaystyle\frac{1}{\sqrt2}\end{cases}\end{align*}</script><p>$\Rightarrow Pr(+)=\displaystyle\frac{1}{2}(1+\frac{1}{\sqrt2})$</p>
+            <p>(a)<br>Because $(X+Z)/\sqrt2 = H$</p><script type="math/tex; mode=display">\begin{align*}\langle \psi\vert Z\otimes H\vert \psi\rangle = \langle \psi\vert \left( \frac{1}{\sqrt2}(\vert 0\rangle \otimes \vert +\rangle -\vert 1\rangle \otimes \vert -\rangle)\right) = \frac{1}{2}(\frac{1}{\sqrt2}+\frac{1}{\sqrt2})=\frac{1}{\sqrt2}\end{align*}</script><p>(b)</p><ul><li>$(X+Z)/\sqrt2=H \Rightarrow \lambda=\pm 1$</li><li>$Z\otimes H \Rightarrow \lambda=\pm 1$</li></ul><p>(c)<br>Outcome table ($\lambda$)</p><div class="table-container"><table><thead><tr><th>$Z\otimes I$</th><th>$I\otimes (X+Z)/\sqrt2$</th><th>$Z\otimes (X+Z)/\sqrt2$</th></tr></thead><tbody><tr><td>$+1$</td><td>$+1$</td><td>$+1$</td></tr><tr><td>$+1$</td><td>$-1$</td><td>$-1$</td></tr><tr><td>$-1$</td><td>$+1$</td><td>$-1$</td></tr><tr><td>$-1$</td><td>$-1$</td><td>$+1$</td></tr></tbody></table></div><p>Let $Pr(+)$ and $Pr(-)$ denotes Alice and Bob get the same outcome and different outcomes.</p><script type="math/tex; mode=display">\begin{align*}\begin{cases}    Pr(+)+Pr(-)=1\\    \langle Z\otimes (X+Z)/\sqrt2\rangle = Pr(+)(+1)+Pr(-)(-1)= \displaystyle\frac{1}{\sqrt2}\end{cases}\end{align*}</script><p>$\Rightarrow Pr(+)=\displaystyle\frac{1}{2}(1+\frac{1}{\sqrt2})$</p>
           </div>
 <h2 id="Problem-4"><a href="#Problem-4" class="headerlink" title="Problem 4"></a>Problem 4</h2><div class="note info">
             <p>Recall that the Bell basis consist of the following states on two qubits:</p><script type="math/tex; mode=display">\begin{eqnarray}\vert \beta_{00}\rangle=\frac{1}{\sqrt2}(\vert 00\rangle+\vert 11\rangle) \quad& \vert \beta_{01}\rangle=\frac{1}{\sqrt2}(\vert 00\rangle-\vert 11\rangle)\\\vert \beta_{10}\rangle=\frac{1}{\sqrt2}(\vert 10\rangle+\vert 01\rangle) \quad& \vert \beta_{11}\rangle=\frac{1}{\sqrt2}(\vert 10\rangle-\vert 01\rangle)\end{eqnarray}</script><p>Consider the quantum state $\vert +\rangle \otimes \vert \beta_{00}\rangle$ on three qubits. Suppose Alice is holding the first two qubits of $\vert +\rangle\otimes \vert \beta_{00}\rangle$ and Bob is holding the third. If Alice measures her two qubits in the Bell basis, what are the probabilities of each measurement outcome and Bob’s post-measurement state corresponding to each measurement outcome?</p>
