@@ -37,7 +37,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/gA4WWCP.png">
 <meta property="article:published_time" content="2021-01-06T09:26:32.000Z">
-<meta property="article:modified_time" content="2021-01-06T11:18:10.879Z">
+<meta property="article:modified_time" content="2021-01-06T11:48:02.602Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="Note">
 <meta property="article:tag" content="Quantum Computing">
@@ -241,7 +241,7 @@
               <span class="post-meta-item-text">發表於</span>
               
 
-              <time title="創建時間：2021-01-06 17:26:32 / 修改時間：19:18:10" itemprop="dateCreated datePublished" datetime="2021-01-06T17:26:32+08:00">2021-01-06</time>
+              <time title="創建時間：2021-01-06 17:26:32 / 修改時間：19:48:02" itemprop="dateCreated datePublished" datetime="2021-01-06T17:26:32+08:00">2021-01-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,14 +266,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">文章字數：</span>
-              <span>11k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="所需閱讀時間">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>28 分鐘</span>
+              <span>29 分鐘</span>
             </span>
 
         </div>
@@ -328,13 +328,13 @@
             <p>Consider the following ensemble:</p><script type="math/tex; mode=display">p_1=2/3, \vert \psi_1\rangle=\vert +\rangle, p_2=1/3, \vert \psi_2\rangle=\vert 0\rangle</script><p>Calculate the following quantities.</p><p>(a) The corresponding density matrix $\rho$.</p><p>(b) The expectation value of $Z$ against $\rho$.</p><p>(c) The outcome probabilities and post measurement states of computational basis measurement.</p><p>(d) The evolved state $\rho’$ obtained after applying $H$ to $\rho$.</p>
           </div>
 <div class="note success">
-            <p>(a)</p><script type="math/tex; mode=display">\rho=p_1\vert \psi_1\rangle\langle\psi_1\vert + p_2\vert \psi_2\rangle\langle \psi_2\vert = \left(\begin{matrix}2/3 & 1/3\\1/3&1/3\end{matrix}\right)</script><p>(b)</p><script type="math/tex; mode=display">\langle Z\rangle = \sum_ip_i\langle \psi_i\vert Z\vert\psi_i\rangle=\text{tr}(\sum_i p_i\vert\psi_i\rangle\langle \psi_i\vert Z)=\text{tr}(\rho Z)=1/3</script><p>(c)</p><script type="math/tex; mode=display">\vert \psi\rangle = \displaystyle\sqrt{\frac{2}{3}}\vert +\rangle + \sqrt{\frac{1}{3}}\vert 0\rangle=\frac{2}{\sqrt{3}}\vert 0\rangle + \frac{1}{\sqrt3}\vert 1\rangle</script><script type="math/tex; mode=display">\begin{cases}    Pr(0) = 2/3 &\Rightarrow \rho_0=\vert 0\rangle\langle 0\vert \\    Pr(1) = 1/3 &\Rightarrow \rho_1=\vert 1\rangle\langle 1\vert\\\end{cases}</script><p>(d)</p><script type="math/tex; mode=display">\rho'=H\rho H^\dagger = \frac{1}{6}\left(\begin{matrix}5&1\\1&1\end{matrix}\right)</script>
+            <p>(a)</p><script type="math/tex; mode=display">\rho=p_1\vert \psi_1\rangle\langle\psi_1\vert + p_2\vert \psi_2\rangle\langle \psi_2\vert = \left(\begin{matrix}2/3 & 1/3\\1/3&1/3\end{matrix}\right)</script><p>(b)</p><script type="math/tex; mode=display">\langle Z\rangle = \sum_ip_i\langle \psi_i\vert Z\vert\psi_i\rangle=\text{tr}(\sum_i p_i\vert\psi_i\rangle\langle \psi_i\vert Z)=\text{tr}(\rho Z)=1/3</script><p>(c)</p><script type="math/tex; mode=display">\begin{cases}    Pr(0) = \text{tr}(M_0^\dagger M_0\rho)= 2/3 &\Rightarrow \rho_0= M_0\rho M_0^\dagger/Pr(0) = \vert 0\rangle\langle 0\vert \\    Pr(1) = \text{tr}(M_1^\dagger M_1\rho)=1/3 &\Rightarrow \rho_1= M_1\rho M_1^\dagger/Pr(1) = \vert 1\rangle\langle 1\vert\\\end{cases}</script><p>(d)</p><script type="math/tex; mode=display">\rho'=H\rho H^\dagger = \frac{1}{6}\left(\begin{matrix}5&1\\1&1\end{matrix}\right)</script>
           </div>
 <h2 id="Problem-7"><a href="#Problem-7" class="headerlink" title="Problem 7"></a>Problem 7</h2><div class="note info">
             <p>Calculate a purification of</p><script type="math/tex; mode=display">\rho=\left(\begin{matrix}1/2&1/4\\1/4&1/2\end{matrix}\right)</script>
           </div>
 <div class="note success">
-            <p>The eigenvalue and eignevector of $\rho$</p><script type="math/tex; mode=display">\det(\rho-\lambda I)=0 ~\Rightarrow~ \lambda^2-\lambda+\frac{3}{16} = 0</script><script type="math/tex; mode=display">\Rightarrow\begin{cases}    \lambda_1 = 3/4 &\Rightarrow\vert \lambda_1\rangle = \vert +\rangle\\    \lambda_2 = 1/4 &\Rightarrow\vert \lambda_2\rangle = \vert -\rangle\end{cases}</script><p>The ensemble of $\rho$ is:</p><script type="math/tex; mode=display">\rho=\frac{3}{4}\vert +\rangle\langle+\vert+\frac{1}{4}\vert -\rangle\langle-\vert</script><p>Then, the purification is </p><script type="math/tex; mode=display">\vert \psi\rangle = \frac{\sqrt3}{2}\vert+\rangle\vert0\rangle+\frac{1}{2}\vert-\rangle\vert1\rangle</script>
+            <p>The eigenvalue and eignevector of $\rho$</p><script type="math/tex; mode=display">\det(\rho-\lambda I)=0 ~\Rightarrow~ \lambda^2-\lambda+\frac{3}{16} = 0</script><script type="math/tex; mode=display">\Rightarrow\begin{cases}    \lambda_1 = 3/4 &\Rightarrow\vert \lambda_1\rangle = \vert +\rangle\\    \lambda_2 = 1/4 &\Rightarrow\vert \lambda_2\rangle = \vert -\rangle\end{cases}</script><p>The ensemble of $\rho$ is:</p><script type="math/tex; mode=display">\rho=\frac{3}{4}\vert +\rangle\langle+\vert+\frac{1}{4}\vert -\rangle\langle-\vert</script><p>Then, the purification is </p><script type="math/tex; mode=display">\vert \psi\rangle = \frac{\sqrt3}{2}\vert+\rangle\vert0\rangle+\frac{1}{2}\vert-\rangle\vert1\rangle</script><p>Verify:</p><script type="math/tex; mode=display">\begin{align*}\text{tr}_R(\vert \psi\rangle\langle\psi\vert) &= \frac{3}{4}\vert +\rangle\langle+\vert\langle0\vert0\rangle + \frac{1}{4}\vert -\rangle\langle-\vert\langle1\vert1\rangle\\&= \frac{3}{4}\vert +\rangle\langle+\vert+\frac{1}{4}\vert -\rangle\langle-\vert\\&= \rho_A\end{align*}</script><p>Hence, $\vert \psi\rangle$ is a purification of $\rho$.</p>
           </div>
 <h2 id="Problem-8"><a href="#Problem-8" class="headerlink" title="Problem 8"></a>Problem 8</h2><div class="note info">
             <p>Let $\vert \psi\rangle=\frac{1}{\sqrt2}(\vert0\rangle\vert+\rangle+\vert1\rangle\vert-\rangle)$ be a quantum state on two systems $A$ and $B$. Calculate the reduced density matrix of $\vert \psi\rangle$ on system $A$.</p>
@@ -346,13 +346,13 @@
             <p>Find $k$ such that $n^3+2n^2+\log(n)$ is $\Theta(n^k)$.</p>
           </div>
 <div class="note success">
-            <p>Suppose $\exists~c_1, c_2$ such that $c_1 n^k\le n^3+2n^2+\log(n)\le c_2n^k,~\forall~n\ge n_0$.<br>Assume $k=3$, let</p><script type="math/tex; mode=display">\begin{cases}    f(n)=n^3+2n^2+\log(n)-c_1 n^3\ge 0\\    f'(n)=3n^2+4n+\frac{1}{n}-3c_1n^2 \ge 0\\\end{cases}</script><p>The two inequality hold for $c_1=1$, $n_0=1$. Let</p><script type="math/tex; mode=display">\begin{cases}    g(n)=n^3+2n^2+\log(n)-c_2 n^3\le 0\\    g'(n)=3n^2+4n+\frac{1}{n}-3c_2n^2 \le 0\\\end{cases}</script><p>The two inequality hold for $c_2=3$, $n_0=1$. Hence, if $k=3$, $n^3+2n^2+\log(n) = \Theta(n^k)$.</p>
+            <p>Suppose $\exists~c_1, c_2$ such that $c_1 n^k\le n^3+2n^2+\log(n)\le c_2n^k,~\forall~n\ge n_0$.<br>Assume $k=3$, let</p><script type="math/tex; mode=display">\begin{cases}    f(n)=n^3+2n^2+\log(n)-c_1 n^3\ge 0\\    f'(n)=3n^2+4n+\frac{1}{n}-3c_1n^2 \ge 0\\\end{cases}</script><p>The two inequality hold for $c_1=1$, $n_0=1$. Let</p><script type="math/tex; mode=display">\begin{cases}    g(n)=n^3+2n^2+\log(n)-c_2 n^3\le 0\\    g'(n)=3n^2+4n+\frac{1}{n}-3c_2n^2 \le 0\\\end{cases}</script><p>The two inequality hold for $c_2=3$, $n_0=1$. </p><p>Hence, $n^3+2n^2+\log(n) = \Theta(n^k)$ if $k=3$.</p>
           </div>
 <h2 id="Problem-10"><a href="#Problem-10" class="headerlink" title="Problem 10"></a>Problem 10</h2><div class="note info">
             <p>In Simon’s problem, we are given an oracle function $f:\{0,1\}^n\to\{0,1\}^n$ promised that $f(x)=f(y)$ if and only if $x=y\oplus s$ for some $s\ne0^n$. The problem is finding $s$. The Simon’s algorithm generate strings $z_1,z_2,\dots,z_k$ by running the following sub-algorithm.</p><ol><li>Create uniform superposition in the first register, prepare $\vert0\rangle^n$ in the second register.</li><li>apply the oracle</li><li>measure the second register</li><li>apply Hadamard gates on the first register</li><li>measure the first register and output as $z_i$</li></ol><p>Suppose we are running Simon’s algorithm with $n=3$ and $s=110$. Write down all possible output strings $z_i$.</p>
           </div>
 <div class="note success">
-            <ol><li>Apply $H^{\otimes n}$ on the first register:<script type="math/tex; mode=display">H^{\otimes n} \vert0\rangle^{\otimes n} \otimes \vert 0\rangle^{\otimes n} = \frac{1}{2^{n/2}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert 0\rangle^{\otimes n}</script></li><li>Apply oracle:<script type="math/tex; mode=display">O_f \frac{1}{2^{n/2}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert 0\rangle^{\otimes n} = \frac{1}{2^{n/2}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert f(x)\rangle</script></li><li>Measure the second register:<script type="math/tex; mode=display">\frac{1}{\sqrt2}\left(\vert x\rangle + \vert x\oplus s\rangle\right)</script></li><li>Apply $H^{\otimes n}$ on the first register:<script type="math/tex; mode=display">\frac{1}{\sqrt2}\frac{1}{2^{n/2}}\sum_{z\in\{0, 1\}^n}\left((-1)^{x\cdot z} + (-1)^{(x\oplus s) \cdot z}\right)\vert z\rangle</script></li><li>Measure the first register. Only the states with $(-1)^{x\cdot z} + (-1)^{(x\oplus s) \cdot z} \ne 0$ can be measured. Suppose $n=3$, $s=110$:</li></ol><div class="table-container"><table><thead><tr><th>$x$</th><th>$x\oplus s$</th><th>Possible $z$</th></tr></thead><tbody><tr><td>$000$</td><td>$110$</td><td>$000, 001, 110, 111$</td></tr><tr><td>$001$</td><td>$111$</td><td>$000, 001, 110, 111$</td></tr><tr><td>$010$</td><td>$100$</td><td>$000, 001, 110, 111$</td></tr><tr><td>$011$</td><td>$101$</td><td>$000, 001, 110, 111$</td></tr></tbody></table></div><p>Since $(-1)^{(x\oplus s)\cdot z} = (-1)^{x\cdot z+s\cdot z}$, $z$ must satisfy $s\cdot z ~(\text{mod}~2)=0$. Hence, the possible $z=000, 001, 110, 111$</p>
+            <ol><li>Apply $H^{\otimes n}$ on the first register:<script type="math/tex; mode=display">H^{\otimes n} \vert0\rangle^{\otimes n} \otimes \vert 0\rangle^{\otimes n} = \frac{1}{2^{n/2}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert 0\rangle^{\otimes n}</script></li><li>Apply oracle:<script type="math/tex; mode=display">O_f \frac{1}{2^{n/2}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert 0\rangle^{\otimes n} = \frac{1}{2^{n/2}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert f(x)\rangle</script></li><li>Measure the second register:<script type="math/tex; mode=display">\frac{1}{\sqrt2}\left(\vert x\rangle + \vert x\oplus s\rangle\right)</script></li><li>Apply $H^{\otimes n}$ on the first register:<script type="math/tex; mode=display">\frac{1}{\sqrt2}\frac{1}{2^{n/2}}\sum_{z\in\{0, 1\}^n}\left((-1)^{x\cdot z} + (-1)^{(x\oplus s) \cdot z}\right)\vert z\rangle</script></li><li>Measure the first register. Only the states with $(-1)^{x\cdot z} + (-1)^{(x\oplus s) \cdot z} \ne 0$ can be measured. Suppose $n=3$, $s=110$:</li></ol><div class="table-container"><table><thead><tr><th>$x$</th><th>$x\oplus s$</th><th>Possible $z$</th></tr></thead><tbody><tr><td>$000$</td><td>$110$</td><td>$000, 001, 110, 111$</td></tr><tr><td>$001$</td><td>$111$</td><td>$000, 001, 110, 111$</td></tr><tr><td>$010$</td><td>$100$</td><td>$000, 001, 110, 111$</td></tr><tr><td>$011$</td><td>$101$</td><td>$000, 001, 110, 111$</td></tr></tbody></table></div><p>Since $(-1)^{(x\oplus s)\cdot z} = (-1)^{x\cdot z+s\cdot z}$, $z$ must satisfy $s\cdot z ~(\text{mod}~2)=0$. </p><p>The possible $z=000, 001, 110, 111$.</p>
           </div>
 <h2 id="Problem-11"><a href="#Problem-11" class="headerlink" title="Problem 11"></a>Problem 11</h2><div class="note info">
             <p>Calculate the eigenvalues of $aX+bY+cZ$, where $X,Y,Z$ are the Pauli matrices and $a,b,c$ are real nubmers.</p>
@@ -582,7 +582,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="所需總閱讀時間">5:25</span>
+    <span title="所需總閱讀時間">5:26</span>
 </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
 
 
