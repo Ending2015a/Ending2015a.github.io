@@ -45,13 +45,17 @@
 <meta property="og:image" content="https://i.imgur.com/4aU6v9S.png">
 <meta property="og:image" content="https://i.imgur.com/5lqZXsq.png">
 <meta property="og:image" content="https://i.imgur.com/UnxIZxq.png">
+<meta property="og:image" content="https://i.imgur.com/fJruwPW.png">
+<meta property="og:image" content="https://i.imgur.com/GG60pDC.png">
+<meta property="og:image" content="https://i.imgur.com/fwOGrrK.png">
+<meta property="og:image" content="https://i.imgur.com/9OIt2Sw.png">
 <meta property="og:image" content="https://i.imgur.com/aV2BnxT.png">
 <meta property="og:image" content="https://i.imgur.com/DLBZoOn.png">
 <meta property="og:image" content="https://i.imgur.com/VXXcUdM.png">
 <meta property="og:image" content="https://i.imgur.com/6ple5iU.png">
 <meta property="og:image" content="https://i.imgur.com/KuPGt93.png">
 <meta property="article:published_time" content="2020-11-08T07:39:32.000Z">
-<meta property="article:modified_time" content="2020-11-15T09:10:23.220Z">
+<meta property="article:modified_time" content="2021-01-07T02:54:05.667Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="Note">
 <meta property="article:tag" content="Quantum Computing">
@@ -261,7 +265,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-11-15 17:10:23" itemprop="dateModified" datetime="2020-11-15T17:10:23+08:00">2020-11-15</time>
+                <time title="修改時間：2021-01-07 10:54:05" itemprop="dateModified" datetime="2021-01-07T10:54:05+08:00">2021-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -286,14 +290,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">文章字數：</span>
-              <span>18k</span>
+              <span>26k</span>
             </span>
             <span class="post-meta-item" title="所需閱讀時間">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>44 分鐘</span>
+              <span>1:05</span>
             </span>
 
         </div>
@@ -463,10 +467,122 @@ I & 0\\
 <p>Conditioning multiple qubits: Suppose we have $n+k$ qubits, and $U$ is a $k$ qubit unitary operator. Then we define the controlled operation $C^n(U)$ by the eqution</p>
 <script type="math/tex; mode=display">
 C^n(U)\vert x_1x_2\dots x_n\rangle\vert \psi\rangle=\vert x_1x_2\dots x_n\rangle U^{x_1x_2\dots x_n}\vert\psi\rangle</script><p><img src="https://i.imgur.com/UnxIZxq.png" alt=""></p>
-<h2 id="4-4-Measurement"><a href="#4-4-Measurement" class="headerlink" title="4.4 Measurement"></a>4.4 Measurement</h2><blockquote>
-<p>待補</p>
-</blockquote>
-<h2 id="4-5-Universal-quantum-gates"><a href="#4-5-Universal-quantum-gates" class="headerlink" title="4.5 Universal quantum gates"></a>4.5 Universal quantum gates</h2><blockquote>
+<h2 id="4-4-Measurement"><a href="#4-4-Measurement" class="headerlink" title="4.4 Measurement"></a>4.4 Measurement</h2><ul>
+<li>Projective measurement in the computational basis<ul>
+<li>Any measurement can be constructed from adding ancilla qubits, performing a unitary, and followed by computational basis measurement.</li>
+</ul>
+</li>
+</ul>
+<div class="note success">
+            <p><strong>Principle 1: Principle of deferred measurement</strong><br>We can assume all measurements happens at the end of the circuit because you can always move a measurements in the middle of the circuit to the end, and replace classical controls of the measurement outcome with quantum control:<br><img src="https://i.imgur.com/fJruwPW.png" alt=""></p>
+          </div>
+<div class="note success">
+            <p><strong>Principle 2: Principle of implicit measurement</strong><br>We can assume that every quantum wire is measured in the end, because measuring “leftover” wires does not change thet reduced density matrix of the wires that give result.<br><img src="https://i.imgur.com/GG60pDC.png" alt=""></p>
+          </div>
+<div class="note info">
+            <p><em>Exercise 4.33</em>: (<strong>Measurement in the Bell basis</strong>) Show that<br><img src="https://i.imgur.com/fwOGrrK.png" width="200px"><br>Performs a measurement in the bell basis.</p><script type="math/tex; mode=display">\begin{align*}(H\otimes I)CNOT &= (H\otimes I)(\vert 0\rangle\langle 0\vert \otimes I + \vert 1\rangle\langle 1 \vert\otimes X)\\    &= (\vert +\rangle\langle 0\vert \otimes I + \vert -\rangle\langle 1\vert X)\\    &= \frac{1}{\sqrt2}(\vert 0\rangle\langle 0\vert\otimes I + \vert 1\rangle\langle 0\vert\otimes I + \vert 0\rangle\langle 1\vert\otimes X - \vert 1\rangle\langle 1\vert\otimes X)\\    &= \frac{1}{\sqrt2}(\vert00\rangle(\langle00\vert+\langle11\vert)+\vert10\rangle(\langle00\vert-\langle11\vert)\\    &    \quad\quad\quad\quad+\vert01\rangle(\langle01\vert+\langle10\vert)+\vert11\rangle(\langle01\vert-\langle10\vert))\end{align*}</script><p>Projective measurements:</p><script type="math/tex; mode=display">\begin{align*}\vert 00\rangle\langle00\vert &\Rightarrow ((H\otimes I)CNOT)^\dagger \vert 00\rangle\langle00\vert (H\otimes I)CNOT \\    &= \frac{1}{2}(\vert00\rangle + \vert11\rangle)(\langle00\vert+\langle11\vert)\\    &= \vert\beta_{00}\rangle\langle\beta_{00}\vert\end{align*}</script><script type="math/tex; mode=display">\begin{align*}\vert 01\rangle\langle01\vert &\Rightarrow ((H\otimes I)CNOT)^\dagger \vert 01\rangle\langle01\vert (H\otimes I)CNOT \\    &= \frac{1}{2}(\vert01\rangle + \vert10\rangle)(\langle01\vert+\langle10\vert)\\    &= \vert\beta_{10}\rangle\langle\beta_{10}\vert\end{align*}</script><script type="math/tex; mode=display">\begin{align*}\vert 10\rangle\langle10\vert &\Rightarrow ((H\otimes I)CNOT)^\dagger \vert 10\rangle\langle10\vert (H\otimes I)CNOT \\    &= \frac{1}{2}(\vert00\rangle - \vert11\rangle)(\langle00\vert-\langle11\vert)\\    &= \vert\beta_{01}\rangle\langle\beta_{01}\vert\end{align*}</script><script type="math/tex; mode=display">\begin{align*}\vert 11\rangle\langle11\vert &\Rightarrow ((H\otimes I)CNOT)^\dagger \vert 11\rangle\langle11\vert (H\otimes I)CNOT \\    &= \frac{1}{2}(\vert01\rangle - \vert10\rangle)(\langle01\vert-\langle10\vert)\\    &= \vert\beta_{11}\rangle\langle\beta_{11}\vert\end{align*}</script>
+          </div>
+<h2 id="4-5-Universal-quantum-gates"><a href="#4-5-Universal-quantum-gates" class="headerlink" title="4.5 Universal quantum gates"></a>4.5 Universal quantum gates</h2><p>A set of gates is said to be <em>universal for quantum computation</em> if any unitary operation may be <strong>approximated</strong> to <strong>arbitary accuracy</strong> by a quantum circuit involving only those gates.</p>
+<p>Three step constructions:</p>
+<ol>
+<li>(exact) $\{\text{2-level unitaries}\}$ universal: an arbitrary unitary may be expressed as a product of unitary operators that each acts non-trivially only on a subspace spanned by two computational basis states.</li>
+<li>(exact) $\{\text{all single qubit } U, CNOT\}$ universal: an arbitrary unitary from the first step may be expressed using single qubit and <code>CNOT</code> gates.</li>
+<li>(approx) $\{H, T, CNOT\}$: single qubit operation from the second step may be approximated to arbitray accuracy using the Hadamard, phase, and $\pi/8$ gates ($T$). This implies that any unitary operation can be approximated to arbitrary accuracy using Hadamard, phase, <code>CNOT</code>, and $\pi/8$ gates.</li>
+</ol>
+<h3 id="4-5-1-Two-level-unitary-gates-are-universal"><a href="#4-5-1-Two-level-unitary-gates-are-universal" class="headerlink" title="4.5.1 Two-level unitary gates are universal"></a>4.5.1 Two-level unitary gates are universal</h3><ul>
+<li>Two-level unitary: unitary that only acts non-trivially on two computational basis.<script type="math/tex; mode=display">
+\left[\begin{matrix}
+\begin{matrix} a & c \\ b & d \end{matrix} & 0\\
+0 & I
+\end{matrix}\right]
+\quad ~\text{ or}~ \quad
+\left[\begin{matrix}
+\ddots&&&&0\\
+&a&&c&\\
+&&\ddots&&\\
+&b&&d&\\
+0&&&&\ddots
+\end{matrix}\right]</script></li>
+</ul>
+<div class="note success">
+            <p>Any unitary $U$ can be decomposed into two-level unitaries</p><p><em>Example</em>: $U\in C^{3\times 3}$, $U=\left[\begin{matrix} a &amp; d &amp; g\\ b &amp; e &amp; h\\ c &amp; f &amp; j\end{matrix}\right]$, find two-level unitaries $U_1, U_2, U_3$ s.t. $U_3U_2U_1U=I\Rightarrow U=U_1^\dagger U_2^\dagger U_3^\dagger$.</p><p>Find $U_1$: </p><ul><li>If $b=0$, $U_1=I$, </li><li>If $b\ne0$, $U_1=\left[\begin{matrix}\frac{a^*}{\sqrt{\vert a\vert^2+\vert b\vert^2}} &amp; \frac{b^*}{\sqrt{\vert a\vert^2+\vert b\vert^2}} &amp; 0\\\frac{b}{\sqrt{\vert a\vert^2+\vert b\vert^2}} &amp; \frac{-a}{\sqrt{\vert a\vert^2+\vert b\vert^2}} &amp; 0\\0&amp;0&amp;I\end{matrix}\right]$</li></ul><p>$\Rightarrow U_1U=\left[\begin{matrix}a’&amp;d’&amp;g’\\0&amp;e’&amp;h’\\c’&amp;f’&amp;j’\end{matrix}\right]$</p><p>Find $U_2$:</p><ul><li>If $c’=0$, $U_2=\left[\begin{matrix}a’^\dagger &amp; 0&amp;0\\0&amp;1&amp;0\\0&amp;0&amp;1\end{matrix}\right]$</li><li>If $c’\ne 0$, $U_2=\left[\begin{matrix} \frac{a’^*}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}}&amp;0&amp;\frac{c’^*}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}} \\ 0&amp;1&amp;0\\ \frac{c’}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}}&amp;0&amp;\frac{-a’}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}}\end{matrix}\right]$</li></ul><p>$\Rightarrow U_2U_1U=\left[\begin{matrix}1&amp;d’’&amp;g’’\\0&amp;e’’&amp;h’’\\0&amp;f’’&amp;j’’\end{matrix}\right]=\left[\begin{matrix}1&amp;0&amp;0\\0&amp;e’’&amp;h’’\\0&amp;f’’&amp;j’’\end{matrix}\right]$, because $U_2U_1U$ is a unitary.</p><p>Find $U_3$:<br>$U_3=\left[\begin{matrix}1&amp;0&amp;0\\0&amp;e’’^\dagger&amp;f’’^\dagger\\0&amp;h’’^\dagger&amp;j’’^\dagger\end{matrix}\right]$</p><p>$\Rightarrow U_3U_2U_1U=I$<br>\<br><em>Proof</em>. For general case, prove by induction.</p><ul><li>We can decompose $2\times 2$ U</li><li>If we can decompose $(d-1)\times(d-1)$ unitaries, then given any $U\in C^{d\times d}$, we can find $U_1, \dots, U_{d-1}$ s.t. $U_{d-1}U_{d-2}\dots U_1U=\left[\begin{matrix}1&amp;\begin{matrix}0&amp;0&amp;\cdots&amp;0\end{matrix}\\\begin{matrix}0\\0\\\vdots\\0\end{matrix} &amp; U’\end{matrix}\right]$. By assumption, we can decompose $U’$ because it is a $(d-1)\times(d-1)$ unitary $\Rightarrow$ We can decompose any $U\in C^{d\times d}$ i.e. $U=U_1U_2\cdots U_k$ where $\{U_i\}$ are two level unitaries (and $k\le \frac{d(d-1)}{2}$)</li></ul>
+          </div>
+<div class="note success">
+            <p><strong>Corollary</strong>: Unitaries on $n$-qubit can be decomposed as $2^{n-1}(2^n-1)$ two-level unitaries.</p>
+          </div>
+<h3 id="4-5-2-Single-qubit-and-CNOT-gates-are-universal"><a href="#4-5-2-Single-qubit-and-CNOT-gates-are-universal" class="headerlink" title="4.5.2 Single qubit and CNOT gates are universal"></a>4.5.2 Single qubit and <code>CNOT</code> gates are universal</h3><p>Recall any unitary $U$ can be decomposed into two-level unitaries. Now we decompose two-level unitaries into multi-controlled unitaries where the target is a single qubit.</p>
+<ol>
+<li>Suppose unitary $U$ acts non-trivially on the two computational basis $\vert s\rangle=\vert s_1s_2\dots s_n\rangle$ and $\vert t\rangle=\vert t_1t_2\dots t_n\rangle$. Let $\tilde{U}$ be the non-trivial $2\times 2$ unitary submatrix of $U$:<script type="math/tex; mode=display">
+U=
+\left[\begin{matrix}
+\ddots&&&&0\\
+&\tilde{U}_{11}&&\tilde{U}_{12}&\\
+&&\ddots&&\\
+&\tilde{U}_{21}&&\tilde{U}_{22}&\\
+0&&&&\ddots
+\end{matrix}\right]</script></li>
+<li>Use <em>Gray code</em> to connect two computational bases $\vert s\rangle$ and $\vert t\rangle$ by flipping one bit at a time. For instance, $s=101001$ and $t=110011$ we have the Gray code:<script type="math/tex; mode=display">
+\begin{align*}
+s=g_1&=101001\\
+g_2&=101011\\
+g_3&=100011\\
+t=g_4&=110011
+\end{align*}</script></li>
+<li>Let $g_1$ through $g_m$ be the element of a Gray code connecting $g_1=s$ and $g_m=t$. The goal is to design a circuit $F$ to change the basis from $\vert g_1\rangle \to \vert g_2\rangle \to \cdots \to\vert g_{m-1}\rangle$, then perform controlled unitary $\tilde U$ on $\vert g_{m-1}\rangle$ and $vert g_m\rangle$, with the target qubit located at the single qubit where $\vert g_{m-1}\rangle$ and $\vert g_{m}\rangle$ differ, and then undo the transformation $\vert g_{m-1}\rangle \to \vert g_{m-2}\rangle \to\cdots\to \vert g_1\rangle$ by reversing the circuit $F$, let’s say $\tilde F$.<ul>
+<li>Suppose $\vert g_1 \rangle$ and $\vert g_2\rangle$ differs at $i$-th bit, do a $C^{(n-1)}-X$ on the $i$-th bit, i.e. swap $\vert g_1 \rangle$ and $\vert g_2 \rangle$.</li>
+<li>Next, swap $\vert g_2 \rangle$ and $\vert g_3 \rangle$ with another Controlled-$X$.</li>
+<li>Continue this fashion until we swap $\vert g_{m-2} \rangle$ and $\vert g_{m-1} \rangle$.</li>
+<li>Result in the permutation (Other basis will remain the same after applying $F$):<script type="math/tex; mode=display">
+\begin{align*}
+\vert g_1\rangle &\xrightarrow{F} \vert g_{m-1}\rangle\\
+\vert g_2\rangle &\xrightarrow{F} \vert g_1\rangle\\
+\vert g_3\rangle &\xrightarrow{F} \vert g_2\rangle\\
+&\vdots\\
+\vert g_{m-1}\rangle &\xrightarrow{F} \vert g_{m-2}\rangle\\
+\end{align*}</script></li>
+</ul>
+</li>
+</ol>
+<p>Example: Implement the two-level unitary transformation</p>
+<script type="math/tex; mode=display">
+U=\left[\begin{matrix} a&0&\cdots&0&c \\ 0&1&&0&0 \\ \vdots&&\ddots&&\vdots \\0&0&&1&0\\b&0&\cdots&0&d\end{matrix}\right], \quad \tilde U\equiv\left[\begin{matrix}a&c\\b&d\end{matrix}\right]</script><p>which acts non-trivially only on the states $\vert 000\rangle$ and $\vert 111\rangle$. Write down the Gray code:</p>
+<script type="math/tex; mode=display">
+\begin{matrix}
+& A & B & C \\
+g_1&0&0&0\\
+g_2&0&0&1\\
+g_3&0&1&1\\
+g_4&1&1&1
+\end{matrix}</script><p>Construct the circuit:<br><img src="https://i.imgur.com/9OIt2Sw.png" alt=""></p>
+<p>$\Rightarrow$ we can decompose any two-level unitaries into multi-controlled single qubit unitaries.</p>
+<p>$\Rightarrow$ $\{\text{single qubit } U, CNOT\}$ universal.</p>
+<p>Complexity:</p>
+<ul>
+<li>Each $C^{n-1}-\tilde U$: $O(n)$ gates</li>
+<li>Each two-level $U$: $O(n^2)$ gates</li>
+<li>Each unitary: $O((2^n)^2)=O(2^{2n})$ two-level unitaries $=O(n^22^{2n})$ gates.</li>
+</ul>
+<h3 id="4-5-3-A-discrete-set-of-universal-operations"><a href="#4-5-3-A-discrete-set-of-universal-operations" class="headerlink" title="4.5.3 A discrete set of universal operations"></a>4.5.3 A discrete set of universal operations</h3><p>$\{H, T\}$ approximate single qubit unitaries.</p>
+<ul>
+<li>Solovay-Kitaev theorem<ul>
+<li>$O(m\log^c(m/\varepsilon))$ gates</li>
+</ul>
+</li>
+<li>$\Omega(1/\varepsilon)$ gates</li>
+</ul>
+<p>Error:</p>
+<ul>
+<li>Distance on matrices: $|U-V| = \max_{\vert \psi\rangle,\langle\psi\vert\psi\rangle=1}|(U-V)\vert\psi\rangle|$</li>
+<li>unitary invariant:<ul>
+<li>$|AU|=|A|$, $|UA|=|A|$</li>
+</ul>
+</li>
+<li>triangle inequality:<ul>
+<li>$|A-C| \le |A-B|+|B-C|$, where $|A|\ge0$, $|A|=0, ~\text{iff}~A=0$ i.e. $|U-V| ~\text{iff}~U=V$</li>
+</ul>
+</li>
+</ul>
+<blockquote>
 <p>待補</p>
 </blockquote>
 <h2 id="4-6-Summary-of-the-quantum-circuit-model-of-computation"><a href="#4-6-Summary-of-the-quantum-circuit-model-of-computation" class="headerlink" title="4.6 Summary of the quantum circuit model of computation"></a>4.6 Summary of the quantum circuit model of computation</h2><blockquote>
@@ -812,7 +928,7 @@ s\cdot &z_k=0 &~~\Rightarrow~ &s_1z_{n1}+s_2z_{n2}+\cdots+s_nz_{kn}&=0
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Quantum-algorithm"><span class="nav-text">4.1 Quantum algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-Single-qubit-operations"><span class="nav-text">4.2 Single qubit operations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-Controlled-operations"><span class="nav-text">4.3 Controlled operations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-Measurement"><span class="nav-text">4.4 Measurement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-Universal-quantum-gates"><span class="nav-text">4.5 Universal quantum gates</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-Summary-of-the-quantum-circuit-model-of-computation"><span class="nav-text">4.6 Summary of the quantum circuit model of computation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-Simulation-of-quantum-systems"><span class="nav-text">4.7 Simulation of quantum systems</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bonus"><span class="nav-text">Bonus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Quantum-oracle"><span class="nav-text">Quantum oracle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deutsch%E2%80%99s-algorithm"><span class="nav-text">Deutsch’s algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deutsch%EF%BC%8DJozsa-algorithm"><span class="nav-text">Deutsch－Jozsa algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bernstain%EF%BC%8DVazirani-algorithm"><span class="nav-text">Bernstain－Vazirani algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Simon%E2%80%99s-problem"><span class="nav-text">Simon’s problem</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Quantum-algorithm"><span class="nav-text">4.1 Quantum algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-Single-qubit-operations"><span class="nav-text">4.2 Single qubit operations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-Controlled-operations"><span class="nav-text">4.3 Controlled operations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-Measurement"><span class="nav-text">4.4 Measurement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-Universal-quantum-gates"><span class="nav-text">4.5 Universal quantum gates</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-1-Two-level-unitary-gates-are-universal"><span class="nav-text">4.5.1 Two-level unitary gates are universal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-2-Single-qubit-and-CNOT-gates-are-universal"><span class="nav-text">4.5.2 Single qubit and CNOT gates are universal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-3-A-discrete-set-of-universal-operations"><span class="nav-text">4.5.3 A discrete set of universal operations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-Summary-of-the-quantum-circuit-model-of-computation"><span class="nav-text">4.6 Summary of the quantum circuit model of computation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-7-Simulation-of-quantum-systems"><span class="nav-text">4.7 Simulation of quantum systems</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bonus"><span class="nav-text">Bonus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Quantum-oracle"><span class="nav-text">Quantum oracle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deutsch%E2%80%99s-algorithm"><span class="nav-text">Deutsch’s algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deutsch%EF%BC%8DJozsa-algorithm"><span class="nav-text">Deutsch－Jozsa algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bernstain%EF%BC%8DVazirani-algorithm"><span class="nav-text">Bernstain－Vazirani algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Simon%E2%80%99s-problem"><span class="nav-text">Simon’s problem</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -903,12 +1019,12 @@ s\cdot &z_k=0 &~~\Rightarrow~ &s_1z_{n1}+s_2z_{n2}+\cdots+s_nz_{kn}&=0
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="總字數">130k</span>
+    <span title="總字數">139k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="所需總閱讀時間">5:26</span>
+    <span title="所需總閱讀時間">5:47</span>
 </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
 
 
