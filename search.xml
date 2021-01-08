@@ -989,6 +989,518 @@ s\cdot &z_k=0 &~~\Rightarrow~ &s_1z_{n1}+s_2z_{n2}+\cdots+s_nz_{kn}&=0
       </tags>
   </entry>
   <entry>
+    <title>[Note] Quantum Computation and Quantum Information - Chapter 5: The quantum Fourier transform and its applications</title>
+    <url>/Ending2015a/16720/</url>
+    <content><![CDATA[<p>上課筆記，原文書:</p>
+<blockquote>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+</blockquote>
+<p><img src="https://i.imgur.com/kaLCQJW.png" alt=""></p>
+<a id="more"></a>
+<h2 id="5-1-The-quantum-Fourier-transform"><a href="#5-1-The-quantum-Fourier-transform" class="headerlink" title="5.1 The quantum Fourier transform"></a>5.1 The quantum Fourier transform</h2><ul>
+<li>Discrete Fourier transform<ul>
+<li>$F_N: \mathbb{C}^N\to\mathbb{C}^N$<script type="math/tex; mode=display">
+\left[\begin{matrix}x_0\\x_1\\\vdots\\x_{N-1}\end{matrix}\right]
+\xrightarrow{F_N}
+\left[\begin{matrix}y_0\\y_1\\\vdots\\y_{N-1}\end{matrix}\right],\quad
+y_k\equiv\frac{1}{\sqrt N}\sum^{N-1}_{j=0}x_je^{2\pi~ijk/N}</script></li>
+</ul>
+</li>
+<li>Quantum Fourier transform<script type="math/tex; mode=display">
+\sum^{N-1}_{j=0}x_j\vert j\rangle \xrightarrow{QFT_N}\sum^{N-1}_{k=0}y_k\vert k\rangle, \quad y_k\equiv\frac{1}{\sqrt N}\sum^{N-1}_{j=0}x_je^{2\pi~ijk/N}</script></li>
+</ul>
+<div class="note info">
+            <p>Prove this transformation is unitary</p>
+          </div>
+<ul>
+<li>Some notations $\vert j\rangle$<ul>
+<li>Binary representation: $j=j_1j_2\dots j_n$<ul>
+<li>$j=j_12^{n-1}+j_22^{n-2}+\cdots+j_n2^0$</li>
+<li>e.g. $110_2\Rightarrow4+2+0=6$</li>
+</ul>
+</li>
+<li>Binary fraction: $0.j_lj_{l+1}\dots j_m$<ul>
+<li>$j_l/2+j_{l+1}/4+\cdots+j_m/2^{m-l+1}$</li>
+<li>$0.11_2=1/2+1/4=3/4$</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="note success">
+            <p>Take $N=2^n$, prove the <em>product representation</em> of quantum Fourier transform</p><script type="math/tex; mode=display">\vert j_1,\dots,j_n\rangle\to\frac{1}{2^{n/2}}\left(\vert 0\rangle+e^{2\pi i0.j_n}\vert 1\rangle\right)\left(\vert 0\rangle+e^{2\pi i0.j_{n-1}j_n}\vert 1\rangle\right)\cdots\left(\vert 0\rangle+e^{2\pi i0.j_1j_2\dots j_n}\vert 1\rangle\right)</script><p><em>Proof</em> By definition:</p><script type="math/tex; mode=display">\begin{align*}\vert j\rangle &\to \frac{1}{2^{N/2}}\sum^{2^n-1}_{k=0}e^{2\pi ijk/2^n}\vert k\rangle\\    &= \frac{1}{2^{n/2}}\sum^1_{k_1=0}\sum^1_{k_2=0}\cdots\sum^1_{k_n=0}e^{2\pi ij(\sum^n_{l=1}k_l2^{-l})}\vert k_1\dots k_n\rangle\\    &= \frac{1}{2^{n/2}}\bigotimes^n_{l=1}\left[\sum^1_{k_l=0}e^{2\pi ijk_j2^{-l}}\vert k_l\rangle\right]\\    &= \frac{1}{2^{n/2}}\bigotimes^n_{l=1}\left[ \vert 0\rangle+e^{2\pi ij2^{-l}}\vert 1\rangle \right]\\    &= \frac{1}{2^{n/2}}\left( \vert 0\rangle + e^{2\pi i0.j_n}\vert 1\rangle \right)\otimes\left( \vert 0\rangle + e^{2\pi i0.j_{n-1}j_n}\vert 1\rangle \right)\otimes\cdots\\    &\qquad\qquad\qquad\qquad\qquad\otimes\left( \vert 0\rangle + e^{2\pi i0.j_1j_2\dots j_n}\vert 1\rangle \right)\end{align*}</script>
+          </div>
+<ul>
+<li>Easy to derive an efficient circuit for the product representaiton<ul>
+<li>$R_k$ gate<script type="math/tex; mode=display">
+R_k\equiv\left[\begin{matrix} 1&0\\0&e^{2\pi i/2^k} \end{matrix}\right]</script></li>
+</ul>
+</li>
+</ul>
+<p>QFT circuit<br><img src="https://i.imgur.com/kaLCQJW.png" alt=""></p>
+<ol>
+<li>Input: $\vert j_1j_2\dots j_n\rangle$</li>
+<li>Hadamard on first qubit:<script type="math/tex; mode=display">
+\frac{1}{2^{n/2}}(\vert 0\rangle+e^{2\pi i0.j_1}\vert 1\rangle)\otimes \vert j_2\dots j_n\rangle,\quad\because e^{2\pi i0.j_1}=(-1)^{j_1}</script></li>
+<li>Applying controlled-$R_2$ on first qubit:<script type="math/tex; mode=display">
+\frac{1}{2^{n/2}}(\vert 0\rangle + e^{2\pi i0.j_1j_2}\vert 1\rangle)\otimes\vert j_2\dots j_n\rangle</script></li>
+<li>Similarly, controlled-$R_3$, $\dots$, $R_n$ on first qubit:<script type="math/tex; mode=display">
+\frac{1}{2^{n/2}}(\vert 0\rangle + e^{2\pi i0.j_1j_2\dots j_n}\vert 1\rangle)\otimes \vert j_2\dots j_n\rangle</script></li>
+<li>On second qubit, Hadamard:<script type="math/tex; mode=display">
+\frac{1}{2^{n/2}}(\vert 0\rangle + e^{2\pi i0.j_1j_2\dots j_n}\vert 1\rangle)\otimes (\vert 0\rangle + e^{2\pi i0.j_2}\vert 1\rangle)\otimes \vert j_3\dots j_n\rangle</script></li>
+<li>Controlled-$R_2$, $\dots$, $R_{n-1}$ on second qubit:<script type="math/tex; mode=display">
+\frac{1}{2^{n/2}}(\vert 0\rangle + e^{2\pi i0.j_1j_2\dots j_n}\vert 1\rangle)\otimes (\vert 0\rangle + e^{2\pi i0.j_2\dots j_n}\vert 1\rangle)\otimes \vert j_3\dots j_n\rangle</script></li>
+<li>~$n$-th qubit:<script type="math/tex; mode=display">
+\frac{1}{2^{n/2}}(\vert 0\rangle + e^{2\pi i0.j_1j_2\dots j_n}\vert 1\rangle)\otimes (\vert 0\rangle + e^{2\pi i0.j_2\dots j_n}\vert 1\rangle)\otimes \cdots\otimes (\vert 0\rangle+e^{2\pi i0.j_n}\vert1\rangle)</script></li>
+<li>Reverse order of qubits with $SWAP$ gates $\Rightarrow$ get QFT.</li>
+</ol>
+<h2 id="5-2-Phase-estimation"><a href="#5-2-Phase-estimation" class="headerlink" title="5.2 Phase estimation"></a>5.2 Phase estimation</h2><p>Suppose a unitary $U$ (<em>oracle</em>) has an eigenvector $\vert u\rangle$ with eigenvalue $e^{2\pi i\varphi}$, estimate phase $\varphi$.</p>
+<ul>
+<li>Assume we can do controlled-$U$. Also for efficient implementation, assume we have controlled-$U^{2^j}$.</li>
+<li>$U\vert u\rangle=e^{2\pi i\varphi}\vert u\rangle$</li>
+</ul>
+<p>Small case: suppose $\varphi=\frac{1}{2} \text{ or } 0\Rightarrow U\vert u\rangle=\vert u\rangle \text{ or } U\vert u\rangle=-\vert u\rangle$</p>
+<p><img src="https://i.imgur.com/kUnv4ei.png" width="300px"></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi \rangle &= \text{C-}U\vert+\rangle\vert u\rangle\\
+    &= \frac{1}{\sqrt 2}\text{C-}U(\vert 0\rangle\vert u\rangle+\vert 1\rangle\vert u\rangle)\\
+    &= \frac{1}{\sqrt 2}(\vert 0\rangle\vert u\rangle+\vert 1\rangle e^{2\pi i\varphi}\vert u\rangle)\\
+    &= \frac{1}{\sqrt 2}(\vert 0\rangle+2^{2\pi i\varphi}\vert 1\rangle)\otimes \vert u\rangle\\
+    &= \begin{cases}
+        \vert +\rangle\otimes \vert u\rangle, &\text{if } \varphi=0,\\
+        \vert -\rangle\otimes \vert u\rangle, &\text{if } \varphi=\frac{1}{2}
+    \end{cases}
+\end{align*}</script><p>$\Rightarrow$<br><img src="https://i.imgur.com/084U6xI.png" width="300px"></p>
+<p>$\Rightarrow$ Only works for $\varphi=0.j_1$</p>
+<p>General case: $\varphi=0.j_1j_2\dots j_n$<br><img src="https://i.imgur.com/fBVLv78.png" alt=""></p>
+<ul>
+<li>Final state:<script type="math/tex; mode=display">
+\begin{align*}
+&\frac{1}{2^{t/2}}(\vert 0\rangle+e^{2\pi i2^{t-1}\varphi}\vert 1\rangle)(\vert 0\rangle+e^{2\pi i2^{t-2}\varphi}\vert 1\rangle)\cdots(\vert 0\rangle+e^{2\pi i\varphi}\vert 1\rangle)\\
+&\quad\because 2^{t-1}\varphi=j_1j_2\dots j_n\\
+\end{align*}</script><script type="math/tex; mode=display">
+\begin{align*}
+\Rightarrow ~&\frac{1}{2^{t/2}}(\vert 0\rangle+e^{2\pi i0.j_t}\vert 1\rangle)(\vert 0\rangle+e^{2\pi i0.j_{t-1}j_t}\vert 1\rangle)\cdots(\vert 0\rangle+e^{2\pi i0.j_1j_2\dots j_t}\vert 1\rangle)\\
+\Rightarrow ~&QFT_t\vert 2^t\varphi\rangle = \frac{1}{2^{t/2}}\sum^{2^t-1}_{k=0} e^{2\pi ik\varphi}\vert k\rangle
+\end{align*}</script></li>
+<li>Apply $(QFT_t)^{-1}$ to get $\vert \varphi\rangle$<br><img src="https://i.imgur.com/fyKx3qp.png" width="500px"></li>
+</ul>
+<h3 id="5-2-1-Performance-and-requirements"><a href="#5-2-1-Performance-and-requirements" class="headerlink" title="5.2.1 Performance and requirements"></a>5.2.1 Performance and requirements</h3><p>The algorithm has “good” accuracy even if $\varphi$ isn’t exactly $t$ bit binary expansion, i.e. $\varphi$ can be irrational.</p>
+<p>Let $b=\text{first } t \text{ bits of } \varphi$, </p>
+<script type="math/tex; mode=display">
+\varphi=0.\underbrace{b_1b_2\dots b_t}_bb_{t+1}b_{t+2}\dots</script><p>define $\delta\equiv \varphi - b/2^t$</p>
+<script type="math/tex; mode=display">
+\frac{1}{2^{t/2}}\sum^{2^t-1}_{k=0}e^{2\pi i\varphi k}\vert k\rangle \xrightarrow{QFT^{-1}}\frac{1}{2^t}\sum^{2^t-1}_{l=0}\sum^{2^t-1}_{k=0} e^{-2\pi i\frac{kl}{2^t}}e^{2\pi i\varphi k}\vert l\rangle</script><p>Let $\alpha_l$ be the amplitude of $\vert b+l~(\text{mod }2^t)\rangle$,</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\alpha_l
+    &\equiv\frac{1}{2^t}\sum^{2^t-1}_{k=0} e^{2\pi ik(\varphi-\frac{b+l}{2^t})}\\
+    &=\frac{1}{2^t}\sum^{2^t-1}_{k=0}\left[e^{2\pi i(\varphi-\frac{b+l}{2^t})}\right]^k\quad(\because\alpha_l \text{ is a geometric series } \frac{1-r^n}{1-r})\\
+    &= \frac{1}{2^t}\frac{1-e^{2\pi i(2^t\varphi-(b+l))}}{1-e^{2\pi i(\varphi-(b+l)/2^t)}}\\
+    &= \frac{1}{2^t}\frac{1-e^{2\pi i(2^t\delta-l)}}{1-e^{2\pi i(\delta-l/2^t)}}
+\end{align*}</script><p>Suppose measurement outcome is $m$, the probability of getting error results is</p>
+<script type="math/tex; mode=display">
+P(\vert m-b\vert>e)=\sum_{-2^{t-1}<l\le-(e+1)}\vert\alpha_l\vert^2+\sum_{e+1\le l\le2^{t-1}}\vert\alpha_l\vert^2</script><p>where $e$ is a positive integer characterizing desired tolerance to error.</p>
+<p>For any real $\theta$, $\vert1-e^{i\theta}\vert\le 2$,</p>
+<script type="math/tex; mode=display">
+\vert \alpha_l\vert = \left\vert\frac{1}{2^t}\frac{1-e^{2\pi i(2^t\delta-l)}}{1-e^{2\pi i(\delta-l/2^t)}}\right\vert\le\frac{1}{2^t}\frac{2}{\vert1-e^{2\pi i(\delta-l/2^t)}\vert}</script><p>By geometry or calculus $\vert 1-e^{i\theta}\vert\ge\frac{2\vert \theta\vert}{\pi}$ whenever $-\pi\le\theta\le\pi$. But when $-2^{t-1}&lt;l\le 2^{t-1}$ we have $-\pi\le 2\pi(\delta-l/2^t)\le \pi$. Thus</p>
+<script type="math/tex; mode=display">
+\vert \alpha_l\vert \le \frac{1}{2^{t+1}\vert \delta-l/2^t\vert}</script><p>Then</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+P(\vert m-b\vert > e)
+    &\le \frac{1}{4}\left[ \sum^{-(e+1)}_{l=-2^{t-1}+1}\frac{1}{(l-2^t\delta)^2}+\sum^{2^{t-1}}_{l=e+1}\frac{1}{(l-2^t\delta)^2} \right]\\
+    &\le \frac{1}{4}\left[ \sum^{-(e+1)}_{l=-2^{t-1}+1}\frac{1}{l^2}+\sum^{2^{t-1}}_{l=e+1}\frac{1}{(l-1)^2} \right] \quad(\because 0\le2^t\delta\le 1)\\
+    &\le \frac{1}{2}\sum^{2^{t-1}-1}_{l=e}\frac{1}{l^2}\\
+    &\le \frac{1}{2}\int^{2^{t-1}-1}_{e-1}dl\frac{1}{l^2}=\frac{1}{2(e-1)}
+\end{align*}</script><p>To have accuracy $2^{-n}$ with probability of success at least $l-\epsilon$, where $\epsilon$ is error rate, choose $e\equiv2^{t-n}-1$ and let $t=n+p$ qubits,</p>
+<script type="math/tex; mode=display">
+\epsilon = \frac{1}{2(2^p-2)} \Rightarrow p=\left\lceil \log\left(2+\frac{1}{2\epsilon}\right) \right\rceil</script><script type="math/tex; mode=display">
+\Rightarrow~t=n+\left\lceil \log\left(2+\frac{1}{2\epsilon}\right) \right\rceil</script><p>If we don’t have eigenstate $\vert u\rangle$, pick a “random” state $\vert \psi\rangle = \sum_u c_u\vert u\rangle$.</p>
+<script type="math/tex; mode=display">
+\sum_uc_u\vert u\rangle \xrightarrow{p.e.}\sum_u c_u\vert \varphi_u\rangle\vert u\rangle</script><h2 id="5-3-Applications-order-finding-and-factoring"><a href="#5-3-Applications-order-finding-and-factoring" class="headerlink" title="5.3 Applications: order-finding and factoring"></a>5.3 Applications: order-finding and factoring</h2><h3 id="5-3-1-Application-order-finding"><a href="#5-3-1-Application-order-finding" class="headerlink" title="5.3.1 Application: order-finding"></a>5.3.1 Application: order-finding</h3><p>Given $x, N$, $x&lt;N$, $\text{gcd}(x,N)=1$, the <em>order</em> of $x$ module $N$ is the least positive integer $r$, s.t. $x^r=1(\text{mod }N)$.</p>
+<ul>
+<li>Problem size $L\equiv\lceil\log(N)\rceil$</li>
+<li>Classical: no poly$(L)$</li>
+<li>Quantum: $O(L^3)$<ul>
+<li>Can reduce factoring to order finding</li>
+<li>Order-finding is the phase estimation applied to the unitary $U_x$<script type="math/tex; mode=display">
+U_x\vert y\rangle\equiv \vert xy~(\text{mod } N)\rangle, \quad y\in\{x,y\}^L</script></li>
+<li>$U_x$ does the cyclic permutation on $x$:<script type="math/tex; mode=display">
+\begin{align*}
+x&\xrightarrow{U_x}x^2,\\
+x^2&\xrightarrow{U_x}x^3\\
+&~~~\vdots\\
+x^{r-1}&\xrightarrow{U_x}x^r\\
+x^r&\xrightarrow{U_x}x
+\end{align*}</script></li>
+<li>$\vert x^r ~(\text{mod }N)\rangle=\vert 1 ~(\text{mod }N)\rangle$</li>
+<li>$\vert u_0\rangle\equiv\vert x\rangle+\vert x^2\rangle+\cdots\vert x^r\rangle$ is an eigenstate of $U_x$. $\because U_x\vert u_0\rangle=\vert x^2\rangle+\vert x^3\rangle+\cdots\vert x\rangle=\vert u_0\rangle$.</li>
+<li>Let $\omega=e^{-\frac{2\pi i}{r}}$, $\vert u_1\rangle\equiv\omega\vert x\rangle+\omega^2\vert x^2\rangle+\cdots+\omega^r\vert x^r\rangle$ is also an eigenstate of $U_x$. $\because U_x\vert u_1\rangle=\omega\vert x^2\rangle+\omega^2\vert x^3\rangle+\cdots+\underbrace{\omega^r}_{=1}\vert x\rangle=\omega^{-1}\vert u_1\rangle$</li>
+</ul>
+</li>
+</ul>
+<p>The eigenstates of $U_x$ can be defined by</p>
+<script type="math/tex; mode=display">
+\vert u_s\rangle = \frac{1}{\sqrt r}\sum^{r-1}_{k=0}e^{-\frac{2\pi isk}{r}} \vert x^k \text{ mod}~N\rangle</script><p>for integer $0\le s\le r-1$, since</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+U_x\vert u_s\rangle &= \frac{1}{\sqrt r}\sum^{r-1}_{k=0}e^{-\frac{2\pi isk}{r}}\vert x^{k+1} \text{ mod}~N\rangle\\
+    &= e^{\frac{2\pi is}{r}}\vert u_s\rangle
+\end{align*}</script><p>Two requirements to use the phase estimation:</p>
+<ul>
+<li>Implement a controlled-$U^{2^j}$ for any integer $j$.<ul>
+<li>Can be resolved by using <em>modular exponentiation</em></li>
+</ul>
+</li>
+<li>Efficiently prepare an eigenstate $\vert u_s\rangle$ with a non-trivial eigenvalue, or at least a superposition of such eigenstates.<ul>
+<li>Observe that $\frac{1}{\sqrt r}\sum^{r-1}_{s=0}\vert u_s\rangle=\vert 1\rangle$, use $\vert 1\rangle$ as the input for second register.</li>
+</ul>
+</li>
+</ul>
+<div class="note info">
+            <script type="math/tex; mode=display">\begin{align*}\frac{1}{\sqrt r}\sum^{r-1}_{s=0}\vert u_s\rangle &= \frac{1}{\sqrt r}\sum^{r-1}_{s=0}\left( \frac{1}{\sqrt r}\sum^{r-1}_{k=0}e^{-\frac{2\pi isk}{r}} \vert x^k \text{ mod } N\rangle \right)\\    &= \frac{1}{r}\sum^{r-1}_{s=0}\sum^{r-1}_{k=0}e^{-\frac{2\pi isk}{r}} \vert x^k \text{ mod } N\rangle\\    &= \frac{1}{r}\sum^{r-1}_{k=0}\left(\sum^{r-1}_{s=0}e^{-\frac{2\pi isk}{r}}\right) \vert x^k \text{ mod } N\rangle\\    &= \frac{1}{r}\sum^{r-1}_{k=0}r\delta_{k,0} \vert x^k \text{ mod } N\rangle\\    &= \vert x^0 \text{ mod } N\rangle =\vert 1\rangle\end{align*}</script>
+          </div>
+<p>Apply phase estimation (PE):<br><img src="https://i.imgur.com/6JOd4qd.png" alt=""></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert 0\rangle^{\otimes t}\vert 1\rangle \xrightarrow{\text{PE of }U_x} &~\frac{1}{\sqrt r}\sum_s\vert \frac{s}{r}\rangle \vert u_s\rangle\\
+\Rightarrow&~\text{get }\frac{s}{r}\text{ with uniform random }s\\
+\Rightarrow&~\text{get a few of }\frac{s_1}{r_1}, \frac{s_2}{r_2}, \cdots\\
+\Rightarrow&~\text{calculate }r.
+\end{align*}</script><p>If we use $t=2L+1+\left\lceil \log(2+\frac{1}{2\epsilon}) \right\rceil$ qubits in phase estimation, we will obtain an estimate of the phase $\varphi\approx s/r$ accuract to $2L+1$ bits, with probability at least $(1-\epsilon)/r$. Then, we find $r$ using contined fraction expansion.</p>
+<p>Modular exponential:</p>
+<ul>
+<li>example: compute $x^{17}=\underbrace{x\cdot x\cdot\cdots\cdot x}_\text{17 terms}$ $\Rightarrow$ $16$ multiplications.</li>
+<li>$x\cdot x=x^2$, $x^2\cdot x^2=x^4$, $x^4\cdot x^4=x^8$, $x^8\cdot x^8=x^{16}$, $x^{16}\cdot x=x^{17}$ $\Rightarrow$ $5$ multiplication.</li>
+<li>In general can do $x^r$ with $O(\text{poly}\log(r))$ multiplications.</li>
+</ul>
+<h4 id="The-continued-fraction-expansion"><a href="#The-continued-fraction-expansion" class="headerlink" title="The continued fraction expansion"></a>The continued fraction expansion</h4><ul>
+<li>Given $\varphi\approx s/r$, how to find $s$, $r$?</li>
+<li>ex. $\varphi=0.25001$, $s/r=1/4$?<script type="math/tex; mode=display">
+\begin{align*}
+\varphi&=\frac{25001}{100000}=\frac{1}{\frac{100000}{25001}}=\frac{1}{3+\frac{24997}{25001}}\\
+&=\frac{1}{3+\frac{1}{\frac{25001}{24997}}}=\frac{1}{3+\frac{1}{1+\underbrace{\frac{4}{24997}}_{\text{small}}}}
+\end{align*}</script></li>
+</ul>
+<div class="note success">
+            <p><em>Theorem 5.1</em>: Suppose $s/r$ is a rational number such that</p><script type="math/tex; mode=display">\left\vert \frac{s}{r}-\varphi \right\vert\le \frac{1}{2r^2}</script><p>Then $s/r$ is a convergent of the continued fraction for $\varphi$, and thus can be computed in $O(L^3)$ operations using the continued fractions algorithm.</p><p>Since $\varphi$ is an approximation of $s/r$ accurate to $2L+1$ bits, it follows that $\vert s/r-\varphi\vert\le 2^{-2L-1}\le 1/2r^2$, since $r\le N\le 2^L$. Thus, the theorem applies.</p>
+          </div>
+<h4 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h4><p>Some considerations:</p>
+<ul>
+<li>phase estimation might produce a bad estimate to $s/r$ with probability $\epsilon$.</li>
+<li>$s$, $r$ have a common factor, in which case the number $r’$ returned by continued fractions algorithm be a factor of $r$, and not $r$ itself $\Rightarrow$ $s$, $r$ might not be co-prime.</li>
+</ul>
+<ol>
+<li>Solution $1$<ul>
+<li>The number of prime numbers less than $r$ is at least $r/2\log r$</li>
+<li>The chance that $s$ is prime is at least $1/2\log(r)&gt;1/2\log(N)$</li>
+<li>Repeating algorithm $2\log(N)$ times ($s_1/r_1, s_2/r_2, \dots$) will have high probability to obtain co-prime $s$, $r$.</li>
+</ul>
+</li>
+<li>Solution $2$<ul>
+<li>if $r’\ne r~\Rightarrow~r’$ is a factor of $r$. The probability is $1/r\le1/2$</li>
+<li><blockquote>
+<p>待補</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>Solution $3$<ul>
+<li>Do phase estimation and continued fractions twice, get $r’_1$, $s’_1$, $r’_2$, $s’_2$. Find $r$ from $r_1$, $r_2$.</li>
+<li>If $LCM(r_1, r_2)\ne r$, exist $q$ s.t. $q$ divides $s’_1$ and $q$ divides $s’_2$. The probability that $s’_1$, $s’_2$ have common factors satisfies<script type="math/tex; mode=display">
+\sum_qp(q\vert s'_1 \cap q\vert s'_2)=\sum_qp(q\vert s'_1)p(q\vert s'_2)\le \sum_q\frac{1}{q^2}\le \sum^\infty_{q=2}\frac{1}{q^2}\le\frac{3}{4}</script></li>
+<li>The probability of obtaining the correct $r$ is at least $1/4$</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-3-2-Application-factoring"><a href="#5-3-2-Application-factoring" class="headerlink" title="5.3.2 Application: factoring"></a>5.3.2 Application: factoring</h3><ul>
+<li>Reducing factor to order finding </li>
+<li>Randomly pick $x$ co-prime to $N$, find order $r$ s.t. $x^r\equiv 1(\text{mod }N)$<ul>
+<li>if $r$ is odd, try another $r$ (with const probability)</li>
+<li>if $r$ is even, compose $x^{r/2} (\text{mod }N)$</li>
+</ul>
+</li>
+<li>We know $(x^{r/2})^2\equiv 1(\text{mod }N)\Rightarrow (x^{r/2}-1)(x^{r/2}+1)\equiv 0(\text{mod }N)$</li>
+<li>4 cases, if $N=pq$</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>$\text{gcd}(x^{r/2}-1, N)$</th>
+<th>$\text{gcd}(x^{r/2}+1, N)$</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$pq$</td>
+<td>$1$</td>
+<td>$x^{r/2}\equiv 1(\text{mod }N)$ impossible</td>
+</tr>
+<tr>
+<td>$1$</td>
+<td>$pq$</td>
+<td>$x^{r/2}\equiv -1(\text{mod }N)$ const probability</td>
+</tr>
+<tr>
+<td>$p$</td>
+<td>$q$</td>
+<td>Non-trivial factor, calculate $\text{gcd}(x^{r/2}-1, N)$</td>
+</tr>
+<tr>
+<td>$q$</td>
+<td>$p$</td>
+<td>Non-trivial factor, calculate $\text{gcd}(x^{r/2}+1, N)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note success">
+            <p><em>Theorem 5.2</em>: Suppose $N$ is an $L$ bit composite number, and $x$ is a non-trivial solution to the equation $x^2=1(\text{mod} N)$ in the range $1\le x\le N$, that is, neither $x=1(\text{mod} N)$ nor $x=N-1=-1(\text{mod} N)$. Then at least one of $\text{gcd}(x-1, N)$ and $\text{gcd}(x+1, N)$ is a non-trivial factor of $N$ that can be computed using $O(L^3)$ operations.</p>
+          </div>
+<div class="note success">
+            <p><em>Theorem 5.3</em>: Suppose $N=p^{\alpha_1}_{1}\dots p^{\alpha_m}_m$ is the prime factorization of an odd composite positive integer. Let $x$ be an integer chosen uniformly at random, subject to the requirements that $1\le x\le N-1$ and $x$ is co-prime to $N$. Let $r$ be the order of $x$ module $N$. Then</p><script type="math/tex; mode=display">p(r\text{ is even and }x^{r/2}\ne -1(\text{mod}N))\ge \text{const.}</script>
+          </div>
+<p>Detail algorithm:</p>
+<ul>
+<li>Input $N$</li>
+</ul>
+<ol>
+<li>If $N$ can be divided by $2$, return $2$</li>
+<li>Determine whether $N=a^b$ by calculating $N^{1/2}, N^{1/3}, \dots, N^{1/L}$ (classical algorithm $O(L^3)$)</li>
+<li>Choose random $x$ s.t. $1\le x\le N-1$, calculate $\text{gcd}(x, N)$. If $\text{gcd}(x, N)\ne 1$, return $\text{gcd}(x, N)$<ul>
+<li>Now we know $N$ is odd and has more than $1$ prime factor, and $x$ is coprime to $N$.</li>
+</ul>
+</li>
+<li>Use order finding algorithm to find minimum $r$ s.t. $x^r\equiv 1(\text{mod }N)$</li>
+<li>If $r$ is even and $x^{r/2}\not\equiv-1 (\text{mod }N)$, return $\text{gcd}(x^{r/2}-1, N)$</li>
+<li>Go back to step 3 and try another $x$</li>
+</ol>
+<ul>
+<li>By theorem 5.3, this algorithm terminates in constant number of trails.</li>
+</ul>
+<h2 id="5-4-General-applications-of-the-quantum-Fourier-transform"><a href="#5-4-General-applications-of-the-quantum-Fourier-transform" class="headerlink" title="5.4 General applications of the quantum Fourier transform"></a>5.4 General applications of the quantum Fourier transform</h2><h3 id="5-4-1-Period-finding"><a href="#5-4-1-Period-finding" class="headerlink" title="5.4.1  Period-finding"></a>5.4.1  Period-finding</h3><p>Given oracle $\tilde{U}_f: \tilde{U}_f\vert x\rangle\vert y\rangle = \vert x\rangle\vert f(x)\oplus y\rangle$ for some $f:N\to N$</p>
+<ul>
+<li>Promise: $\exists 1\le r\le c$ s.t. $f(x)=f(y)$ iff $r\mid \vert x-y\vert$ ($r$ is period of $f$)</li>
+<li>Problem: Use $\tilde{U}_f$ to find $r$ s.t. $f(x+r)=f(x)$<ul>
+<li>Classical: $\Omega(c)$ queries</li>
+<li>Quantum: One query, short alg</li>
+</ul>
+</li>
+</ul>
+<div class="note success">
+            <p><em>Algorithm</em> (<strong>Period-finding</strong>)</p><ul><li>Inputs: <ol><li>A blackbox with performs the operation $U\vert x\rangle\vert y\rangle = \vert x \rangle\vert y\oplus f(x)\rangle$</li><li>a state to store the function evaluation, initialized to $\vert 0\rangle$ </li><li>$t=O(L+\log(1/\epsilon))$ qubits initialized to $\vert 0\rangle$</li></ol></li><li>Outputs: The least integer $r&gt;0$ such that $f(x+r)=f(x)$</li><li>Runtime: One use of $U$, and $O(L^2)$ operations. Succeeds with probability $O(1)$.</li><li>Prodecure:<ol><li>$\vert 0\rangle\vert 0\rangle$  (initial state)</li><li>$\to \displaystyle\frac{1}{\sqrt{2^t}}\sum^{2^t-1}_{x=0}\vert x\rangle \vert 0\rangle$  (create superposition)</li><li>$\to \displaystyle\frac{1}{\sqrt{2^t}}\sum^{2^t-1}_{x=0}\vert x\rangle\vert f(x)\rangle$ (apply $U$)<br> $\approx\displaystyle\frac{1}{\sqrt{r2^t}}\sum^{r-1}_{\ell=0}\sum^{2^t-1}_{x=0}e^{2\pi i\ell x/r}\vert x\rangle \vert \hat{f}(\ell)\rangle$</li><li>$\to\displaystyle\frac{1}{\sqrt r}\sum^{r-1}_{l=0}\tilde{\vert\ell/r\rangle}\vert \hat{f}(\ell)\rangle$  (apply inverse Fourier transform to first register)</li><li>$\to\tilde{\ell/r}$  (measure first register)</li><li>$\to r$  (apply continued fractions algorithm)</li></ol></li></ul>
+          </div>
+<h4 id="Hidden-shift-problem"><a href="#Hidden-shift-problem" class="headerlink" title="Hidden shift problem"></a>Hidden shift problem</h4><p>Given $\tilde{U}_f\vert x\rangle\vert f(y)\rangle=\vert x\rangle \vert f(x+y)\rangle$, also given $(x_0, f(x_0))$ for some $x_0$</p>
+<ul>
+<li>Problem: find $r$ </li>
+<li>$\displaystyle\frac{1}{\sqrt r}\sum_j e^{2\pi i\frac{j}{r}}\vert f(x_0+j)\rangle$ are eigenvalues of $\tilde{U}_f\vert 1\rangle$<ul>
+<li>Use phase estimation to get $\displaystyle\frac{s}{r}$</li>
+</ul>
+</li>
+</ul>
+<p>Blackbox generalization of order finding</p>
+<ul>
+<li>Period finding v.s. Hidden shift: Period finding is the mainstream. No phase estimation</li>
+</ul>
+<h3 id="5-4-2-Discrete-logarithms"><a href="#5-4-2-Discrete-logarithms" class="headerlink" title="5.4.2 Discrete logarithms"></a>5.4.2 Discrete logarithms</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="5-4-3-The-hidden-subgroup-problem"><a href="#5-4-3-The-hidden-subgroup-problem" class="headerlink" title="5.4.3 The hidden subgroup problem"></a>5.4.3 The hidden subgroup problem</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="5-4-4-Other-quantum-algorithm"><a href="#5-4-4-Other-quantum-algorithm" class="headerlink" title="5.4.4 Other quantum algorithm"></a>5.4.4 Other quantum algorithm</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h2 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h2><h3 id="Group-theory"><a href="#Group-theory" class="headerlink" title="Group theory"></a>Group theory</h3><ul>
+<li>A group $G$ is a set of elements $\{a,b,c,\dots\}$ with a “multiplication” operation $\cdot$ satisfying the following properties<ol>
+<li>Closure: $(a\cdot b)$ is an element of $G$</li>
+<li>Associative: $a\cdot(b\cdot c)=(a\cdot b)\cdot c$</li>
+<li>Identity: exist an element $e$ s.t. $e\cdot a=a$ and $a\cdot e=a$, $\forall a\in G$</li>
+<li>Inverse: $\forall a\in G$, exist $a^{-1}$ s.t. $a\cdot a^{-1}=e=a^{-1}\cdot a$</li>
+</ol>
+</li>
+<li>Order of a group $\vert G\vert$: number of elements of $G$</li>
+<li>Subgroup: subset of $G$ that is also a group (with same multiplication) (most importantly, closure)</li>
+<li>If $H$ is a subgroup of $G$, $\vert H\vert$ divides $\vert G\vert$</li>
+</ul>
+<p>Example: multiplication group mod $7$</p>
+<ul>
+<li>elements: $\{1,2,3,4,5,6\}\Rightarrow$ order $6$</li>
+<li>operation: multiplication mod $7$</li>
+<li>closure: $a\nmid 7, b\nmid 7 \Rightarrow ab\nmid 7$</li>
+<li>association: from integer multiplication</li>
+<li>identity: $1$</li>
+<li>inverse: $x^r\equiv 1 (\text{mod } 7)\Rightarrow (x^{r-1})\cdot x^r=1\Rightarrow x^{r-1}\equiv x^{-1}$</li>
+<li>subgroup: $\{x, x^2, x^3,\cdots, \underbrace{x^r}_{=1}\}$ is a subgroup, $\forall x$<ul>
+<li>$\{1,2,4\}\Rightarrow$ order $3$</li>
+<li>$\{1,6\}\Rightarrow$ order $2$</li>
+</ul>
+</li>
+</ul>
+<p>In general, multiplication mod $P$ for some prime $P$ is a group $\Rightarrow$ order $P-1$</p>
+<script type="math/tex; mode=display">
+r\mid(P-1)\Rightarrow (P-1)=c\cdot r\Rightarrow x^{(P-1)}=(x^r)^c\equiv 1(\text{mod }P)</script><p>Suppose $N=pq$, and $p,q$ is prime</p>
+<ul>
+<li>Define: $\varphi(N)$ (<em>Euler’s totient function</em>) is the number of $x$ s.t. $1\le x\le N-1$ and $\text{gcd}(x,N)=1$</li>
+<li>Claim: $\varphi(N)=(p-1)(q-1)$</li>
+<li>Example: $p=3$, $q=5$ $\Rightarrow N=15\Rightarrow\varphi(N)=2\cdot4=8$</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>$\text{mod }3 \backslash\text{mod }5$</th>
+<th>$1$</th>
+<th>$2$</th>
+<th>$3$</th>
+<th>$4$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$1$</td>
+<td>$1$</td>
+<td>$10+12=22\\\equiv 7(\text{mod }15)$</td>
+<td>$10+18=28\\\equiv 13(\text{mod }15)$</td>
+<td>$10+24=34\\\equiv 4(\text{mod }15)$</td>
+</tr>
+<tr>
+<td>$2$</td>
+<td>$20+6=26\\\equiv 11(\text{mod }15)$</td>
+<td>$20+12=32\\\equiv 2(\text{mod }15)$</td>
+<td>$20+18=38\\\equiv 8(\text{mod }15)$</td>
+<td>$20+24=44\\\equiv 14(\text{mod }15)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$10=5\cdot 2\equiv 1 (\text{mod }3)$</p>
+<p>$6=3\cdot 2\equiv 1(\text{mod } 5)$</p>
+<p>$\Rightarrow 10\cdot a+6\cdot b\equiv a(\text{mod } 3)\equiv b(\text{mod } 5)$</p>
+<p>Let $f(a,b)\equiv 10a+6b (\text{mod }15)\Rightarrow f(a,b)\cdot f(c,d)\equiv f(a+c \text{ mod }3, b+d \text{ mod }5)\text{mod }15$</p>
+<h3 id="RSA-public-key-encryption"><a href="#RSA-public-key-encryption" class="headerlink" title="RSA public key encryption"></a>RSA public key encryption</h3><p>Construction phase:</p>
+<ul>
+<li>Select random large prime $p$ and $q$</li>
+<li>calculate $N=pq$, $\varphi(N)=(p-1)(q-1)$</li>
+<li>pick encryption key $e$ s.t. $\text{gcd}(e, \varphi(N))=1$</li>
+<li>calculate decryption key $d$ s.t. $de\equiv 1(\text{mod }\varphi(N))$ (efficiently with extended Euler’s algorithm)</li>
+</ul>
+<p>Operations:<br><img src="https://i.imgur.com/TVATsRm.png" width="300px"></p>
+<ul>
+<li>Server send out $(N, e)$ as public key</li>
+<li>User encode $m$ as $m^e(\text{mod }N)\equiv E(m)$ (Suppose user’s message is some $m$ coprime to $N$) </li>
+<li>Server decrypt by calculating $(E(m))^d=(m^e)^d=m^{ed}=m (\text{mod }N)$</li>
+</ul>
+<p>Proof:<br>Recall:</p>
+<ol>
+<li>$ed-1\equiv 0(\text{mod }\varphi(N))$</li>
+<li>Recall $r\mid \varphi(N)\Rightarrow \varphi(N)=c’\cdot r$</li>
+</ol>
+<p>$m^{ed-1}\stackrel{\text{by 1}}{=}m^{c\cdot \varphi(N)}\stackrel{\text{by 2}}{=} m^{cc’r}\equiv 1(\text{mod }N)\Rightarrow m^{ed-1}\equiv 1 \Rightarrow m^{ed}\equiv m(\text{mod }N)$</p>
+<p>extend eular:<br>$\varphi(N)=8, e=3\Rightarrow 8-(3\cdot 2)=2, 3-2=1$</p>
+<p>$\Rightarrow 1=3-2=3-(8-3\cdot 2)=3\cdot 3-8$</p>
+<p>$3\cdot 3-8=1 (\text{mod }8)\Rightarrow 3\cdot 3\equiv 1(\text{mod }8)$</p>
+<h3 id="Shor’s-algorithm-without-phase-estimation"><a href="#Shor’s-algorithm-without-phase-estimation" class="headerlink" title="Shor’s algorithm without phase estimation"></a>Shor’s algorithm without phase estimation</h3><ul>
+<li><p>writing out the phase estimation part of order finding (The only quantum part of shor’s algorithm)<br><img src="https://i.imgur.com/VIPJfnF.png" alt=""></p>
+</li>
+<li><p>$U_x\vert y\rangle = \vert xy (\text{mod }N)\rangle$</p>
+</li>
+<li>$CU_x^j\vert j\rangle\vert y\rangle = \vert j\rangle\vert x^j y\rangle$</li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_1\rangle&=\frac{1}{2^{t/2}}\sum^{2^t-1}_{j=0}\vert j\rangle\vert 1\rangle\\
+\vert \psi_2\rangle&=\frac{1}{2^{t/2}}\sum^{2^t-1}_{j=0}\vert j\rangle\vert x^{j}\rangle
+\end{align*}</script><p>Two changes we can make on the order finding algorithm:</p>
+<ul>
+<li>Get $\vert \psi_2\rangle$ from a different oracle</li>
+<li>measure the second qubit after the oracle</li>
+</ul>
+<p>Let $\tilde{U}_x: \tilde{U}_x\vert j\rangle\vert y\rangle=\vert j\rangle\vert x^j\oplus y(\text{mod }N)\rangle$<br><img src="https://i.imgur.com/psCX0h1.png" alt=""></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_1\rangle &= \frac{1}{2^{t/2}}\sum^{2^t-1}_{j=0}\vert j\rangle \vert 0\rangle\\
+\vert \psi_2\rangle &= \frac{1}{2^{t/2}}\sum^{2^t-1}_{j=0}\vert j\rangle \vert x^j\rangle
+\end{align*}</script><p>Possible $x^j$: $x, x^2, x^3,\dots, x^r$<br>$\Rightarrow$ measure second register, get $x^s$ with some $s\in\{0, 1,\dots r-1\}$</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_3\rangle &\propto \left( \vert s\rangle+\vert s+r\rangle+\vert s+2r\rangle+\cdots \right)\otimes \vert x^s\rangle\\
+    &=\frac{1}{\sqrt m}\sum^{m-1}_{j=0}\vert s+j\cdot r\rangle \otimes \vert x^s\rangle\qquad m\sim\frac{2^t}{r}
+\end{align*}</script><p>$QFT(\sum_j\vert s+jr\rangle)=?$</p>
+<ul>
+<li><p>Easy case: suppose $r\mid 2^t$, i.e. $2^t=m\cdot r$</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_4\rangle &= QFT^{-1}(\sum_j\vert s+jr\rangle)\\
+  &= \frac{1}{\sqrt m}\frac{1}{\sqrt{2^t}}\sum^{m-1}_{j=0}\sum^{2^t-1}_{k=0}e^{-2\pi i \frac{(s+jr)k}{2^t}}\vert k\rangle\\
+  &= \frac{1}{\sqrt{m2^t}}\sum^{2^t-1}_{k=0}e^{-2\pi i\frac{sk}{2^t}}\sum^{m-1}_{j=0}e^{-2\pi i\frac{jk}{m}}\vert k\rangle\\
+  \Rightarrow \left\vert \langle k\vert\psi_4\rangle\right\vert^2 &= \begin{cases}
+      \left\vert \sqrt{\frac{m}{2^t}}e^{i\phi_k} \right\vert^2=\frac{1}{r}, & \text{if } m\mid k,\\
+      0, & \text{otherwise}\\
+  \end{cases}\\
+  \Rightarrow m\mid k\Rightarrow &k=cm \Rightarrow \displaystyle\frac{k}{2^t}=\frac{c}{r}
+\end{align*}</script></li>
+<li><p>Hard case: $r\not\mid 2^t$</p>
+<ul>
+<li>Has error like when doing phase estimation and $\varphi\ne 0.b_1b_2\dots b_t$</li>
+<li>error similar to what we get in phase estimation (geometric sum)</li>
+<li>do continued fraction to get rid of error</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/JDiueGQ.png" width="300px"></p>
+<p>Some comparisons</p>
+<ul>
+<li>Same output distribution, different oracles</li>
+<li>Oracle of second interpretation has phase</li>
+<li>Second interpretation is similar to Simon’s algorithm</li>
+</ul>
+<h3 id="Shor’s-algorithm-for-N-3-times17-51"><a href="#Shor’s-algorithm-for-N-3-times17-51" class="headerlink" title="Shor’s algorithm for $N=3\times17=51$"></a>Shor’s algorithm for $N=3\times17=51$</h3><div class="note info">
+            <p>Recall</p><ul><li>$N=pq$, where $p$ and $q$ are primes.</li><li>Randomly pick $1&lt;x\le N-1$ co-prime to $N$, find order $x^r \equiv 1(\text{mod}~N)$<ul><li>if $r$ is odd, try another $r$ (with const probability)</li><li>if $r$ is even, compose $x^{r/2}(\text{mod}~N)$</li></ul></li><li>We know $(x^{r/2})^2\equiv (\text{mod}~N)\Rightarrow (x^{r/2}-1)(x^{r/2}+1)\equiv 0(\text{mod}~N)$</li></ul>
+          </div>
+<ol>
+<li>Pick $x=2$, find $r$ s.t. $x^r\equiv 1 (\text{mod}~N)$ (Using order-finding algorithm)<br> $\Rightarrow r=8$ ($r$ is even)</li>
+<li>$x^{r/2}+1=17, \quad x^{r/2}-1=15$</li>
+<li>Find $\text{gcd}(x^{r/2}-1, N)=\text{gcd}(15, 51)=3$</li>
+</ol>
+<p>Order-finding part (assume $t=6$, $2^t=64$, $2^t-1=63$):<br><img src="https://i.imgur.com/quthZiz.png" alt=""></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi_1\rangle &= (H^{\otimes 6}\vert 0\rangle^{\otimes 6})\otimes \vert 1\rangle =\frac{1}{8}\sum^{63}_{j=0}\vert j\rangle\otimes \vert 1\rangle\\
+\vert \psi_2\rangle &= \frac{1}{8}\sum^{63}_{j=0}\vert j\rangle \otimes \vert x^j\rangle
+\end{align*}</script><div class="note info">
+            <p>Recall:</p><script type="math/tex; mode=display">\begin{align*}&\frac{1}{\sqrt r}\sum^{r-1}_{s=0}\vert u_s\rangle=\vert 1\rangle\\\vert u_s\rangle &= \frac{1}{\sqrt r}\sum^{r-1}_{k=0}e^{-\frac{2\pi isk}{r}} \vert x^k \text{ mod}~N\rangle\\U_x\vert u_s\rangle &= \frac{1}{\sqrt r}\sum^{r-1}_{k=0}e^{-\frac{2\pi isk}{r}}\vert x^{k+1} \text{ mod}~N\rangle    = e^{\frac{2\pi is}{r}}\vert u_s\rangle\end{align*}</script>
+          </div>
+<script type="math/tex; mode=display">
+\begin{align*}
+\Rightarrow&&\vert 1\rangle &= \frac{1}{\sqrt 8}\sum^{7}_{s=0}\vert u_s\rangle, \quad \vert u_s\rangle = \frac{1}{\sqrt8}\sum^{7}_{y=0}e^{-2\pi i\frac{sy}{8}}\vert x^y\rangle\\
+&&(x^j)\vert u_s\rangle &= \frac{1}{\sqrt8}\sum^{7}_{y=0} e^{-2\pi i\frac{sy}{8}}\vert x^{j+y}\rangle \qquad (y'=j+y,~~y=y'-j)\\
+    &&&= \frac{1}{\sqrt8}\sum^{7}_{y=0} e^{-2\pi i\frac{s(y'-j)}{8}} \vert x^{y'}\rangle\\
+    &&&= e^{2\pi i\frac{sj}{8}}\vert u_s\rangle\\
+\Rightarrow&&\vert \psi_1\rangle &= \frac{1}{8}\sum^{63}_{j=0}\vert j\rangle \otimes \frac{1}{\sqrt 8}\sum^{7}_{s=0}\vert u_s\rangle\\
+\Rightarrow&&\vert \psi_2\rangle &= \frac{1}{8\sqrt8}\sum^{7}_{s=0}\sum^{63}_{j=0}\vert j\rangle \otimes e^{2\pi i\frac{sj}{8}}\vert u_s\rangle\\
+&&QFT_t\vert k\rangle &= \frac{1}{8}\sum^{63}_{j=0}e^{2\pi i\frac{kj}{64}}\vert j\rangle,\quad e^{2\pi i\frac{sj}{8}}=e^{2\pi i\frac{(8s)j}{64}}\\
+&&\Rightarrow~~&\frac{1}{8}\sum^{63}_{j=0}e^{2\pi i\frac{sj}{8}}\vert j\rangle = \frac{1}{8}\sum^{63}_{j=0}e^{2\pi i\frac{(8s)j}{64}}\vert j\rangle=QFT_t\vert 8s\rangle\\
+&&\Rightarrow~~&QFT^{-1}_t\big(QFT_t\vert 8s\rangle\big) = \vert 8s\rangle\\
+\Rightarrow&&\vert \psi_3\rangle&=\big(QFT^{-1}_t\otimes I\big)\vert \psi_2\rangle = \frac{1}{\sqrt 8}\sum^{7}_{s=0}\vert 8s\rangle \otimes \vert u_s\rangle
+\end{align*}</script><p>Measure the first register will randomly get $\{0, 8, 16, 24, 32, 40, 48, 56\}$</p>
+<p>$\Rightarrow$ Solve $r=8$</p>
+]]></content>
+      <categories>
+        <category>Quantum Computing</category>
+      </categories>
+      <tags>
+        <tag>Note</tag>
+        <tag>Quantum Computing</tag>
+        <tag>Quantum Algorithm</tag>
+        <tag>Quantum Circuits</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[Note] 神的語言 Metaprogramming: one_of</title>
     <url>/Ending2015a/58824/</url>
     <content><![CDATA[<h2 id="發想"><a href="#發想" class="headerlink" title="發想"></a>發想</h2><p>最近在寫程式的時候遇到一個情景，讓我非常困擾。<br>下面這個情況我不需要多加解釋，應該很多人也都有遇過類似這種困擾。</p>
