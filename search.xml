@@ -270,6 +270,242 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
       </tags>
   </entry>
   <entry>
+    <title>[Note] Quantum Computation and Quantum Information - Chapter 6: Quantum search algorithms</title>
+    <url>/Ending2015a/8802/</url>
+    <content><![CDATA[<p>上課筆記，原文書:</p>
+<blockquote>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+</blockquote>
+<p><img src="https://i.imgur.com/LMzyRKv.png" alt=""></p>
+<a id="more"></a>
+<h2 id="6-1-The-quantum-search-algorithm"><a href="#6-1-The-quantum-search-algorithm" class="headerlink" title="6.1 The quantum search algorithm"></a>6.1 The quantum search algorithm</h2><ul>
+<li>Search marked items out of $N$ items<ul>
+<li>Classical: $\Theta(N)$ operations</li>
+<li>Quantum: $O(\sqrt N)$ operations, $\Omega(\sqrt N)$ matching lower bound</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-1-1-The-oracle"><a href="#6-1-1-The-oracle" class="headerlink" title="6.1.1 The oracle"></a>6.1.1 The oracle</h3><ul>
+<li>Use a blackbox $\tilde{O_f}$ to store information about a function $f: \{0, 1\}^k\to\{0,1\}$.<ul>
+<li>$\tilde{O_f}\vert x\rangle\vert q\rangle = \vert x\rangle\vert f(x)\oplus q\rangle$</li>
+<li>In the search problem, we think $f(x)=1$ as an marked item, i.e. we want to find an $x$ s.t. $f(x)=1$</li>
+</ul>
+</li>
+<li>Quantum query complexity: number of $\tilde{O_f}$ you need to put in your circuit to solve the problem.</li>
+<li>Assume $N$ items (indexed $\{0, 1,\dots, N-1\}$), exactly $M$ marked items (i.e. solutions) $1\le M \le N$.<ul>
+<li>find any marked item: $O(\sqrt{\frac{N}{M}})$</li>
+<li>find all marked item: $\Theta(\sqrt{MN})$</li>
+<li>find first marked item: $O(\sqrt{N})$</li>
+</ul>
+</li>
+</ul>
+<h4 id="Phase-version-of-quantum-oracle"><a href="#Phase-version-of-quantum-oracle" class="headerlink" title="Phase version of quantum oracle"></a>Phase version of quantum oracle</h4><script type="math/tex; mode=display">
+\begin{align*}
+    \tilde{O_f}\vert x\rangle\vert -\rangle 
+        &= \tilde{O_f}\vert x\rangle \frac{1}{\sqrt 2}(\vert 0\rangle-\vert 1\rangle)\\
+        &= \begin{cases}
+                \vert x\rangle\vert -\rangle, &f(x)=0\\
+                -\vert x\rangle\vert -\rangle, & f(x)=1
+            \end{cases}\\
+        &= (-1)^{f(x)}\vert x\rangle\vert -\rangle
+\end{align*}</script><ul>
+<li>Using one $\tilde{O_f}$, we can simulate one $O_f$ s.t. <script type="math/tex; mode=display">
+  O_f\vert x\rangle=(-1)^{f(x)}\vert x\rangle</script></li>
+<li>We can also simulate $\tilde{O_f}$ with one controlled-$O_f$:<script type="math/tex; mode=display">
+  CO_f\vert x\rangle\vert y\rangle=(-1)^{f(x)}\vert x\rangle\vert y\rangle</script><ul>
+<li>$y$ is the control qubit</li>
+<li>$\tilde{O_f}$ and $CO_f$ is equivalant</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-1-2-The-procedure"><a href="#6-1-2-The-procedure" class="headerlink" title="6.1.2 The procedure"></a>6.1.2 The procedure</h3><p><img src="https://i.imgur.com/LMzyRKv.png" alt=""></p>
+<ul>
+<li><p>$G$ is the grover iteration, which composed of 4 steps:</p>
+<ol>
+<li>Apply Oracle $O_f$</li>
+<li>Apply $H^{\otimes n}$</li>
+<li>Apply an conditioned phase shift $(2\vert 0\rangle\langle 0\vert -I)$ (only $\vert 0\rangle$ get an extra phase of $-1$)<script type="math/tex; mode=display">
+\vert x\rangle \to -(-1)^{\delta_{x0}}\vert x\rangle</script></li>
+<li>Apply $H^{\otimes n}$<br><img src="https://i.imgur.com/QI4G07L.png" alt=""></li>
+</ol>
+</li>
+<li><p>Step 3 is a reflection about $\vert 0\rangle$:</p>
+<script type="math/tex; mode=display">
+\vert x\rangle \to (2\vert 0\rangle\langle 0\vert-I)\vert x \rangle</script></li>
+<li>Step 2 3 4 together is a reflection around $\vert \psi\rangle$<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi \rangle \equiv \frac{1}{\sqrt N}\sum^{N-1}_{x=0}\vert x\rangle&=H^{\otimes n}\vert 0\rangle\\
+H^{\otimes n}(2\vert 0\rangle\langle 0\vert - I)H^{\otimes n} 
+  &= 2\vert \psi\rangle\langle\psi\vert - (H^{\otimes n})^2\\
+  &= 2\vert \psi\rangle\langle \psi\vert -I
+\end{align*}</script></li>
+<li>Step 2 3 4 no oracle calls, can be implemented efficiently $O(n)$ gates</li>
+<li>$G=(2\vert \psi\rangle\langle\psi\vert -I)O_f$</li>
+</ul>
+<h3 id="6-1-3-Geometric-visualization"><a href="#6-1-3-Geometric-visualization" class="headerlink" title="6.1.3 Geometric visualization"></a>6.1.3 Geometric visualization</h3><p>Suppose there are $M$ marked items (solutions), let $\vert \beta\rangle$ be the superposition of all marked items, $\vert \alpha\rangle$ be the superposition of non-marked items</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \beta\rangle &\equiv \frac{1}{\sqrt M} \sum_{x:f(x)=1} \vert x\rangle\\
+\vert \alpha\rangle &\equiv \frac{1}{\sqrt {N-M}}\sum{x:f(x)=0} \vert x\rangle
+\end{align*}</script><script type="math/tex; mode=display">
+\Rightarrow \vert \psi\rangle = \sqrt{\frac{N-M}{N}}\vert \alpha\rangle + \sqrt{\frac{M}{N}}\vert \beta\rangle</script><ul>
+<li>Consider the 2D space spanned by $\vert \psi\rangle$ and $\vert \beta\rangle$<ul>
+<li>Oracle operation $O_f$ performs a reflection about the vector $\vert \alpha\rangle$ in the plane defined by $\vert \alpha\rangle$ and $\vert \beta\rangle$<script type="math/tex; mode=display">
+O_f(a\vert \alpha\rangle+b\vert \beta\rangle)=a\vert\alpha\rangle-b\vert \beta\rangle</script></li>
+<li>$(2\vert \psi\rangle\langle\psi\vert -I)$ performs a reflection about $\vert \psi\rangle$</li>
+<li>$G$ perfoms a rotation. Both $O_f$ and $(2\vert \psi\rangle\langle\psi\vert -I)$ doesn’t bring vectors outside of this 2D plane.<script type="math/tex; mode=display">
+G^k\vert \psi\rangle = \cos\left(\frac{2k+1}{2}\theta\right)\vert \alpha\rangle + \sin\left(\frac{2k+1}{2}\theta\right)\vert \beta\rangle</script><img src="https://i.imgur.com/McKd8nJ.png" alt=""></li>
+<li>The Grover iteration can be written as<script type="math/tex; mode=display">
+G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matrix}\right)</script></li>
+</ul>
+</li>
+<li>After that, get $\vert \beta\rangle=\frac{1}{\sqrt M}\sum_{x:f(x)=1}\vert x\rangle \Rightarrow$ measure to get random $x$</li>
+</ul>
+<h3 id="6-1-4-Performance"><a href="#6-1-4-Performance" class="headerlink" title="6.1.4 Performance"></a>6.1.4 Performance</h3><ul>
+<li>How many iterations does Grover’s search need?<ul>
+<li>$\displaystyle\langle \beta \vert \psi\rangle = \sqrt{\frac{M}{N}} = \sin\frac{\theta}{2}$</li>
+<li>Assume $\displaystyle M\ll N~\Rightarrow \sin\frac{\theta}{2}\approx \frac{\theta}{2}~\Rightarrow~\theta \approx 2\sqrt{\frac{M}{N}} =\Omega(\sqrt{\frac{M}{N}})$</li>
+<li>We want $\displaystyle\frac{2k+1}{2}\theta=\frac{\pi}{2}~\Rightarrow~ k=\frac{\pi}{2\theta}-\frac{1}{2}\approx \frac{\pi}{2\theta}\approx \frac{\pi}{4}\sqrt{\frac{M}{N}}\approx O(\sqrt{\frac{N}{M}})$</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/QHCmhbv.png" width="400px"></p>
+<ul>
+<li>The probability of getting a solution:<script type="math/tex; mode=display">
+  Pr(\text{success}) = \displaystyle\sin^2\left((k+\frac{1}{2})\theta\right)</script></li>
+<li>The probability of falure: <script type="math/tex; mode=display">
+  \begin{align*}
+  1-Pr(\text{success}) &=\displaystyle\cos^2\left((k+\frac{1}{2})\theta\right)\\
+  &= \sin^2\left(\frac{\pi}{2}-(k+\frac{1}{2})\theta\right)\\
+  &= \sin^2\vert\delta\vert\le \sin^2\frac{\theta}{2}=\frac{M}{N}
+  \end{align*}</script></li>
+<li>This algorith requires you to know $M$. Otherwise, you might <strong>overshoot</strong>.</li>
+<li>If you know $M$, it is possible to make success probability $100\%$. The idea is to make $\theta$ a little smaller so $k=\frac{\pi}{2\theta}-\frac{1}{2}$ is an integer</li>
+<li>If we don’t know $M$, we can do <strong>quantum counting</strong> to estimate $M$ first.</li>
+</ul>
+<h3 id="6-2-Quantum-search-as-a-quantum-simulation"><a href="#6-2-Quantum-search-as-a-quantum-simulation" class="headerlink" title="6.2 Quantum search as a quantum simulation"></a>6.2 Quantum search as a quantum simulation</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="6-3-Quantum-Counting"><a href="#6-3-Quantum-Counting" class="headerlink" title="6.3 Quantum Counting"></a>6.3 Quantum Counting</h3><ul>
+<li>Estimate the number of solutions $M$ from $N$ items with a probability of success at least $1-\varepsilon$<ul>
+<li>Classical: $\Omega(\frac{1}{\varepsilon^2}\frac{N}{M})$</li>
+<li>Quantum: $O(\frac{1}{\varepsilon}\sqrt{\frac{N}{M}})$ queries, for some $\varepsilon$ multiplicative error.</li>
+</ul>
+</li>
+<li>Idea: apply phase estimation to Grover iteration $G$<script type="math/tex; mode=display">
+  G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matrix}\right)</script><ul>
+<li>Have eigenvalues $e^{i\theta}$ and $e^{i(2\pi-\theta)}$.</li>
+<li>Estimate $\theta$ to $m$ bits of accuracy ($\vert\Delta\theta\vert\le2^{-m}$) with a probability of success at least $1-\varepsilon$. </li>
+</ul>
+</li>
+</ul>
+<p>Preparation:</p>
+<ul>
+<li>Assume the search space is augmented $N\to2N$ for convenient, $\sin^2(\theta/2)=M/2N$. </li>
+<li>Use $t=m+\lceil\log(2+\frac{1}{2\varepsilon})\rceil$ bits.</li>
+<li>$\vert \psi\rangle=\sum_x\vert x\rangle$ as input to oracle (superposition of all possible states)<br><img src="https://i.imgur.com/sgs8t7h.png" alt=""></li>
+</ul>
+<div class="note success">
+            <p><em>Proof</em></p><p>Recall that $\sin^2\frac{\theta}{2}=\frac{M}{2N}$, we estimate $M$ by estimating $\theta$ (assume $\theta&lt;\frac{\pi}{2}$)</p><script type="math/tex; mode=display">\begin{align*}\frac{\vert \Delta M\vert}{2N}     &= \left\vert \sin^2\frac{(\theta+\Delta\theta)}{2}-\sin^2\frac{\theta}{2} \right\vert\\    &= \left(\sin\frac{(\theta+\Delta\theta)}{2}+\sin\frac{\theta}{2}\right)\left\vert \sin\frac{(\theta+\Delta\theta)}{2}-\sin\frac{\theta}{2} \right\vert\end{align*}</script><p>Two parts:</p><script type="math/tex; mode=display">\begin{align*}\left\vert \sin\frac{(\theta+\Delta\theta)}{2}-\sin\frac{\theta}{2} \right\vert    &= \left\vert \cos\left(\frac{\theta}{2}+\frac{\Delta\theta}{4}\sin\frac{\Delta\theta}{4}\right) \right\vert \\    &\le \frac{\vert \Delta\theta\vert}{4}\le\frac{\vert \Delta\theta\vert}{2}\\\left\vert \sin\left(\frac{\theta+\Delta\theta}{2}\right)\right\vert    &= \left\vert \sin\frac{\theta}{2}\cos\frac{\Delta\theta}{2}+\sin\frac{\Delta\theta}{2}\cos\frac{\theta}{2} \right\vert\\    &\le \sin\frac{\theta}{2}+\frac{\vert\Delta\theta\vert}{2}\end{align*}</script><p>Implies:</p><script type="math/tex; mode=display">\begin{align*}\Rightarrow &&\frac{\vert\Delta M\vert}{2N}    &\le (2\sin\frac{\theta}{2}+\frac{\vert\Delta\theta\vert}{2})\frac{\vert\Delta\theta\vert}{2}\\    &&&\le \left(\sqrt{\frac{2M}{N}}+2^{-(m+1)}\right)\frac{2^{-m}}{2}\\\Rightarrow && \vert \Delta M\vert     &\le (\sqrt{2MN}+\frac{N}{2^{m+1}})2^{-m}\end{align*}</script><ul><li>Pick $\vert \Delta M\vert=\varepsilon M~\Rightarrow~ \varepsilon M\approx 2^{-m}\sqrt{MN}~\Rightarrow~2^m\approx\frac{1}{\varepsilon}\sqrt{\frac{N}{M}}$.</li><li>Use $t=m+\lceil\log(2+\frac{1}{2\delta})\rceil$ bits, need $2^0+2^1+…+2^{t-1}=2^t-1$ Grover iterations for phase estimation $\Rightarrow$ number of quries (oracle calls) $\sim 2^t$<script type="math/tex; mode=display">  2^t=2^m\cdot 2^{\lceil\log(2+\frac{1}{2\delta})\rceil}\approx \frac{1}{\varepsilon}\sqrt{\frac{N}{M}}\left(2+\frac{1}{2\delta}\right)=O(\frac{1}{\varepsilon}\sqrt\frac{N}{M})</script></li></ul>
+          </div>
+<h3 id="6-4-Speeding-up-the-solution-of-NP-complete-problems"><a href="#6-4-Speeding-up-the-solution-of-NP-complete-problems" class="headerlink" title="6.4 Speeding up the solution of NP-complete problems"></a>6.4 Speeding up the solution of NP-complete problems</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="6-5-Quantum-search-of-an-unstructured-database"><a href="#6-5-Quantum-search-of-an-unstructured-database" class="headerlink" title="6.5 Quantum search of an unstructured database"></a>6.5 Quantum search of an unstructured database</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="6-6-Optimality-of-the-search-algorithm"><a href="#6-6-Optimality-of-the-search-algorithm" class="headerlink" title="6.6 Optimality of the search algorithm"></a>6.6 Optimality of the search algorithm</h3><ul>
+<li>No quantum algorithm can perform oracle search using fewer than $\Omega(\sqrt N)$ quries.</li>
+<li>Idea: adversary method<ul>
+<li>Quantum query algorithms can be viewed as<br>  <img src="https://i.imgur.com/uFy7hCx.png" alt=""></li>
+<li>Consider the distance between $\vert \psi^f_k\rangle$ and $\vert \psi^{f’}_k\rangle$ for some function $f$ and $f’$<script type="math/tex; mode=display">
+  \left\Vert \vert \psi^f_k\rangle-\vert \psi^{f'}_k\rangle \right\Vert^2</script></li>
+<li>Start with zer odistance $\vert \psi^f_0\rangle=U_0\vert 0\rangle, ~\forall~f$</li>
+<li>For some $(f, f’)$ pairs, $\vert \psi^f_k\rangle$ and $\vert \psi^{f’}_k\rangle$ are distinguishable $\Rightarrow$ const distance.<ul>
+<li>for example, $f(x)=0~\forall x$ and $\exists x$ s.t. $f’(x)=1$</li>
+</ul>
+</li>
+<li>In the middle, note that $U_t$ does not change the distance<script type="math/tex; mode=display">
+  \begin{align*}
+  \left\Vert U\vert a\rangle - U\vert b\rangle \right\Vert
+      &= \left\Vert U(\vert a\rangle-\vert b\rangle) \right\Vert^2\\
+      &= (\langle a\vert -\langle b\vert)U^\dagger U(\vert a\rangle-\vert b\rangle)\\
+      &= \left\Vert \vert a\rangle - \vert b\rangle \right\Vert^2
+  \end{align*}</script></li>
+<li>For a specific pair of $(f, f’)$, $O_f$ and $O_{f’}$ might change the distance between $\vert \psi^f_t\rangle$ and $\vert \psi^{f’}_{t}\rangle$ a lot. Eg. $\vert \psi^f_t\rangle=\vert \psi^{f’}_t=\vert x\rangle$ for some $x$ s.t. $f(x)=0$ and $f’(x)=1$ $\Rightarrow$ distance changed by const.</li>
+<li>So we sum over different pairs of $(f, f’)$, such that the sum of distance cannot increase a lot.</li>
+<li>Sum of distance start with zero, end with something big, cannot change too much each step $\Rightarrow$ need many steps.</li>
+</ul>
+</li>
+</ul>
+<p>Way to proof:</p>
+<ul>
+<li>Consider <script type="math/tex; mode=display">
+  \begin{align*}
+  f_0 &= \text{all zeros}&\\
+  f_x &= \begin{cases}f(x)=1\\f(y)=0, &\forall y\ne x\end{cases}
+  \end{align*}</script>  we pair between $(f_0, f_x)~~\forall x\in\{1,2,\dots, N\}$</li>
+<li>Use the phase version of the oracle (ignore control, ignore ancilla)<script type="math/tex; mode=display">
+  O_{f_0}=I, \quad O_{f_x}\vert y\rangle=(-1)^{\delta_{xy}}\vert y\rangle = (I-2\vert x\rangle\langle x\vert)\vert y\rangle</script><ul>
+<li>Define $O_x\equiv O_{f_x}=I-2\vert x\rangle\langle x\vert$</li>
+</ul>
+</li>
+<li>Define <script type="math/tex; mode=display">
+  \begin{align*}
+  \vert \psi^x_k\rangle &\equiv\vert \psi^{f_x}_k\rangle=U_kO_xU_{k-1}O_x\cdots U_1O_xU_0\vert 0\rangle\\
+  \vert \psi_k\rangle &\equiv\vert \psi^{f_0}_k\rangle=U_kU_{k-1}\cdots U_0\vert 0\rangle
+  \end{align*}</script></li>
+<li>Define “Progress function” $D_k$, the deviation after $k$ steps (simplified notations)<script type="math/tex; mode=display">
+  \begin{align*}
+  D_k\equiv \sum^N_{x=1}\left\Vert\psi^x_k-\psi_k\right\Vert^2
+  \end{align*}</script></li>
+<li>Need to prove two parts<ol>
+<li>$D_k \le O(k^2)$ (Induction)</li>
+<li>$D_k=\Omega(N)$ to success</li>
+</ol>
+</li>
+<li>Finally $\Rightarrow~k=\Omega(\sqrt N)$</li>
+</ul>
+<div class="note success">
+            <p><em>Proof</em> $D_k\le4k^2$</p><p>By induction</p><p>Hypothesis: $D_k\le4k^2$</p><p>Base case: $k=0$, $D_k=0$</p><p>Induction step:</p><script type="math/tex; mode=display">\begin{align*}D_{k+1} &= \sum_x \left\Vert U_{k+1}O_x\psi^x_k-U_{k+1}\psi_k \right\Vert^2\\    &= \sum_x\left\Vert O_x\psi^x_k-\psi_k \right\Vert^2\\    &= \sum_x\big\Vert \underbrace{O_x(\psi^x_k-\psi_k)}_{b}+\underbrace{(O_x-I)\psi_k}_{c} \big\Vert^2\end{align*}</script><p>Applying $\left\Vert b+c\right\Vert^2\le \left\Vert b\right\Vert^2 + 2\left\Vert b\right\Vert \left\Vert c\right\Vert+\left\Vert c\right\Vert^2$ with $b\equiv O_x(\psi^x_k-\psi_k)$ and $c\equiv (O_x-I)\psi_k=-2\vert x\rangle\langle x\vert\psi_k\rangle=-2\langle x\vert \psi_k\rangle\vert x\rangle$</p><script type="math/tex; mode=display">D_{k+1}\le \sum_x\left(\underbrace{\left\Vert \psi^x_k-\psi_k\right\Vert^2}_{D_k} +4\underbrace{\left\Vert \psi^x_k-\psi_k \right\Vert\langle x\vert \psi_k\rangle}_{\text{Cauchy}}+4\underbrace{\left\vert \langle \psi_k\vert x\rangle \right\vert^2}_{1} \right)</script><p>Because $\sum_x\left\vert \langle\psi_k\vert x\rangle \right\vert^2=\sum_x\langle\psi_k\vert x\rangle\langle x\vert \psi_k\rangle=\langle \psi_k\vert \underbrace{\left(\sum_x\vert x\rangle\langle x\vert\right)}_{I}\vert\psi_k\rangle=1$. By Cauchy’s inequality $\sum_x a_xb_x\le \sqrt{\sum_x a^2_x}\sqrt{\sum_x b^2_x}$.</p><script type="math/tex; mode=display">\begin{align*}D_{k+1} &\le D_k +4{\textstyle\sqrt{\sum_x\left\Vert \psi^x_k-\psi_k \right\Vert^2}\sqrt{\sum_x\left\vert \langle \psi_k\vert x\rangle \right\vert^2} }+4\\    &\le D_k + 4\sqrt{D_k} + 4\end{align*}</script><p>By induction hypothesis $D_k\le 4k^2$</p><script type="math/tex; mode=display">D_{k+1}\le 4k^2 +4\cdot 2k + 4 = 4(k+1)^2</script><p>Hence, $D_k\le 4k^2$.</p>
+          </div>
+<div class="note success">
+            <p><em>Proof</em> $D_k=\Omega(N)$</p><p>Assume $\exists$ projector $P$ s.t. $\left\Vert P\vert\psi_k\rangle \right\Vert^2\le \frac{1}{9}, ~\left\Vert P\vert\psi^x_k\rangle \right\Vert^2\le \frac{8}{9}, ~\forall x$. (some magic number: distinguish prob. $\approx 1/3$)</p><p><em>Claim</em>: if there $\exists~p$ s.t. $\left\Vert P\vert a\rangle \right\Vert^2\le \frac{1}{9}, ~\left\Vert P\vert b\rangle \right\Vert^2\le \frac{8}{9}~\Rightarrow~\left\Vert\vert a\rangle-\vert b\rangle\right\Vert^2\ge\frac{2}{3}$</p><p><em>Proof</em>: Note that $\left\Vert(I-P)\vert b\rangle\right\Vert^2\le \frac{1}{9}$.</p><p>Consider $\vert \langle a\vert b\rangle\vert$</p><script type="math/tex; mode=display">\begin{align*}\vert \langle a\vert b\rangle\vert    &= \left\vert \langle a\vert (I-P)+p \vert b\rangle \right\vert\\    &\le \vert \langle a \vert (I-P)\vert b\rangle \vert + \vert \langle a\vert P\vert b\rangle\vert\\    &\le \left\Vert a \right\Vert \left\Vert (I-P)b \right\Vert + \left\Vert a(P) \right\Vert \left\Vert b \right\Vert\\    &\le 1\cdot \frac{1}{3}+1\cdot \frac{1}{3} =\frac{2}{3}\end{align*}</script><p>Thus</p><script type="math/tex; mode=display">\begin{align*}\left\Vert \vert a\rangle-\vert b\rangle \right\Vert^2    &= \left\Vert a\right\Vert^2+\left\Vert b\right\Vert^2 -\langle a\vert b\rangle -\langle b\vert a\rangle\\    &= 2 - 2\vert \langle a\vert b\rangle\vert\ge 2(1-\frac{2}{3})=\frac{2}{3}\end{align*}</script><p>Let $\vert a\rangle = \vert \psi_k\rangle$ and $\vert b\rangle=\vert \psi^x_k\rangle$</p><script type="math/tex; mode=display">\begin{align*}D_k&=\sum_x\left\Vert \vert \psi_k\rangle-\vert \psi^x_k\rangle\right\Vert^2 \ge \sum_x\frac{2}{3} = \frac{2N}{3}\\\Rightarrow D_k&=\Omega(N)\end{align*}</script>
+          </div>
+<div class="note success">
+            <p><em>Proof</em> $k=\Omega(\sqrt N)$</p><p>By $D_k\le 4k^2$ and $D_k\ge\frac{2N}{3}$</p><script type="math/tex; mode=display">\frac{2N}{3}\le D_k\le 4k^2~\Rightarrow~k\ge\sqrt{\frac{N}{6}}=\Omega(\sqrt N)</script>
+          </div>
+<ul>
+<li>This can be generalized to adversary method<ul>
+<li>Weight on different pairs</li>
+<li>Can put negative weight on some pairs. negative weight adversary bound is optimal.</li>
+</ul>
+</li>
+<li>State distinguishment (Ch. 9)<ul>
+<li>Trace distance: $D_\text{tr}(\rho, \sigma)=\frac{1}{2}\text{tr}\vert\rho-\sigma\vert$, maximum distinguish prob.</li>
+<li>Fidelity: $F(\psi, \phi)=\vert\langle\psi\vert\phi\rangle\vert$</li>
+<li>For pure state: $D_\text{tr}(\psi, \phi)^2+F(\psi, \phi)^2=1$</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-7-Black-box-algorithm-limits"><a href="#6-7-Black-box-algorithm-limits" class="headerlink" title="6.7 Black box algorithm limits"></a>6.7 Black box algorithm limits</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h2 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h2><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="Better-bounds-on-distinguish-quantum-states"><a href="#Better-bounds-on-distinguish-quantum-states" class="headerlink" title="Better bounds on distinguish quantum states"></a>Better bounds on distinguish quantum states</h3><h3 id="Applications-of-Grover’s-algorithm"><a href="#Applications-of-Grover’s-algorithm" class="headerlink" title="Applications of Grover’s algorithm"></a>Applications of Grover’s algorithm</h3><h3 id="Exact-Grover-search"><a href="#Exact-Grover-search" class="headerlink" title="Exact Grover search"></a>Exact Grover search</h3><h3 id="Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items"><a href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items" class="headerlink" title="$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items"></a>$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items</h3><h3 id="Minimum-finding"><a href="#Minimum-finding" class="headerlink" title="Minimum finding"></a>Minimum finding</h3>]]></content>
+      <categories>
+        <category>Quantum Computing</category>
+      </categories>
+      <tags>
+        <tag>Note</tag>
+        <tag>Quantum Computing</tag>
+        <tag>Quantum Algorithm</tag>
+        <tag>Quantum Circuits</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[Note] AuTO: Scaling Deep Reinforcement Learnign for Datacenter-Scale Automatic Traffic Optimization</title>
     <url>/Ending2015a/41710/</url>
     <content><![CDATA[<p><img src="https://i.imgur.com/xLpxJlN.png" alt=""></p>

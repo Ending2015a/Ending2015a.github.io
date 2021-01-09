@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+
+
+<script data-ad-client="ca-pub-7507926436817293" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="qULwlr5gDdA6ifhvmwMcyP1IiJiGz25AOy3ezrOL-7k">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ending2015a.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+  <meta name="description" content="上課筆記，原文書:  Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Note] Quantum Computation and Quantum Information - Chapter 6: Quantum search algorithms">
+<meta property="og:url" content="https://ending2015a.github.io/Ending2015a/8802/index.html">
+<meta property="og:site_name" content="My Notes">
+<meta property="og:description" content="上課筆記，原文書:  Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/LMzyRKv.png">
+<meta property="og:image" content="https://i.imgur.com/LMzyRKv.png">
+<meta property="og:image" content="https://i.imgur.com/QI4G07L.png">
+<meta property="og:image" content="https://i.imgur.com/McKd8nJ.png">
+<meta property="og:image" content="https://i.imgur.com/QHCmhbv.png">
+<meta property="og:image" content="https://i.imgur.com/sgs8t7h.png">
+<meta property="og:image" content="https://i.imgur.com/uFy7hCx.png">
+<meta property="article:published_time" content="2021-01-09T14:31:02.000Z">
+<meta property="article:modified_time" content="2021-01-09T14:40:04.968Z">
+<meta property="article:author" content="Joe Hsiao">
+<meta property="article:tag" content="Note">
+<meta property="article:tag" content="Quantum Computing">
+<meta property="article:tag" content="Quantum Algorithm">
+<meta property="article:tag" content="Quantum Circuits">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/LMzyRKv.png">
+
+<link rel="canonical" href="https://ending2015a.github.io/Ending2015a/8802/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>[Note] Quantum Computation and Quantum Information - Chapter 6: Quantum search algorithms | My Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZE22590KG"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KZE22590KG');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">My Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>網站地圖</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/Ending2015a" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://ending2015a.github.io/Ending2015a/8802/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/TBCKPn1.jpg">
+      <meta itemprop="name" content="Joe Hsiao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [Note] Quantum Computation and Quantum Information - Chapter 6: Quantum search algorithms
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2021-01-09 22:31:02 / 修改時間：22:40:04" itemprop="dateCreated datePublished" datetime="2021-01-09T22:31:02+08:00">2021-01-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Quantum-Computing/" itemprop="url" rel="index"><span itemprop="name">Quantum Computing</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span class="firestore-visitors-count"></span>
+            </span><br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>32 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上課筆記，原文書:</p>
+<blockquote>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+</blockquote>
+<p><img src="https://i.imgur.com/LMzyRKv.png" alt=""></p>
+<a id="more"></a>
+<h2 id="6-1-The-quantum-search-algorithm"><a href="#6-1-The-quantum-search-algorithm" class="headerlink" title="6.1 The quantum search algorithm"></a>6.1 The quantum search algorithm</h2><ul>
+<li>Search marked items out of $N$ items<ul>
+<li>Classical: $\Theta(N)$ operations</li>
+<li>Quantum: $O(\sqrt N)$ operations, $\Omega(\sqrt N)$ matching lower bound</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-1-1-The-oracle"><a href="#6-1-1-The-oracle" class="headerlink" title="6.1.1 The oracle"></a>6.1.1 The oracle</h3><ul>
+<li>Use a blackbox $\tilde{O_f}$ to store information about a function $f: \{0, 1\}^k\to\{0,1\}$.<ul>
+<li>$\tilde{O_f}\vert x\rangle\vert q\rangle = \vert x\rangle\vert f(x)\oplus q\rangle$</li>
+<li>In the search problem, we think $f(x)=1$ as an marked item, i.e. we want to find an $x$ s.t. $f(x)=1$</li>
+</ul>
+</li>
+<li>Quantum query complexity: number of $\tilde{O_f}$ you need to put in your circuit to solve the problem.</li>
+<li>Assume $N$ items (indexed $\{0, 1,\dots, N-1\}$), exactly $M$ marked items (i.e. solutions) $1\le M \le N$.<ul>
+<li>find any marked item: $O(\sqrt{\frac{N}{M}})$</li>
+<li>find all marked item: $\Theta(\sqrt{MN})$</li>
+<li>find first marked item: $O(\sqrt{N})$</li>
+</ul>
+</li>
+</ul>
+<h4 id="Phase-version-of-quantum-oracle"><a href="#Phase-version-of-quantum-oracle" class="headerlink" title="Phase version of quantum oracle"></a>Phase version of quantum oracle</h4><script type="math/tex; mode=display">
+\begin{align*}
+    \tilde{O_f}\vert x\rangle\vert -\rangle 
+        &= \tilde{O_f}\vert x\rangle \frac{1}{\sqrt 2}(\vert 0\rangle-\vert 1\rangle)\\
+        &= \begin{cases}
+                \vert x\rangle\vert -\rangle, &f(x)=0\\
+                -\vert x\rangle\vert -\rangle, & f(x)=1
+            \end{cases}\\
+        &= (-1)^{f(x)}\vert x\rangle\vert -\rangle
+\end{align*}</script><ul>
+<li>Using one $\tilde{O_f}$, we can simulate one $O_f$ s.t. <script type="math/tex; mode=display">
+  O_f\vert x\rangle=(-1)^{f(x)}\vert x\rangle</script></li>
+<li>We can also simulate $\tilde{O_f}$ with one controlled-$O_f$:<script type="math/tex; mode=display">
+  CO_f\vert x\rangle\vert y\rangle=(-1)^{f(x)}\vert x\rangle\vert y\rangle</script><ul>
+<li>$y$ is the control qubit</li>
+<li>$\tilde{O_f}$ and $CO_f$ is equivalant</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-1-2-The-procedure"><a href="#6-1-2-The-procedure" class="headerlink" title="6.1.2 The procedure"></a>6.1.2 The procedure</h3><p><img src="https://i.imgur.com/LMzyRKv.png" alt=""></p>
+<ul>
+<li><p>$G$ is the grover iteration, which composed of 4 steps:</p>
+<ol>
+<li>Apply Oracle $O_f$</li>
+<li>Apply $H^{\otimes n}$</li>
+<li>Apply an conditioned phase shift $(2\vert 0\rangle\langle 0\vert -I)$ (only $\vert 0\rangle$ get an extra phase of $-1$)<script type="math/tex; mode=display">
+\vert x\rangle \to -(-1)^{\delta_{x0}}\vert x\rangle</script></li>
+<li>Apply $H^{\otimes n}$<br><img src="https://i.imgur.com/QI4G07L.png" alt=""></li>
+</ol>
+</li>
+<li><p>Step 3 is a reflection about $\vert 0\rangle$:</p>
+<script type="math/tex; mode=display">
+\vert x\rangle \to (2\vert 0\rangle\langle 0\vert-I)\vert x \rangle</script></li>
+<li>Step 2 3 4 together is a reflection around $\vert \psi\rangle$<script type="math/tex; mode=display">
+\begin{align*}
+\vert \psi \rangle \equiv \frac{1}{\sqrt N}\sum^{N-1}_{x=0}\vert x\rangle&=H^{\otimes n}\vert 0\rangle\\
+H^{\otimes n}(2\vert 0\rangle\langle 0\vert - I)H^{\otimes n} 
+  &= 2\vert \psi\rangle\langle\psi\vert - (H^{\otimes n})^2\\
+  &= 2\vert \psi\rangle\langle \psi\vert -I
+\end{align*}</script></li>
+<li>Step 2 3 4 no oracle calls, can be implemented efficiently $O(n)$ gates</li>
+<li>$G=(2\vert \psi\rangle\langle\psi\vert -I)O_f$</li>
+</ul>
+<h3 id="6-1-3-Geometric-visualization"><a href="#6-1-3-Geometric-visualization" class="headerlink" title="6.1.3 Geometric visualization"></a>6.1.3 Geometric visualization</h3><p>Suppose there are $M$ marked items (solutions), let $\vert \beta\rangle$ be the superposition of all marked items, $\vert \alpha\rangle$ be the superposition of non-marked items</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\vert \beta\rangle &\equiv \frac{1}{\sqrt M} \sum_{x:f(x)=1} \vert x\rangle\\
+\vert \alpha\rangle &\equiv \frac{1}{\sqrt {N-M}}\sum{x:f(x)=0} \vert x\rangle
+\end{align*}</script><script type="math/tex; mode=display">
+\Rightarrow \vert \psi\rangle = \sqrt{\frac{N-M}{N}}\vert \alpha\rangle + \sqrt{\frac{M}{N}}\vert \beta\rangle</script><ul>
+<li>Consider the 2D space spanned by $\vert \psi\rangle$ and $\vert \beta\rangle$<ul>
+<li>Oracle operation $O_f$ performs a reflection about the vector $\vert \alpha\rangle$ in the plane defined by $\vert \alpha\rangle$ and $\vert \beta\rangle$<script type="math/tex; mode=display">
+O_f(a\vert \alpha\rangle+b\vert \beta\rangle)=a\vert\alpha\rangle-b\vert \beta\rangle</script></li>
+<li>$(2\vert \psi\rangle\langle\psi\vert -I)$ performs a reflection about $\vert \psi\rangle$</li>
+<li>$G$ perfoms a rotation. Both $O_f$ and $(2\vert \psi\rangle\langle\psi\vert -I)$ doesn’t bring vectors outside of this 2D plane.<script type="math/tex; mode=display">
+G^k\vert \psi\rangle = \cos\left(\frac{2k+1}{2}\theta\right)\vert \alpha\rangle + \sin\left(\frac{2k+1}{2}\theta\right)\vert \beta\rangle</script><img src="https://i.imgur.com/McKd8nJ.png" alt=""></li>
+<li>The Grover iteration can be written as<script type="math/tex; mode=display">
+G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matrix}\right)</script></li>
+</ul>
+</li>
+<li>After that, get $\vert \beta\rangle=\frac{1}{\sqrt M}\sum_{x:f(x)=1}\vert x\rangle \Rightarrow$ measure to get random $x$</li>
+</ul>
+<h3 id="6-1-4-Performance"><a href="#6-1-4-Performance" class="headerlink" title="6.1.4 Performance"></a>6.1.4 Performance</h3><ul>
+<li>How many iterations does Grover’s search need?<ul>
+<li>$\displaystyle\langle \beta \vert \psi\rangle = \sqrt{\frac{M}{N}} = \sin\frac{\theta}{2}$</li>
+<li>Assume $\displaystyle M\ll N~\Rightarrow \sin\frac{\theta}{2}\approx \frac{\theta}{2}~\Rightarrow~\theta \approx 2\sqrt{\frac{M}{N}} =\Omega(\sqrt{\frac{M}{N}})$</li>
+<li>We want $\displaystyle\frac{2k+1}{2}\theta=\frac{\pi}{2}~\Rightarrow~ k=\frac{\pi}{2\theta}-\frac{1}{2}\approx \frac{\pi}{2\theta}\approx \frac{\pi}{4}\sqrt{\frac{M}{N}}\approx O(\sqrt{\frac{N}{M}})$</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/QHCmhbv.png" width="400px"></p>
+<ul>
+<li>The probability of getting a solution:<script type="math/tex; mode=display">
+  Pr(\text{success}) = \displaystyle\sin^2\left((k+\frac{1}{2})\theta\right)</script></li>
+<li>The probability of falure: <script type="math/tex; mode=display">
+  \begin{align*}
+  1-Pr(\text{success}) &=\displaystyle\cos^2\left((k+\frac{1}{2})\theta\right)\\
+  &= \sin^2\left(\frac{\pi}{2}-(k+\frac{1}{2})\theta\right)\\
+  &= \sin^2\vert\delta\vert\le \sin^2\frac{\theta}{2}=\frac{M}{N}
+  \end{align*}</script></li>
+<li>This algorith requires you to know $M$. Otherwise, you might <strong>overshoot</strong>.</li>
+<li>If you know $M$, it is possible to make success probability $100\%$. The idea is to make $\theta$ a little smaller so $k=\frac{\pi}{2\theta}-\frac{1}{2}$ is an integer</li>
+<li>If we don’t know $M$, we can do <strong>quantum counting</strong> to estimate $M$ first.</li>
+</ul>
+<h3 id="6-2-Quantum-search-as-a-quantum-simulation"><a href="#6-2-Quantum-search-as-a-quantum-simulation" class="headerlink" title="6.2 Quantum search as a quantum simulation"></a>6.2 Quantum search as a quantum simulation</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="6-3-Quantum-Counting"><a href="#6-3-Quantum-Counting" class="headerlink" title="6.3 Quantum Counting"></a>6.3 Quantum Counting</h3><ul>
+<li>Estimate the number of solutions $M$ from $N$ items with a probability of success at least $1-\varepsilon$<ul>
+<li>Classical: $\Omega(\frac{1}{\varepsilon^2}\frac{N}{M})$</li>
+<li>Quantum: $O(\frac{1}{\varepsilon}\sqrt{\frac{N}{M}})$ queries, for some $\varepsilon$ multiplicative error.</li>
+</ul>
+</li>
+<li>Idea: apply phase estimation to Grover iteration $G$<script type="math/tex; mode=display">
+  G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matrix}\right)</script><ul>
+<li>Have eigenvalues $e^{i\theta}$ and $e^{i(2\pi-\theta)}$.</li>
+<li>Estimate $\theta$ to $m$ bits of accuracy ($\vert\Delta\theta\vert\le2^{-m}$) with a probability of success at least $1-\varepsilon$. </li>
+</ul>
+</li>
+</ul>
+<p>Preparation:</p>
+<ul>
+<li>Assume the search space is augmented $N\to2N$ for convenient, $\sin^2(\theta/2)=M/2N$. </li>
+<li>Use $t=m+\lceil\log(2+\frac{1}{2\varepsilon})\rceil$ bits.</li>
+<li>$\vert \psi\rangle=\sum_x\vert x\rangle$ as input to oracle (superposition of all possible states)<br><img src="https://i.imgur.com/sgs8t7h.png" alt=""></li>
+</ul>
+<div class="note success">
+            <p><em>Proof</em></p><p>Recall that $\sin^2\frac{\theta}{2}=\frac{M}{2N}$, we estimate $M$ by estimating $\theta$ (assume $\theta&lt;\frac{\pi}{2}$)</p><script type="math/tex; mode=display">\begin{align*}\frac{\vert \Delta M\vert}{2N}     &= \left\vert \sin^2\frac{(\theta+\Delta\theta)}{2}-\sin^2\frac{\theta}{2} \right\vert\\    &= \left(\sin\frac{(\theta+\Delta\theta)}{2}+\sin\frac{\theta}{2}\right)\left\vert \sin\frac{(\theta+\Delta\theta)}{2}-\sin\frac{\theta}{2} \right\vert\end{align*}</script><p>Two parts:</p><script type="math/tex; mode=display">\begin{align*}\left\vert \sin\frac{(\theta+\Delta\theta)}{2}-\sin\frac{\theta}{2} \right\vert    &= \left\vert \cos\left(\frac{\theta}{2}+\frac{\Delta\theta}{4}\sin\frac{\Delta\theta}{4}\right) \right\vert \\    &\le \frac{\vert \Delta\theta\vert}{4}\le\frac{\vert \Delta\theta\vert}{2}\\\left\vert \sin\left(\frac{\theta+\Delta\theta}{2}\right)\right\vert    &= \left\vert \sin\frac{\theta}{2}\cos\frac{\Delta\theta}{2}+\sin\frac{\Delta\theta}{2}\cos\frac{\theta}{2} \right\vert\\    &\le \sin\frac{\theta}{2}+\frac{\vert\Delta\theta\vert}{2}\end{align*}</script><p>Implies:</p><script type="math/tex; mode=display">\begin{align*}\Rightarrow &&\frac{\vert\Delta M\vert}{2N}    &\le (2\sin\frac{\theta}{2}+\frac{\vert\Delta\theta\vert}{2})\frac{\vert\Delta\theta\vert}{2}\\    &&&\le \left(\sqrt{\frac{2M}{N}}+2^{-(m+1)}\right)\frac{2^{-m}}{2}\\\Rightarrow && \vert \Delta M\vert     &\le (\sqrt{2MN}+\frac{N}{2^{m+1}})2^{-m}\end{align*}</script><ul><li>Pick $\vert \Delta M\vert=\varepsilon M~\Rightarrow~ \varepsilon M\approx 2^{-m}\sqrt{MN}~\Rightarrow~2^m\approx\frac{1}{\varepsilon}\sqrt{\frac{N}{M}}$.</li><li>Use $t=m+\lceil\log(2+\frac{1}{2\delta})\rceil$ bits, need $2^0+2^1+…+2^{t-1}=2^t-1$ Grover iterations for phase estimation $\Rightarrow$ number of quries (oracle calls) $\sim 2^t$<script type="math/tex; mode=display">  2^t=2^m\cdot 2^{\lceil\log(2+\frac{1}{2\delta})\rceil}\approx \frac{1}{\varepsilon}\sqrt{\frac{N}{M}}\left(2+\frac{1}{2\delta}\right)=O(\frac{1}{\varepsilon}\sqrt\frac{N}{M})</script></li></ul>
+          </div>
+<h3 id="6-4-Speeding-up-the-solution-of-NP-complete-problems"><a href="#6-4-Speeding-up-the-solution-of-NP-complete-problems" class="headerlink" title="6.4 Speeding up the solution of NP-complete problems"></a>6.4 Speeding up the solution of NP-complete problems</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="6-5-Quantum-search-of-an-unstructured-database"><a href="#6-5-Quantum-search-of-an-unstructured-database" class="headerlink" title="6.5 Quantum search of an unstructured database"></a>6.5 Quantum search of an unstructured database</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="6-6-Optimality-of-the-search-algorithm"><a href="#6-6-Optimality-of-the-search-algorithm" class="headerlink" title="6.6 Optimality of the search algorithm"></a>6.6 Optimality of the search algorithm</h3><ul>
+<li>No quantum algorithm can perform oracle search using fewer than $\Omega(\sqrt N)$ quries.</li>
+<li>Idea: adversary method<ul>
+<li>Quantum query algorithms can be viewed as<br>  <img src="https://i.imgur.com/uFy7hCx.png" alt=""></li>
+<li>Consider the distance between $\vert \psi^f_k\rangle$ and $\vert \psi^{f’}_k\rangle$ for some function $f$ and $f’$<script type="math/tex; mode=display">
+  \left\Vert \vert \psi^f_k\rangle-\vert \psi^{f'}_k\rangle \right\Vert^2</script></li>
+<li>Start with zer odistance $\vert \psi^f_0\rangle=U_0\vert 0\rangle, ~\forall~f$</li>
+<li>For some $(f, f’)$ pairs, $\vert \psi^f_k\rangle$ and $\vert \psi^{f’}_k\rangle$ are distinguishable $\Rightarrow$ const distance.<ul>
+<li>for example, $f(x)=0~\forall x$ and $\exists x$ s.t. $f’(x)=1$</li>
+</ul>
+</li>
+<li>In the middle, note that $U_t$ does not change the distance<script type="math/tex; mode=display">
+  \begin{align*}
+  \left\Vert U\vert a\rangle - U\vert b\rangle \right\Vert
+      &= \left\Vert U(\vert a\rangle-\vert b\rangle) \right\Vert^2\\
+      &= (\langle a\vert -\langle b\vert)U^\dagger U(\vert a\rangle-\vert b\rangle)\\
+      &= \left\Vert \vert a\rangle - \vert b\rangle \right\Vert^2
+  \end{align*}</script></li>
+<li>For a specific pair of $(f, f’)$, $O_f$ and $O_{f’}$ might change the distance between $\vert \psi^f_t\rangle$ and $\vert \psi^{f’}_{t}\rangle$ a lot. Eg. $\vert \psi^f_t\rangle=\vert \psi^{f’}_t=\vert x\rangle$ for some $x$ s.t. $f(x)=0$ and $f’(x)=1$ $\Rightarrow$ distance changed by const.</li>
+<li>So we sum over different pairs of $(f, f’)$, such that the sum of distance cannot increase a lot.</li>
+<li>Sum of distance start with zero, end with something big, cannot change too much each step $\Rightarrow$ need many steps.</li>
+</ul>
+</li>
+</ul>
+<p>Way to proof:</p>
+<ul>
+<li>Consider <script type="math/tex; mode=display">
+  \begin{align*}
+  f_0 &= \text{all zeros}&\\
+  f_x &= \begin{cases}f(x)=1\\f(y)=0, &\forall y\ne x\end{cases}
+  \end{align*}</script>  we pair between $(f_0, f_x)~~\forall x\in\{1,2,\dots, N\}$</li>
+<li>Use the phase version of the oracle (ignore control, ignore ancilla)<script type="math/tex; mode=display">
+  O_{f_0}=I, \quad O_{f_x}\vert y\rangle=(-1)^{\delta_{xy}}\vert y\rangle = (I-2\vert x\rangle\langle x\vert)\vert y\rangle</script><ul>
+<li>Define $O_x\equiv O_{f_x}=I-2\vert x\rangle\langle x\vert$</li>
+</ul>
+</li>
+<li>Define <script type="math/tex; mode=display">
+  \begin{align*}
+  \vert \psi^x_k\rangle &\equiv\vert \psi^{f_x}_k\rangle=U_kO_xU_{k-1}O_x\cdots U_1O_xU_0\vert 0\rangle\\
+  \vert \psi_k\rangle &\equiv\vert \psi^{f_0}_k\rangle=U_kU_{k-1}\cdots U_0\vert 0\rangle
+  \end{align*}</script></li>
+<li>Define “Progress function” $D_k$, the deviation after $k$ steps (simplified notations)<script type="math/tex; mode=display">
+  \begin{align*}
+  D_k\equiv \sum^N_{x=1}\left\Vert\psi^x_k-\psi_k\right\Vert^2
+  \end{align*}</script></li>
+<li>Need to prove two parts<ol>
+<li>$D_k \le O(k^2)$ (Induction)</li>
+<li>$D_k=\Omega(N)$ to success</li>
+</ol>
+</li>
+<li>Finally $\Rightarrow~k=\Omega(\sqrt N)$</li>
+</ul>
+<div class="note success">
+            <p><em>Proof</em> $D_k\le4k^2$</p><p>By induction</p><p>Hypothesis: $D_k\le4k^2$</p><p>Base case: $k=0$, $D_k=0$</p><p>Induction step:</p><script type="math/tex; mode=display">\begin{align*}D_{k+1} &= \sum_x \left\Vert U_{k+1}O_x\psi^x_k-U_{k+1}\psi_k \right\Vert^2\\    &= \sum_x\left\Vert O_x\psi^x_k-\psi_k \right\Vert^2\\    &= \sum_x\big\Vert \underbrace{O_x(\psi^x_k-\psi_k)}_{b}+\underbrace{(O_x-I)\psi_k}_{c} \big\Vert^2\end{align*}</script><p>Applying $\left\Vert b+c\right\Vert^2\le \left\Vert b\right\Vert^2 + 2\left\Vert b\right\Vert \left\Vert c\right\Vert+\left\Vert c\right\Vert^2$ with $b\equiv O_x(\psi^x_k-\psi_k)$ and $c\equiv (O_x-I)\psi_k=-2\vert x\rangle\langle x\vert\psi_k\rangle=-2\langle x\vert \psi_k\rangle\vert x\rangle$</p><script type="math/tex; mode=display">D_{k+1}\le \sum_x\left(\underbrace{\left\Vert \psi^x_k-\psi_k\right\Vert^2}_{D_k} +4\underbrace{\left\Vert \psi^x_k-\psi_k \right\Vert\langle x\vert \psi_k\rangle}_{\text{Cauchy}}+4\underbrace{\left\vert \langle \psi_k\vert x\rangle \right\vert^2}_{1} \right)</script><p>Because $\sum_x\left\vert \langle\psi_k\vert x\rangle \right\vert^2=\sum_x\langle\psi_k\vert x\rangle\langle x\vert \psi_k\rangle=\langle \psi_k\vert \underbrace{\left(\sum_x\vert x\rangle\langle x\vert\right)}_{I}\vert\psi_k\rangle=1$. By Cauchy’s inequality $\sum_x a_xb_x\le \sqrt{\sum_x a^2_x}\sqrt{\sum_x b^2_x}$.</p><script type="math/tex; mode=display">\begin{align*}D_{k+1} &\le D_k +4{\textstyle\sqrt{\sum_x\left\Vert \psi^x_k-\psi_k \right\Vert^2}\sqrt{\sum_x\left\vert \langle \psi_k\vert x\rangle \right\vert^2} }+4\\    &\le D_k + 4\sqrt{D_k} + 4\end{align*}</script><p>By induction hypothesis $D_k\le 4k^2$</p><script type="math/tex; mode=display">D_{k+1}\le 4k^2 +4\cdot 2k + 4 = 4(k+1)^2</script><p>Hence, $D_k\le 4k^2$.</p>
+          </div>
+<div class="note success">
+            <p><em>Proof</em> $D_k=\Omega(N)$</p><p>Assume $\exists$ projector $P$ s.t. $\left\Vert P\vert\psi_k\rangle \right\Vert^2\le \frac{1}{9}, ~\left\Vert P\vert\psi^x_k\rangle \right\Vert^2\le \frac{8}{9}, ~\forall x$. (some magic number: distinguish prob. $\approx 1/3$)</p><p><em>Claim</em>: if there $\exists~p$ s.t. $\left\Vert P\vert a\rangle \right\Vert^2\le \frac{1}{9}, ~\left\Vert P\vert b\rangle \right\Vert^2\le \frac{8}{9}~\Rightarrow~\left\Vert\vert a\rangle-\vert b\rangle\right\Vert^2\ge\frac{2}{3}$</p><p><em>Proof</em>: Note that $\left\Vert(I-P)\vert b\rangle\right\Vert^2\le \frac{1}{9}$.</p><p>Consider $\vert \langle a\vert b\rangle\vert$</p><script type="math/tex; mode=display">\begin{align*}\vert \langle a\vert b\rangle\vert    &= \left\vert \langle a\vert (I-P)+p \vert b\rangle \right\vert\\    &\le \vert \langle a \vert (I-P)\vert b\rangle \vert + \vert \langle a\vert P\vert b\rangle\vert\\    &\le \left\Vert a \right\Vert \left\Vert (I-P)b \right\Vert + \left\Vert a(P) \right\Vert \left\Vert b \right\Vert\\    &\le 1\cdot \frac{1}{3}+1\cdot \frac{1}{3} =\frac{2}{3}\end{align*}</script><p>Thus</p><script type="math/tex; mode=display">\begin{align*}\left\Vert \vert a\rangle-\vert b\rangle \right\Vert^2    &= \left\Vert a\right\Vert^2+\left\Vert b\right\Vert^2 -\langle a\vert b\rangle -\langle b\vert a\rangle\\    &= 2 - 2\vert \langle a\vert b\rangle\vert\ge 2(1-\frac{2}{3})=\frac{2}{3}\end{align*}</script><p>Let $\vert a\rangle = \vert \psi_k\rangle$ and $\vert b\rangle=\vert \psi^x_k\rangle$</p><script type="math/tex; mode=display">\begin{align*}D_k&=\sum_x\left\Vert \vert \psi_k\rangle-\vert \psi^x_k\rangle\right\Vert^2 \ge \sum_x\frac{2}{3} = \frac{2N}{3}\\\Rightarrow D_k&=\Omega(N)\end{align*}</script>
+          </div>
+<div class="note success">
+            <p><em>Proof</em> $k=\Omega(\sqrt N)$</p><p>By $D_k\le 4k^2$ and $D_k\ge\frac{2N}{3}$</p><script type="math/tex; mode=display">\frac{2N}{3}\le D_k\le 4k^2~\Rightarrow~k\ge\sqrt{\frac{N}{6}}=\Omega(\sqrt N)</script>
+          </div>
+<ul>
+<li>This can be generalized to adversary method<ul>
+<li>Weight on different pairs</li>
+<li>Can put negative weight on some pairs. negative weight adversary bound is optimal.</li>
+</ul>
+</li>
+<li>State distinguishment (Ch. 9)<ul>
+<li>Trace distance: $D_\text{tr}(\rho, \sigma)=\frac{1}{2}\text{tr}\vert\rho-\sigma\vert$, maximum distinguish prob.</li>
+<li>Fidelity: $F(\psi, \phi)=\vert\langle\psi\vert\phi\rangle\vert$</li>
+<li>For pure state: $D_\text{tr}(\psi, \phi)^2+F(\psi, \phi)^2=1$</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-7-Black-box-algorithm-limits"><a href="#6-7-Black-box-algorithm-limits" class="headerlink" title="6.7 Black box algorithm limits"></a>6.7 Black box algorithm limits</h3><blockquote>
+<p>待補</p>
+</blockquote>
+<h2 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h2><blockquote>
+<p>待補</p>
+</blockquote>
+<h3 id="Better-bounds-on-distinguish-quantum-states"><a href="#Better-bounds-on-distinguish-quantum-states" class="headerlink" title="Better bounds on distinguish quantum states"></a>Better bounds on distinguish quantum states</h3><h3 id="Applications-of-Grover’s-algorithm"><a href="#Applications-of-Grover’s-algorithm" class="headerlink" title="Applications of Grover’s algorithm"></a>Applications of Grover’s algorithm</h3><h3 id="Exact-Grover-search"><a href="#Exact-Grover-search" class="headerlink" title="Exact Grover search"></a>Exact Grover search</h3><h3 id="Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items"><a href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items" class="headerlink" title="$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items"></a>$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items</h3><h3 id="Minimum-finding"><a href="#Minimum-finding" class="headerlink" title="Minimum finding"></a>Minimum finding</h3>
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相關文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Ending2015a/33975/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Midterm exam</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Ending2015a/56696/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Chapter 4: Quantum Circuits</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Ending2015a/16720/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Chapter 5: The quantum Fourier transform and its applications</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Ending2015a/51732/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Chapter 3: Introduction to compuer science</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Ending2015a/55689/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Chapter 2: Introduction to quantum mechanics</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>想喝咖啡 <i class="fas fa-coffee"></i></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    捐贈
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/paypal-qr-code.png" alt="Joe Hsiao PayPal">
+        <p>PayPal</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Note/" rel="tag"><i class="fa fa-tag"></i> Note</a>
+              <a href="/tags/Quantum-Computing/" rel="tag"><i class="fa fa-tag"></i> Quantum Computing</a>
+              <a href="/tags/Quantum-Algorithm/" rel="tag"><i class="fa fa-tag"></i> Quantum Algorithm</a>
+              <a href="/tags/Quantum-Circuits/" rel="tag"><i class="fa fa-tag"></i> Quantum Circuits</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Ending2015a/16720/" rel="prev" title="[Note] Quantum Computation and Quantum Information - Chapter 5: The quantum Fourier transform and its applications">
+      <i class="fa fa-chevron-left"></i> [Note] Quantum Computation and Quantum Information - Chapter 5: The quantum Fourier transform and its applications
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-The-quantum-search-algorithm"><span class="nav-text">6.1 The quantum search algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-1-The-oracle"><span class="nav-text">6.1.1 The oracle</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Phase-version-of-quantum-oracle"><span class="nav-text">Phase version of quantum oracle</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-2-The-procedure"><span class="nav-text">6.1.2 The procedure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-3-Geometric-visualization"><span class="nav-text">6.1.3 Geometric visualization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-4-Performance"><span class="nav-text">6.1.4 Performance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-Quantum-search-as-a-quantum-simulation"><span class="nav-text">6.2 Quantum search as a quantum simulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-Quantum-Counting"><span class="nav-text">6.3 Quantum Counting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-Speeding-up-the-solution-of-NP-complete-problems"><span class="nav-text">6.4 Speeding up the solution of NP-complete problems</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-Quantum-search-of-an-unstructured-database"><span class="nav-text">6.5 Quantum search of an unstructured database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6-Optimality-of-the-search-algorithm"><span class="nav-text">6.6 Optimality of the search algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-7-Black-box-algorithm-limits"><span class="nav-text">6.7 Black box algorithm limits</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bonus"><span class="nav-text">Bonus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Better-bounds-on-distinguish-quantum-states"><span class="nav-text">Better bounds on distinguish quantum states</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Applications-of-Grover%E2%80%99s-algorithm"><span class="nav-text">Applications of Grover’s algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exact-Grover-search"><span class="nav-text">Exact Grover search</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items"><span class="nav-text">$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Minimum-finding"><span class="nav-text">Minimum finding</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Joe Hsiao"
+      src="https://i.imgur.com/TBCKPn1.jpg">
+  <p class="site-author-name" itemprop="name">Joe Hsiao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ending2015a" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ending2015a" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/hsiao.ending" title="Facebook → https:&#x2F;&#x2F;www.facebook.com&#x2F;hsiao.ending" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>Facebook</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/tsu-ching-hsiao-207710171/" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;tsu-ching-hsiao-207710171&#x2F;" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCxQE_77aDje2oGwaYWfUBYw" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCxQE_77aDje2oGwaYWfUBYw" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:joehsiao@gapp.nthu.edu.tw" title="E-Mail → mailto:joehsiao@gapp.nthu.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+    <div class="google-ads sidebar-inner" style="display:block; ">
+      <!-- Google AdSense Start -->
+      
+      <!-- Google AdSense End -->
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Joe Hsiao</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="總字數">174k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="所需總閱讀時間">7:16</span>
+</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+
+        
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAh0yiA4K7UmvnkI3uec5UzR-6l0Iqx4_E',
+      projectId: 'hexo-blog-my-notes'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '147625b156bb26bc2600',
+      clientSecret: '5b28b32d768ce289add547b43f2a144274dec2a8',
+      repo        : 'Ending2015a.github.io',
+      owner       : 'Ending2015a',
+      admin       : ['Ending2015a'],
+      id          : '37247975b6f433c9d86886fb4c53dab9',
+        language: 'zh-TW',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>
