@@ -32,7 +32,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="[Note] Quantum Computation and Quantum Information - Chapter 6: Quantum search algorithms">
 <meta property="og:url" content="https://ending2015a.github.io/Ending2015a/8802/index.html">
-<meta property="og:site_name" content="My Notes">
+<meta property="og:site_name" content="Grimoire Verum">
 <meta property="og:description" content="上課筆記，原文書:  Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/LMzyRKv.png">
@@ -42,8 +42,12 @@
 <meta property="og:image" content="https://i.imgur.com/QHCmhbv.png">
 <meta property="og:image" content="https://i.imgur.com/sgs8t7h.png">
 <meta property="og:image" content="https://i.imgur.com/uFy7hCx.png">
+<meta property="og:image" content="https://i.imgur.com/H0PpikY.png">
+<meta property="og:image" content="https://i.imgur.com/FBpOCas.png">
+<meta property="og:image" content="https://i.imgur.com/qJk8fnu.png">
+<meta property="og:image" content="https://i.imgur.com/W6cIhAs.png">
 <meta property="article:published_time" content="2021-01-09T14:31:02.000Z">
-<meta property="article:modified_time" content="2021-01-09T14:42:59.333Z">
+<meta property="article:modified_time" content="2021-01-27T12:56:45.472Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="Note">
 <meta property="article:tag" content="Quantum Computing">
@@ -65,7 +69,7 @@
   };
 </script>
 
-  <title>[Note] Quantum Computation and Quantum Information - Chapter 6: Quantum search algorithms | My Notes</title>
+  <title>[Note] Quantum Computation and Quantum Information - Chapter 6: Quantum search algorithms | Grimoire Verum</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZE22590KG"></script>
     <script data-pjax>
@@ -127,7 +131,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">My Notes</h1>
+      <h1 class="site-title">Grimoire Verum</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -232,7 +236,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My Notes">
+      <meta itemprop="name" content="Grimoire Verum">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -245,10 +249,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">發表於</span>
-              
 
-              <time title="創建時間：2021-01-09 22:31:02 / 修改時間：22:42:59" itemprop="dateCreated datePublished" datetime="2021-01-09T22:31:02+08:00">2021-01-09</time>
+              <time title="創建時間：2021-01-09 22:31:02" itemprop="dateCreated datePublished" datetime="2021-01-09T22:31:02+08:00">2021-01-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2021-01-27 20:56:45" itemprop="dateModified" datetime="2021-01-27T20:56:45+08:00">2021-01-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -272,14 +282,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">文章字數：</span>
-              <span>13k</span>
+              <span>22k</span>
             </span>
             <span class="post-meta-item" title="所需閱讀時間">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>32 分鐘</span>
+              <span>55 分鐘</span>
             </span>
 
         </div>
@@ -513,7 +523,197 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 <h2 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h2><blockquote>
 <p>待補</p>
 </blockquote>
-<h3 id="Better-bounds-on-distinguish-quantum-states"><a href="#Better-bounds-on-distinguish-quantum-states" class="headerlink" title="Better bounds on distinguish quantum states"></a>Better bounds on distinguish quantum states</h3><h3 id="Applications-of-Grover’s-algorithm"><a href="#Applications-of-Grover’s-algorithm" class="headerlink" title="Applications of Grover’s algorithm"></a>Applications of Grover’s algorithm</h3><h3 id="Exact-Grover-search"><a href="#Exact-Grover-search" class="headerlink" title="Exact Grover search"></a>Exact Grover search</h3><h3 id="Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items"><a href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items" class="headerlink" title="$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items"></a>$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items</h3><h3 id="Minimum-finding"><a href="#Minimum-finding" class="headerlink" title="Minimum finding"></a>Minimum finding</h3>
+<h3 id="Better-bounds-on-distinguish-quantum-states"><a href="#Better-bounds-on-distinguish-quantum-states" class="headerlink" title="Better bounds on distinguish quantum states"></a>Better bounds on distinguish quantum states</h3><p>Suppose we have two quantum states $\vert a\rangle$, $\vert b\rangle$, projective measurements $\{P, I-P\}$ s.t. $\left\Vert P\vert a\rangle \right\Vert^2 \le \varepsilon$, $\left\Vert P\vert b\rangle \right\Vert^2\ge 1-\varepsilon$, $~\varepsilon\in [0, \frac{1}{2}]$.</p>
+<p>Claim: $\vert\langle a\vert b\rangle\vert\le 2\sqrt{\varepsilon(1-\varepsilon)}$</p>
+<div class="note success">
+            <p><em>Proof</em> $\vert\langle a\vert b\rangle\vert\le 2\sqrt{\varepsilon(1-\varepsilon)}$</p><p><strong>Proof 1</strong></p><script type="math/tex; mode=display">\begin{align*}\vert \langle a \vert b \rangle \vert &= \vert \langle a \vert P+(I-P)\vert b\rangle\vert\\    &= \vert \langle a\vert P^2+(I-P)^2\vert b\rangle\vert\\    &\le \vert \langle a \vert PP\vert b\rangle \vert + \vert \langle a\vert (I-P)(I-P)\vert b\rangle\vert\\    &\le\big\Vert \underbrace{P\vert a\rangle}_{x_1}\big\Vert \big\Vert \underbrace{P\vert b\rangle}_{x_2}\big\Vert + \big\Vert\underbrace{(I-P)\vert b\rangle}_{y_1}\big\Vert \big\Vert\underbrace{(I-P)\vert a\rangle}_{y_2}\big\Vert\\\end{align*}</script><p>By Cauchy theory $x_1x_2+y_1y_2\le \sqrt{x_1^2+x_2^2}+\sqrt{y_1^2+y_2^2}$</p><script type="math/tex; mode=display">\begin{align*}    \vert \langle a \vert b \rangle \vert &\le \sqrt{x_1^2+x_2^2} + \sqrt{y_1^2+y_2^2}\\\end{align*}</script><p>By</p><script type="math/tex; mode=display">\begin{cases}x_1^2+y_2^2=1,&x_1^2\le \varepsilon\\x_2^2+y_1^2=1,&y_1^2\le \varepsilon\end{cases}</script><script type="math/tex; mode=display">\vert \langle a \vert b \rangle \vert \le \sqrt{(x_1^2+y_1^2)(2-(x_1^2+y_1^2))}</script><p>By $x\le2\varepsilon$</p><script type="math/tex; mode=display">\vert \langle a \vert b \rangle \vert \le \sqrt{2\varepsilon(2-2\varepsilon)}=2\sqrt{\varepsilon(1-\varepsilon)}</script><p><strong>Proof 2</strong></p><p>The best way to distingish $\vert a\rangle$ and $\vert b\rangle$: $\vert b\rangle \sim \vert 0\rangle$ and $\vert a\rangle \sim \vert 1\rangle$</p><p><img src="https://i.imgur.com/H0PpikY.png" width="300px"></p><script type="math/tex; mode=display">\begin{align*}\text{error} = \sin^2\delta \le \varepsilon\end{align*}</script><script type="math/tex; mode=display">\begin{align*}\Rightarrow~\vert \langle a\vert b\rangle &= \vert \cos(\frac{\pi}{2} - 2\delta)\vert\\    &= \vert \sin(2\delta)\vert \\    &= 2\vert \sin\delta \vert \vert\cos\delta\vert = 2\sqrt{\varepsilon(1-\varepsilon)}\end{align*}</script><p><strong>Proof 3</strong><br>Let $T$ be the trace distance between $\vert a\rangle, \vert b\rangle$, $F$ be the Fidelity between $\vert a\rangle$, $\vert b\rangle$.</p><ul><li>Fact 1: $T\ge$ bias betweem measurement probability $\ge(1-\varepsilon)-\varepsilon=1-2\epsilon$<ul><li>$|P\vert b\rangle|^2\ge 1-\varepsilon$</li><li>$|P\vert a\rangle|^2 \le \varepsilon$</li></ul></li><li>Fact 2: For $\vert a\rangle$ and $\vert b\rangle$ pur states<ul><li>$T^2+F^2=1$</li><li>$F=|\langle a\vert b\rangle|=\sqrt{1-T^2}\le \sqrt{1-(1-2\varepsilon)^2}=2\sqrt{\varepsilon(1-\varepsilon)}$</li></ul></li></ul>
+          </div>
+<h3 id="Applications-of-Grover’s-algorithm"><a href="#Applications-of-Grover’s-algorithm" class="headerlink" title="Applications of Grover’s algorithm"></a>Applications of Grover’s algorithm</h3><h4 id="Speed-up-for-NP-complete-problems"><a href="#Speed-up-for-NP-complete-problems" class="headerlink" title="Speed up for $NP$-complete problems"></a>Speed up for $NP$-complete problems</h4><ul>
+<li>Satisfiability: given boolean formula $\phi(i_1,i_2,\dots,i_n)$, determine whether there exist $i=i_1i_2\dots i_n$ s.t. $\phi(i)=1$ ($\phi(i)$ is easy to compute, but there are $N=2^n$ possible assignment of $i$)<ul>
+<li>Quantum alg: construct $q$ circuit $Q_\phi$ s.t. $\vert i\rangle\to(-1)^{\phi(i)}\vert i\rangle$ ($\vert i,b\rangle\to\vert i,b\oplus \phi(i)\rangle$)</li>
+<li>$O_\phi$ is easy to construct because $\phi(i)$ is easy to compute<ul>
+<li>$\Rightarrow$ use $O_\phi$ as the oracle in Grover’s search</li>
+<li>$\Rightarrow$ determine whether $\exists~i,$ s.t. $\phi(i)=1$ in $O(\sqrt{2^n}~\text{cost of}~O_\phi)\sim 2^{m/2}$ time</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>However, not always getting quadratic speedup to $NP$ complete problem. Because $\sqrt{\text{num of assignment}}$ might be slower than known classical alg.<ul>
+<li>e.g. Travelling Salesmans Problem (TSP) on $n$<ul>
+<li>number of assignment $=n!\sim n^n$</li>
+<li>Classical alg $\sim O(2^n)$</li>
+<li>Best quantum algorithm $\sim O(1.728^n)$ non-trivial application of Grover’s search</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="OR-of-AND"><a href="#OR-of-AND" class="headerlink" title="$OR$ of $AND$"></a>$OR$ of $AND$</h4><ul>
+<li>A boolean matrix<script type="math/tex; mode=display">
+  \left[\begin{matrix}
+  0 & 0 & 0 & 1 & 0 & 0\\
+  1 & 1 & 1 & 0 & 1 & 1\\
+  1 & 0 & 1 & 1 & 1 & 1\\
+  1 & 1 & 1 & 1 & 1 & 1\\
+  1 & 0 & 0 & 0 & 0 & 0\\
+  0 & 0 & 1 & 0 & 1 & 0\\
+  \end{matrix}\right]\xrightarrow{\text{row-wise}~AND}
+  \left[\begin{matrix}
+  0\\0\\0\\1\\0\\0\\
+  \end{matrix}\right]\xrightarrow{OR}1</script></li>
+<li>Question: is there a row with all $1$’s?<ul>
+<li>Classical: easy to see need $\Omega(N)$ queries</li>
+<li>Quantum alg 1: Grover search each row for an $0$<ul>
+<li>time for each row $\sqrt{\sqrt{N}}\sim N^{1/4}$ (times $\log N$ because we want $1/N$ error)</li>
+<li>total time<br>  $=\text{num of rows}\times\text{time for each row}=\sqrt{N}\cdot N^{1/4}\cdot \log N=N^{3/4}\cdot\log N$</li>
+</ul>
+</li>
+<li>Quantum alg 2: run Grover’s search recursively, have an outer Grover that search through rows, and a row is “marked” iff the inner Grover cannot find zero in it<ul>
+<li>total running time $\sqrt{\sqrt{N}}\cdot\sqrt{\sqrt{N}}\cdot\log N=\sqrt{N}\log N$ (quadratic speedup)</li>
+<li>$\Omega(\sqrt{N})$ lower bound</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="AND-OR-tree"><a href="#AND-OR-tree" class="headerlink" title="$AND$-$OR$ tree"></a>$AND$-$OR$ tree</h4><p><img src="https://i.imgur.com/FBpOCas.png" width="300px"></p>
+<ul>
+<li>Game tree for chess or Go etc.<ul>
+<li>$1$: win, $0$: lose (ignore tie)</li>
+<li>$OR$: Is there a move that makes me win?</li>
+<li>$AND$: Is there a move that makes me lose?</li>
+</ul>
+</li>
+<li>Recursive Grover? Don’t actually work because error builds up through recursion</li>
+<li>Still has $O(\sqrt N)$ quantum alg. through quantum walk</li>
+</ul>
+<h4 id="Collision-problem"><a href="#Collision-problem" class="headerlink" title="Collision problem"></a>Collision problem</h4><ul>
+<li>Given blacbox access to the function $f:\{1,2,\dots,N\}\to\{1,2,\dots,N\}$</li>
+<li>Promise: $f$ is either one-to-one or two-to-one (has lots of collision)<ul>
+<li>e.g. one-to-one $f:1\to1,~2\to2,~3\to4,~4\to3$</li>
+<li>e.g. two-to-one $f:1\to1,~2\to4,~3\to1,~4\to4$</li>
+</ul>
+</li>
+<li>Problom: decide whether $f$ is one-to-one or two-to-one<ul>
+<li>Classical $\Theta(\sqrt N)$<ul>
+<li>Birthday attach: random pair $O(1/N)$ probability to be a collision.</li>
+<li>If we pick $O(\sqrt N)$ items, there are $O(N)$ pairs $\Rightarrow$ const probability finding a collision in those pairs.</li>
+</ul>
+</li>
+<li>Quantum alg 1: $O(\sqrt N)$ queries (no speedup)<ul>
+<li>query $f(1)$, Grover search for an $x\ne1$ s.t. $f(x)=f(1)$</li>
+</ul>
+</li>
+<li>Quantum alg 2: $\Omega(N^{1/3})$ lowerbound<ul>
+<li>pick $N^{1/3}$ random elements $S_1$ query them classically and write down the answers</li>
+<li>pick another $N^{2/3}$ elements $S_2$ (don’t query them yet). Grover search through $y\in S_2$, an item $y\in S_2$ is marked iff $\exists~x\in S_1$ s.t. $f(x)=f(y)$</li>
+<li>Since we already reordered everything in $S_1$ only need one query $f(y)$ to determined whether $y$ is marked.</li>
+<li>Total number of queries: $N^{1/3}+\sqrt{N^{2/3}}=O(N^{1/3})$</li>
+<li>Number of pirs searched: $N^{1/3}\cdot N^{2/3}\sim O(N)\Rightarrow$ const success probability</li>
+<li>with smart data structure can also do $\tilde{O}(N^{1/3})$ time.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Element-distinctness"><a href="#Element-distinctness" class="headerlink" title="Element distinctness"></a>Element distinctness</h4><ul>
+<li>also $f:\{1,2,\dots,N\}\to\{1,2,\dots,N\}$, no promise</li>
+<li>Problem: determine whether $f$ is one-to-one (ie. whether $f$ have collision)<ul>
+<li>Classical: $\Theta(N)$</li>
+<li>Quantum alg 1: $O(N^{3/4})$<ul>
+<li>Divide the inputs isno $\sqrt{N}$ blocks of size $\sqrt{N}$</li>
+<li>Outer Grover search through each block $s$ and query all elements in it (check collision inside)</li>
+<li>Inner Grover search between pair ($x\in s, y\in s$)</li>
+<li>If $s$ contain an element of the collision, we find it $\Rightarrow$ prob $\frac{1}{\sqrt N}$</li>
+<li>Total queries: $\sqrt{\sqrt N}\cdot \sqrt{\sqrt N}=O(N^{3/4})$</li>
+</ul>
+</li>
+<li>Quantum alg 2: $O(N^{2/3})$ by quantum walk<ul>
+<li>$\Omega(N^{2/3})$ lower bound by reduction from collision (pick $\sqrt{N}$ elements)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Exact-Grover-search"><a href="#Exact-Grover-search" class="headerlink" title="Exact Grover search"></a>Exact Grover search</h3><ul>
+<li>Promised that an unique marked item, find alg. that find the marked item with prob $1$, in $O(\sqrt N)$ steps.<script type="math/tex; mode=display">
+  f:\{1,2,\dots,N\}\to\{0,1\},\quad \exists~x^* ~\text{s.t.}~ f(x)\begin{cases}
+  1, &x=x^*\\
+  0, &\text{otherwise}
+  \end{cases}</script></li>
+<li>Define $f’:\{1,\dots,2N\}\to\{0,1\}$<script type="math/tex; mode=display">
+  f'(x)=\begin{cases}
+      f'(x)=f(x), &\text{if}~1\le x\le N\\
+      f'(x)=0, &\text{if}~N+1\le x\le 2N
+  \end{cases}</script></li>
+<li>can simulate $O_{f’}$ with one $\tilde{O_f}$<script type="math/tex; mode=display">
+  \tilde{O}_f\vert x,b\rangle = \vert x,f(x)\oplus b\rangle</script>  <img src="https://i.imgur.com/qJk8fnu.png" alt=""><ul>
+<li>define <script type="math/tex; mode=display">
+  U_\gamma=\left(\begin{matrix}\cos\gamma & -\sin\gamma \\ \sin\gamma & \cos\gamma\end{matrix}\right),\quad A=H^{\otimes n}\otimes U_\gamma</script></li>
+<li>We have <script type="math/tex; mode=display">
+  A\vert 0\rangle^{\otimes n+1}=\frac{1}{\sqrt N}\sum^N_{x=1}\vert x\rangle \otimes (\cos\gamma\vert 0\rangle+\sin\gamma\vert 1\rangle)</script></li>
+<li>The probability that $A\vert 0\rangle^{\oplus n+1}$ is marked<script type="math/tex; mode=display">
+  \begin{align*}
+  \text{Prob}(A\vert 0\rangle^{\oplus n+1}~\text{marked})
+      &= \left|\langle x^*,0|A|0\rangle\right|^2\\
+      &= \frac{1}{N} \cos^2\gamma
+  \end{align*}</script>  <img src="https://i.imgur.com/W6cIhAs.png" alt=""><script type="math/tex; mode=display">
+  \sin\theta_\gamma=\frac{\cos\theta_\gamma}{\sqrt N},\quad \text{write}~\lceil\tilde k\rceil=k</script><script type="math/tex; mode=display">
+  \begin{align*}
+  (2k+1)\theta_\gamma=\frac{\pi}{2} 
+      &\Rightarrow \theta_\gamma =\frac{\pi}{2(2k+1)}\\
+      &\Rightarrow \frac{\cos\gamma}{\sqrt N}=\sin\frac{\pi}{2(2k+1)}\quad(\text{let}~\theta_\gamma\approx\gamma)\\
+      &\Rightarrow \gamma=\cos^{-1}\left(\sqrt N\cdot \sin\frac{\pi}{2(2\lceil \tilde k\rceil+1)}\right)
+  \end{align*}</script></li>
+</ul>
+</li>
+</ul>
+<h3 id="Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items"><a href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items" class="headerlink" title="$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items"></a>$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items</h3><ul>
+<li>easy solution<br>  $Q($search $M$ marked items from $N$ items $)$<br>  $\ge Q($search $M$ marked items from $N$ items promised that marked items are blocks$)$<br>  $\ge Q($search one marked item in $\frac{N}{M}$ items$)$<br>  $=\Omega(\sqrt{\frac{N}{M}})$</li>
+<li>harder solution<ul>
+<li>consider all $C^N_M$ ways to mark $M$ items</li>
+<li>Let $S\subset\{1,2,\dots,N\}$ with size $M$. $C^N_M$ possible $S$<script type="math/tex; mode=display">
+  D_k=\sum_{\substack{S:S\le[N]\\\vert S\vert=M}} \vert\psi^S_k-\psi\vert^2,\quad D_T=\Omega(C^N_M)</script></li>
+<li>By induction<script type="math/tex; mode=display">
+  \begin{align*}
+  D_{k+1}&=\sum_S\vert O_S\psi^S_k-\psi_k\vert^2\\
+      &=\sum_S\big\vert \underbrace{O_S(\psi^S_k-\psi)}_{\equiv~ b_S}+\underbrace{(O_S-I)\psi_k)}_{\equiv ~c_S}\big\vert^2\\
+      &\le \sum_S\vert b_S\vert^2+2\vert b_S\vert\vert c_S\vert+\vert c_S\vert^2
+  \end{align*}</script><script type="math/tex; mode=display">
+  (O_S-I)=-2\sum_{x\in S}\vert x\rangle\langle x\vert, \quad (O_S-I)\vert \psi_k\rangle=-2\sum_{x\in S}\vert x\rangle\langle x\vert \psi_k\rangle</script><script type="math/tex; mode=display">
+  \begin{align*}
+  \sum_S\vert c_S\vert^2
+      &= 4\sum_S\left\|\sum_{x\in S}\vert x\rangle\langle x\vert \psi_k\rangle\right\|^2\\
+      &=4\sum_S\sum_{x\in S}\left\vert \langle x\vert \psi_k\rangle\right\vert^2 \quad (\text{recall}~\sum^N_{x=1}\vert\langle x\vert \psi_s\rangle\vert^2=1)\\
+      &=4 C^{N-1}_{M-1}\\
+  \sum_S\vert b_S\vert\vert c_S\vert 
+      &\le \sqrt{\sum_S\vert b_S\vert^2}\sqrt{\sum_S\vert c_S\vert^2},\quad \sum_S\vert b_s\vert^2 =D_k\\
+  \end{align*}</script><script type="math/tex; mode=display">
+  \begin{align*}
+  \Rightarrow &&D_{k+1}&\le D_k+2\sqrt{D_k}\sqrt{4C^{N-1}_{M-1}}+4C^{N-1}_{M-1}\\
+  \Rightarrow &&D_{k+1} -D_k 
+      &\le 4\sqrt{D_k}\sqrt{C^{N-1}_{M-1}}+4C^{N-1}_{M-1}\\
+      &&&\le O(\sqrt{C^N_M}\sqrt{C^{N-1}_{M-1}})
+  \end{align*}</script><script type="math/tex; mode=display">
+  \begin{align*}
+  T\ge \frac{D_T-D_0}{\Delta D} &=\Omega\left(\frac{C^N_M}{\sqrt{C^N_M}\sqrt{C^{N-1}_{M-1}}}\right) = \Omega\left(\sqrt{\frac{C^N_M}{C^{N-1}_{M-1}}}\right)\\
+      &= \Omega\left(\sqrt{\frac{N!}{M!(N-M)!}\frac{(M-1)!(N-M)!}{(N-1)!}}\right)\\
+      &= \Omega\left(\sqrt{\frac{N}{M}}\right)
+  \end{align*}</script></li>
+</ul>
+</li>
+</ul>
+<h3 id="Minimum-finding"><a href="#Minimum-finding" class="headerlink" title="Minimum finding"></a>Minimum finding</h3><ul>
+<li>Given quantum access to input of $N$ numbers, $x_1,x_2,\dots,x_N$, find the $\min$ of them in $O(\sqrt N\log N)$ steps.</li>
+<li>start with random $s\in\{1,\dots,N\}$ query $x_s$.</li>
+<li>Grover search among the items to find some $r$ s.t. $x_r\le x_s$<ul>
+<li>$O(\sqrt N)$ times find a random one</li>
+<li>keep doing this until you cannot find a smaller one</li>
+<li>every iteration expect number of smaller items $\Rightarrow~\log N$ iterations</li>
+</ul>
+</li>
+</ul>
+
     </div>
 
     
@@ -633,7 +833,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-The-quantum-search-algorithm"><span class="nav-text">6.1 The quantum search algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-1-The-oracle"><span class="nav-text">6.1.1 The oracle</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Phase-version-of-quantum-oracle"><span class="nav-text">Phase version of quantum oracle</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-2-The-procedure"><span class="nav-text">6.1.2 The procedure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-3-Geometric-visualization"><span class="nav-text">6.1.3 Geometric visualization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-4-Performance"><span class="nav-text">6.1.4 Performance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-Quantum-search-as-a-quantum-simulation"><span class="nav-text">6.2 Quantum search as a quantum simulation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-Quantum-Counting"><span class="nav-text">6.3 Quantum Counting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-Speeding-up-the-solution-of-NP-complete-problems"><span class="nav-text">6.4 Speeding up the solution of NP-complete problems</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-Quantum-search-of-an-unstructured-database"><span class="nav-text">6.5 Quantum search of an unstructured database</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-Optimality-of-the-search-algorithm"><span class="nav-text">6.6 Optimality of the search algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-7-Black-box-algorithm-limits"><span class="nav-text">6.7 Black box algorithm limits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bonus"><span class="nav-text">Bonus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Better-bounds-on-distinguish-quantum-states"><span class="nav-text">Better bounds on distinguish quantum states</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Applications-of-Grover%E2%80%99s-algorithm"><span class="nav-text">Applications of Grover’s algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exact-Grover-search"><span class="nav-text">Exact Grover search</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items"><span class="nav-text">$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Minimum-finding"><span class="nav-text">Minimum finding</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-The-quantum-search-algorithm"><span class="nav-text">6.1 The quantum search algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-1-The-oracle"><span class="nav-text">6.1.1 The oracle</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Phase-version-of-quantum-oracle"><span class="nav-text">Phase version of quantum oracle</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-2-The-procedure"><span class="nav-text">6.1.2 The procedure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-3-Geometric-visualization"><span class="nav-text">6.1.3 Geometric visualization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-4-Performance"><span class="nav-text">6.1.4 Performance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-Quantum-search-as-a-quantum-simulation"><span class="nav-text">6.2 Quantum search as a quantum simulation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-Quantum-Counting"><span class="nav-text">6.3 Quantum Counting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-Speeding-up-the-solution-of-NP-complete-problems"><span class="nav-text">6.4 Speeding up the solution of NP-complete problems</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-Quantum-search-of-an-unstructured-database"><span class="nav-text">6.5 Quantum search of an unstructured database</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-Optimality-of-the-search-algorithm"><span class="nav-text">6.6 Optimality of the search algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-7-Black-box-algorithm-limits"><span class="nav-text">6.7 Black box algorithm limits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bonus"><span class="nav-text">Bonus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Better-bounds-on-distinguish-quantum-states"><span class="nav-text">Better bounds on distinguish quantum states</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Applications-of-Grover%E2%80%99s-algorithm"><span class="nav-text">Applications of Grover’s algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Speed-up-for-NP-complete-problems"><span class="nav-text">Speed up for $NP$-complete problems</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OR-of-AND"><span class="nav-text">$OR$ of $AND$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AND-OR-tree"><span class="nav-text">$AND$-$OR$ tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Collision-problem"><span class="nav-text">Collision problem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Element-distinctness"><span class="nav-text">Element distinctness</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exact-Grover-search"><span class="nav-text">Exact Grover search</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items"><span class="nav-text">$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Minimum-finding"><span class="nav-text">Minimum finding</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -724,12 +924,12 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="總字數">174k</span>
+    <span title="總字數">183k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="所需總閱讀時間">7:16</span>
+    <span title="所需總閱讀時間">7:38</span>
 </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
 
 
