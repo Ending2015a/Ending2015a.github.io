@@ -1778,7 +1778,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 </ul>
 </li>
 </ul>
-<h4 id="AND-OR-tree"><a href="#AND-OR-tree" class="headerlink" title="$AND$-$OR$ tree"></a>$AND$-$OR$ tree</h4><p><img src="https://i.imgur.com/FBpOCas.png" width="300px"></p>
+<h4 id="AND-OR-tree"><a href="#AND-OR-tree" class="headerlink" title="$AND$-$OR$ tree"></a>$AND$-$OR$ tree</h4><p><img src="https://i.imgur.com/FBpOCas.png" width="400px"></p>
 <ul>
 <li>Game tree for chess or Go etc.<ul>
 <li>$1$: win, $0$: lose (ignore tie)</li>
