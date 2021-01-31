@@ -107,7 +107,7 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
 <p>此外，此篇論文也使用 XSPH viscosity 來模擬流體的黏滯力:</p>
 <script type="math/tex; mode=display">
 \mathbf{v}_i^{new}=\mathbf{v}_i+c\sum_jm_j\mathbf{v}_{ij}\cdot W\big(\mathbf{p}_i-\mathbf{p}_j, h\big)\tag{17}</script><p>其中，參數 $c$ 通常設為 $0.1$。</p>
-<h2 id="6-Algorithm"><a href="#6-Algorithm" class="headerlink" title="6. Algorithm"></a>6. Algorithm</h2><p><img src="https://i.imgur.com/PZz8Zvo.png =500x" alt=""></p>
+<h2 id="6-Algorithm"><a href="#6-Algorithm" class="headerlink" title="6. Algorithm"></a>6. Algorithm</h2><p><img src="https://i.imgur.com/PZz8Zvo.png" width="500px">)</p>
 <h2 id="7-Rendering"><a href="#7-Rendering" class="headerlink" title="7. Rendering"></a>7. Rendering</h2><p>使用 GPU based ellipsoid splatting technique 詳情見 <a href="https://zhuanlan.zhihu.com/p/38280537">液体渲染：一种屏幕空间方法</a></p>
 ]]></content>
       <categories>
@@ -270,6 +270,58 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
       </tags>
   </entry>
   <entry>
+    <title>[Note] Quantum Computation and Quantum Information - Final exam</title>
+    <url>/Ending2015a/28314/</url>
+    <content><![CDATA[<p>期末考詳解，原文書:</p>
+<blockquote>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+</blockquote>
+<ul>
+<li>班平均：64</li>
+</ul>
+<a id="more"></a>
+<h2 id="Problem-1"><a href="#Problem-1" class="headerlink" title="Problem 1"></a>Problem 1</h2><div class="note info">
+            <p>Recall that the Bell basis consist of the following states on two qubits:</p><script type="math/tex; mode=display">\begin{align*}\vert \beta_{00}\rangle &= \frac{1}{\sqrt 2}(\vert 00\rangle+\vert11\rangle) &     \vert \beta_{01}\rangle &= \frac{1}{\sqrt 2}(\vert 00\rangle-\vert11\rangle)\\\vert \beta_{10}\rangle &= \frac{1}{\sqrt 2}(\vert 10\rangle+\vert01\rangle) &     \vert \beta_{11}\rangle &= \frac{1}{\sqrt 2}(\vert 10\rangle-\vert01\rangle)\end{align*}</script><p>Suppose Alice is holding the first two qubits of $\vert +\rangle \otimes \vert \beta_{11}\rangle$ and Bob is holding the third.</p><p>(a) If Alice applies $(I\otimes H)\text{CNOT}$ to her two qubits, where the first qubit is the control of the $\text{CNOT}$ and the second qubit is the target, what is the state shared by Alice and Bob now?</p><p>(b) After step (a), what is the reduced density matrix of Bob’s state?</p><p>(c) After step (a), Alice measures her two qubits in the Bell basis, what are the probabilities of each measurement outcome and Bob’s post-measurement state corresponding to each measurement outcome?</p>
+          </div>
+<div class="note success">
+            <script type="math/tex; mode=display">\begin{align*}\vert +\rangle\otimes\vert\beta_{11}\rangle    &= \frac{1}{\sqrt 2}(\vert 0\rangle + \vert 1\rangle) \otimes \vert \beta_{11}\rangle\\    &= \frac{1}{\sqrt 2}\big(\vert0\rangle\otimes\vert\beta_{11}\rangle+\vert1\rangle\otimes\vert\beta_{11}\rangle\big)\end{align*}</script><p>(a)</p><p>First apply $\text{CNOT}_\text{Alice}$</p><script type="math/tex; mode=display">\begin{align*}&\frac{1}{\sqrt 2}\big(\vert0\rangle\otimes\vert\beta_{11}\rangle+\vert1\rangle\otimes\vert\beta_{11}\rangle\big)\\&\qquad\xrightarrow{\text{CNOT}_\text{Alice}} \frac{1}{\sqrt 2}\big(\vert0\rangle\otimes\vert\beta_{11}\rangle+\vert1\rangle\otimes\vert\beta_{01}\rangle\big)\end{align*}</script><p>Then, apply $(I\otimes H)_\text{Alice}$</p><script type="math/tex; mode=display">\begin{align*}&&\frac{1}{\sqrt 2}\big(\vert0\rangle\otimes\vert\beta_{11}\rangle+&\vert1\rangle\otimes\vert\beta_{01}\rangle\big)\\&&\qquad\xrightarrow{(I\otimes H)_\text{Alice}}&\frac{1}{2}(\vert0\rangle\otimes(\vert\beta_{01}\rangle-\vert\beta_{10}\rangle)+\vert1\rangle\otimes(\vert\beta_{00}\rangle+\vert\beta_{11}\rangle))\\&&=&\frac{1}{2}(\vert00\rangle\otimes\vert-\rangle-\vert01\rangle\otimes\vert+\rangle+\vert10\rangle\otimes\vert-\rangle+\vert11\rangle\otimes\vert+\rangle)\\&&=&\frac{1}{2}\big((\vert00\rangle+\vert10\rangle)\vert-\rangle+(\vert11\rangle-\vert01\rangle)\vert+\rangle\big)\end{align*}</script><p>(b)</p><p>Let $\vert\psi\rangle=\displaystyle\frac{1}{2}\big((\vert00\rangle+\vert10\rangle)\vert-\rangle+(\vert11\rangle-\vert01\rangle)\vert+\rangle\big)$. The reduced density matrix of Bob’s state is</p><script type="math/tex; mode=display">\begin{align*}\rho_{Bob}    &=\text{tr}_\text{Alice}(\vert\psi\rangle\langle\psi\vert)\\    &=\vert-\rangle\langle-\vert+\vert+\rangle\langle+\vert\\    &=\vert0\rangle\langle0\vert+\vert1\rangle\langle1\vert\end{align*}</script><p>(c)</p><script type="math/tex; mode=display">\begin{align*}\begin{cases}    Pr(00)=\frac{1}{4} &\Rightarrow \vert \psi_\text{Bob}\rangle=\vert0\rangle\\    Pr(01)=\frac{1}{4} &\Rightarrow \vert \psi_\text{Bob}\rangle=-\vert1\rangle\\    Pr(10)=\frac{1}{4} &\Rightarrow \vert \psi_\text{Bob}\rangle=-\vert1\rangle\\    Pr(11)=\frac{1}{4} &\Rightarrow \vert \psi_\text{Bob}\rangle=\vert0\rangle\\\end{cases}\end{align*}</script>
+          </div>
+<h2 id="Problem-2"><a href="#Problem-2" class="headerlink" title="Problem 2"></a>Problem 2</h2><div class="note info">
+            <p>Calculate the output state and measurement distribution of the following circuits.</p><p>(a)</p><p><img src="https://i.imgur.com/850JyxW.png" width="200px"></p><p>(b)</p><p><img src="https://i.imgur.com/fKKwBvr.png" width="300px"></p>
+          </div>
+<div class="note success">
+            <p>(a)</p><p><img src="https://i.imgur.com/cv5dvw9.png" width="200px"></p><script type="math/tex; mode=display">\begin{align*}\vert \psi_1\rangle     &= \vert +\rangle\otimes\vert0\rangle\\\vert \psi_2\rangle     &= \frac{1}{\sqrt{2}}(\vert00\rangle+\vert11\rangle)\\\vert \psi_3\rangle    &= \frac{1}{2}(\vert00\rangle+\vert10\rangle+\vert01\rangle-\vert11\rangle)\end{align*}</script><p>Output distribution:</p><script type="math/tex; mode=display">\begin{cases}    Pr(00) = \frac{1}{4}\\    Pr(01) = \frac{1}{4}\\    Pr(10) = \frac{1}{4}\\    Pr(11) = \frac{1}{4}\end{cases}</script><p>(b)</p><p><img src="https://i.imgur.com/wLMNcCP.png" width="300px"></p><script type="math/tex; mode=display">\begin{align*}\vert \psi_1\rangle     &= \vert +\rangle \otimes \vert 0\rangle\\\vert \psi_2\rangle     &= \frac{1}{\sqrt 2}(\vert 00\rangle + \vert 11\rangle)\\\vert \psi_3\rangle    &= \frac{1}{\sqrt 2}(\vert 00\rangle-\vert11\rangle)\\\vert \psi_4\rangle    &= \frac{1}{\sqrt 2}(\vert00\rangle-\vert10\rangle)\\    &= \vert -\rangle\otimes \vert 0\rangle\\\vert \psi_5\rangle    &= \vert 10\rangle\end{align*}</script><p>Output distribution:</p><script type="math/tex; mode=display">Pr(10)=1</script>
+          </div>
+<h2 id="Problem-3"><a href="#Problem-3" class="headerlink" title="Problem 3"></a>Problem 3</h2><div class="note info">
+            <p>Suppose we have a one-bit function $f:\{0,1\}\to\{0,1\}$ and associated phase oracle</p><script type="math/tex; mode=display">O_f\vert b\rangle = (-1)^{f(b)}\vert b\rangle~~\text{for}~~ b\in\{0,1\}</script><p>(a) Suppose we run the one-qubit circuit $HO_fH$ on input $\vert 0\rangle$ then measures in the computational basis, what is the output probability distribution in terms of $f(0)$ and $f(1)$?</p><p>(b) Now suppose we implemented quantum gate of $f$ while leaving some “garbage” in the work space, so we have the oracle</p><script type="math/tex; mode=display">O'_f\vert b,c\rangle =(-1)^{f(b)}\vert b,c\oplus b\rangle</script><p>Suppose we run the two qubit quantum circuit $(H\otimes I)O’_f(H\otimes I)$ on the input $\vert 00\rangle$ and measurement the first qubit, what is the output probability distribution?</p>
+          </div>
+<div class="note success">
+            <p>(a)</p><p>Apply $H$</p><script type="math/tex; mode=display">\vert 0\rangle \xrightarrow{H}\vert+\rangle</script><p>Apply oracle $O_f$</p><script type="math/tex; mode=display">\vert +\rangle \xrightarrow{O_f} \frac{1}{\sqrt 2}\left((-1)^{f(0)}\vert 0\rangle + (-1)^{f(1)}\vert 1\rangle\right)</script><p>Apply $H$</p><script type="math/tex; mode=display">\begin{align*}&\frac{1}{\sqrt 2}\left((-1)^{f(0)}\vert 0\rangle + (-1)^{f(1)}\vert 1\rangle\right) \\    &\qquad\xrightarrow{H} \frac{1}{2}\left(\left((-1)^{f(0)}+(-1)^{f(1)}\right)\vert 0\rangle + \left((-1)^{f(0)}-(-1)^{f(1)}\right)\vert 1\rangle\right)\end{align*}</script><p>Output distribution</p><script type="math/tex; mode=display">\begin{cases}    Pr(0) = \frac{1}{4}\left((-1)^{2f(0)}+(-1)^{2f(1)}+2(-1)^{f(0)+f(1)}\right)\\    Pr(1) = \frac{1}{4}\left((-1)^{2f(0)}+(-1)^{2f(1)}-2(-1)^{f(0)+f(1)}\right)\end{cases}</script><p>(b)</p><p>Apply $(H\otimes I)$</p><script type="math/tex; mode=display">\vert 00\rangle \xrightarrow{(H\otimes I)}\vert+\rangle\otimes \vert 0\rangle</script><p>Apply oracle $O’_f$</p><script type="math/tex; mode=display">\vert+\rangle\otimes \vert 0\rangle \xrightarrow{O'_f} \frac{1}{\sqrt 2}\left((-1)^{f(0)}\vert00\rangle+(-1)^{f(1)}\vert11\rangle\right)</script><p>Apply $(H\otimes I)$</p><script type="math/tex; mode=display">\begin{align*}&\frac{1}{\sqrt 2}\left((-1)^{f(0)}\vert00\rangle+(-1)^{f(1)}\vert11\rangle\right)\\&\qquad\xrightarrow{(H\otimes I)}\frac{1}{2}\left((-1)^{f(0)}(\vert00\rangle+\vert10\rangle)+(-1)^{f(1)}(\vert01\rangle-\vert11\rangle)\right)\end{align*}</script><p>Output distribution</p><script type="math/tex; mode=display">\begin{cases}    Pr(0)=\frac{1}{4}\left((-1)^{2f(0)}+(-1)^{2f(1)}\right)\\    Pr(1)=\frac{1}{4}\left((-1)^{2f(0)}+(-1)^{2f(1)}\right)\end{cases}</script>
+          </div>
+<h2 id="Problem-4"><a href="#Problem-4" class="headerlink" title="Problem 4"></a>Problem 4</h2><div class="note info">
+            <p>In this problem, we walk through Shor’s algorithm with $N=3\times 5$</p><p>(a) What is the number of positive integers less than $N$ that is coprime to N?</p><p>(b) What is the order $r$ of $x=2$ modulo $N$ (the smallest positive integer $r$ such that $x^r=1(\text{mod}~N)$)? Check that $r$ is even.</p><p>(c) Calculate $x^{r/2}+1$ and $x^{r/2}-1$.</p><p>(d) Calculate $\text{gcd}(x^{r/2}-1, N)$ and confirm it is a factor of $N$.</p><p>(e) Recall the period finding algorithm has the following circuit</p><p><img src="https://i.imgur.com/V0pW97Y.png" width="300px"></p><p>where the controlled gate does  controlled multiplication: $\vert j,y\rangle\to\vert j,y\cdot x^j(\text{mod}~N)\rangle$, and $QFT_t$ is the quantum fourier transform gate on $t$ qubits, with $QFT_t\vert x\rangle=\frac{1}{\sqrt{2^t}}\exp[2\pi ixy/2^t]\vert y\rangle$ for $x\in\{0,1,\dots,2^t-1\}$. Use $t=5$, write down all intermediate states and the output probability distribution of the period finding algorithm. (Hint: recall $\vert 1\rangle=\frac{1}{\sqrt r}\sum^{r-1}_{s=0}\vert u_s\rangle$, where $\vert u_s\rangle=\frac{1}{\sqrt r}\sum^{r-1}_{k=0}\exp[-2\pi isk/r]\vert x^k\rangle$)</p>
+          </div>
+<div class="note success">
+            <p>(a) By Euler’s totient function</p><script type="math/tex; mode=display">\phi(N)=(p-1)(q-1)=2\times4=8</script><p>(b)</p><script type="math/tex; mode=display">2^r=1(\text{mod}~15)~\Rightarrow~ r=4</script><p>$r$ is even.</p><p>(c)</p><script type="math/tex; mode=display">x^{r/2}+1=2^{2}+1=5,\quad x^{r/2}-1=4-1=3</script><p>(d)</p><script type="math/tex; mode=display">\text{gcd}(x^{r/2}-1,N)=\text{gcd}(3,15)=3</script><p>Yes, $3$ is a factor of $N=15$.</p><p>(e)</p><p><img src="https://i.imgur.com/73X0yxx.png" width="300px"></p><script type="math/tex; mode=display">\begin{align*}\vert \psi_1\rangle    &=(H^{\otimes5}\vert0\rangle)\otimes\vert1\rangle\\    &=\frac{1}{\sqrt{32}}\sum^{31}_{j=0}\vert j\rangle\otimes\vert 1\rangle\\\vert \psi_2\rangle    &=\frac{1}{\sqrt{32}}\sum^{31}_{j=0}\vert j\rangle\otimes \vert x^j\rangle\end{align*}</script><p>Recall (from Hint)</p><script type="math/tex; mode=display">\vert 1\rangle=\frac{1}{\sqrt r}\sum^{r-1}_{s=0}\vert u_s\rangle,\quad \vert u_s\rangle=\frac{1}{\sqrt r}\sum^{r-1}_{k=0}e^{-2\pi i\frac{sk}{r}}\vert x^k\rangle</script><p>$r=4~\Rightarrow$</p><script type="math/tex; mode=display">\begin{align*}\Rightarrow&&\vert 1\rangle&=\frac{1}{2}\sum^{3}_{s=0}\vert u_s\rangle, \quad \vert u_s\rangle=\frac{1}{2}\sum^{3}_{k=0}e^{-2\pi i\frac{sk}{4}}\vert x^k\rangle\\&&\vert u_s\cdot x^j\rangle     &= \frac{1}{2}\sum^{3}_{k=0}e^{-2\pi i\frac{sk}{4}}\vert x^{j+k}\rangle\\    &&&= \frac{1}{2}\sum^{3}_{k=0}e^{-2\pi i\frac{s(k'-j)}{4}}\vert x^{k'}\rangle\\    &&&= e^{2\pi i\frac{sj}{4}}\vert u_s\rangle\\\Rightarrow &&\vert \psi_1\rangle    &= \frac{1}{\sqrt{32}}\sum^{31}_{j=0}\vert j\rangle \otimes \frac{1}{2}\sum^3_{s=0}\vert u_s\rangle\\\Rightarrow &&\vert \psi_2\rangle    &=\frac{1}{2\sqrt{32}}\sum^{31}_{j=0}\sum^3_{s=0}\vert j\rangle\otimes e^{2\pi i\frac{sj}{4}}\vert u_s\rangle\\&&QFT_5\vert k\rangle &=\frac{1}{\sqrt{32}}\sum^{31}_{j=0}e^{2\pi i\frac{kj}{32}}\vert j\rangle,\quad e^{2\pi i\frac{sj}{4}}=e^{2\pi i\frac{(8s)j}{32}}\\&&\Rightarrow~~&\frac{1}{\sqrt{32}}\sum^{31}_{j=0}e^{2\pi i\frac{sj}{4}}\vert j\rangle    =\frac{1}{\sqrt{32}}\sum^{31}_{j=0}e^{2\pi i\frac{(8s)j}{32}}\vert j\rangle=QFT_5\vert 8s\rangle\\\Rightarrow&&\vert \psi_3\rangle&=QFT^{-1}_5\vert \psi_2\rangle=\frac{1}{2}\sum^4_{s=0}\vert 8s\rangle\otimes \vert u_s\rangle\end{align*}</script><p>Output distribution:</p><script type="math/tex; mode=display">\{0, 8,16,24\}\sim\text{Uniform}</script>
+          </div>
+<h2 id="Problem-5"><a href="#Problem-5" class="headerlink" title="Problem 5"></a>Problem 5</h2><div class="note info">
+            <p>Suppose we have an input of $N$ numbers $x_1,x_2,\dots,x_N$. Give a rough sketch of a quantum algorithm that determines whether all inputs are different in $O(N)$ time. (You can use Grover’s algorithm that searches from any number of marked items as a subroutine.)</p>
+          </div>
+<div class="note success">
+            <p>Reduce to Element distinctness problem</p><ol><li>Divide the inputs into $\sqrt N$ blocks of size $\sqrt N$</li><li>Outer Grover search through each block $s$ and query all elements in it (check collision inside)</li><li>Inner Grover search between pair ($x\in s,y\in s$)</li><li>If $s$ contains an element of the collision, we found it $\Rightarrow Pr=\frac{1}{\sqrt N}$</li></ol><p>Complexity:</p><ul><li>Inner Grover: $\sqrt{N}$</li><li>Outer Grover: $\sqrt{\sqrt N}$</li><li>Total: $\sqrt{\sqrt N}\cdot \sqrt{N}=O(N^{3/4})\le O(N)$</li></ul>
+          </div>
+]]></content>
+      <categories>
+        <category>Quantum Computing</category>
+      </categories>
+      <tags>
+        <tag>Note</tag>
+        <tag>Quantum Computing</tag>
+        <tag>Quantum Algorithm</tag>
+        <tag>Quantum Circuits</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[Note] AuTO: Scaling Deep Reinforcement Learnign for Datacenter-Scale Automatic Traffic Optimization</title>
     <url>/Ending2015a/41710/</url>
     <content><![CDATA[<p><img src="https://i.imgur.com/xLpxJlN.png" alt=""></p>
@@ -359,7 +411,7 @@ J(\mu_\theta)
     &=\int_\mathcal{S}\rho^\mu(s)\nabla_\theta\mu_\theta(s)\nabla_a Q^{\mu^k}(s, a)\Big|_{a=\mu_\theta(s)}ds\\
     &=E_{s\sim\rho^u}\left[ \nabla_\theta\mu_\theta(s)\nabla_a Q^{\mu^k}(s, a)\Big|_{a=\mu_\theta(s)} \right]
 \end{align}</script><p>使用 DDPG 更新，有 4 個 network：一個 actor $\mu_{\theta^\mu}(s)$，一個 critic $Q_{\theta^Q}(s, a)$，另外兩個是 target network $\mu’_{\theta^{\mu’}}(s)$ 和 $Q’_{\theta^{Q’}}(s, a)$。random mini-batch with size $N$，transition tuple $(s_i, a_i, r_i, s_{i+1})$。當時的 state-of-the-art。</p>
-<p><img src="https://i.imgur.com/6U4HTDS.png =500x" alt=""></p>
+<p><img src="https://i.imgur.com/6U4HTDS.png" width="500px">)</p>
 <p><strong>DRL formulation</strong> 找到一組 optimal set of threshold $\{\alpha_i\}$ 來 minimize average FCT，把這個目標轉換成 DRL problem。設 cumulative density function of flow size distribution as $F(x)$，因此 $F(x)$ 代表 probability that a flow size is no larger than $x$。$L_i$ 表示 the number of packets a given flow brings in queue $Q_i$ for $i=1,\dots, K$。因此，$E[L_i]\le (\alpha_i-\alpha_{i-1})(1-F(\alpha_{i-1}))$。設 flow arrival rate as $\lambda$，則 packet arrival rate to queue $Q_i$ 是 $\lambda_i=\lambda E[L_i]$。設 $P_1$ service rate $\mu_1=\mu$ 其中 $\mu$ 是 link 的 service rate。則 $Q_1$ 的 idle rate 就是 $(1-\rho_1)$ 其中 $\rho_i=\lambda_i/\mu_i$ 是 $Q_i$ 的 utilization rate。$Q_2$ 的 service rate 則是 $\mu_2=(1-\rho_1)\mu$。<br>得到 $\mu_i=\Pi^{i-1}_{j=0}(1-\rho_{j})\mu$，其中 $\rho_0=0$。因此 $T_i=1/(\mu_i-\lambda_i)$ 就會是 average delay。對於一個 size $[\alpha_{i-1}, \alpha_{i})$ 的 flow 來說，在不同的 queue 會經歷不同的 delay。若說 $T_i$ 是 $Q_i$ 所需的 average spent time，設 $i_{max}(x)$ 代表比 flow size $x$ 還大一個層級的 threshold，則 flow size $x$ 的 average FCT $T(x)$ 會有 upper bound: $\sum^{i_{max}(x)}_{i=1}T_i$。</p>
 <div class="note info">
             <ul><li>$\alpha_i$ 是 threshold 其實就是 flow 的 size</li><li>$\mu$ 代表 link 的使用 rate，$\rho_i$ 代表某 queue $Q_i$ 佔用 link 的比例，由於先給 priority 高的使用因此 priority 低的就用剩下的部份，低 priority 的 service rate (佔 link 的比例) 就會是 $\mu_i=\Pi^{i-1}_{j=0}(1-\rho_{j})\mu$ (link 的 total capacity 乘上前面所有 queue 用剩的比例)</li></ul>
@@ -1790,7 +1842,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 <li>Still has $O(\sqrt N)$ quantum alg. through quantum walk</li>
 </ul>
 <h4 id="Collision-problem"><a href="#Collision-problem" class="headerlink" title="Collision problem"></a>Collision problem</h4><ul>
-<li>Given blacbox access to the function $f:\{1,2,\dots,N\}\to\{1,2,\dots,N\}$</li>
+<li>Given blackbox access to the function $f:\{1,2,\dots,N\}\to\{1,2,\dots,N\}$</li>
 <li>Promise: $f$ is either one-to-one or two-to-one (has lots of collision)<ul>
 <li>e.g. one-to-one $f:1\to1,~2\to2,~3\to4,~4\to3$</li>
 <li>e.g. two-to-one $f:1\to1,~2\to4,~3\to1,~4\to4$</li>
@@ -1823,11 +1875,11 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 <li>Problem: determine whether $f$ is one-to-one (ie. whether $f$ have collision)<ul>
 <li>Classical: $\Theta(N)$</li>
 <li>Quantum alg 1: $O(N^{3/4})$<ul>
-<li>Divide the inputs isno $\sqrt{N}$ blocks of size $\sqrt{N}$</li>
+<li>Divide the inputs into $\sqrt{N}$ blocks of size $\sqrt{N}$</li>
 <li>Outer Grover search through each block $s$ and query all elements in it (check collision inside)</li>
 <li>Inner Grover search between pair ($x\in s, y\in s$)</li>
 <li>If $s$ contain an element of the collision, we find it $\Rightarrow$ prob $\frac{1}{\sqrt N}$</li>
-<li>Total queries: $\sqrt{\sqrt N}\cdot \sqrt{\sqrt N}=O(N^{3/4})$</li>
+<li>Total queries: $\sqrt{\sqrt N}\cdot \sqrt{N}=O(N^{3/4})$</li>
 </ul>
 </li>
 <li>Quantum alg 2: $O(N^{2/3})$ by quantum walk<ul>
@@ -2304,7 +2356,7 @@ X\vert +\rangle = \vert +\rangle, &\quad X\vert -\rangle = (-1)\vert -\rangle
 <li><p>Every hermitian matrix $M=\sum_\lambda \lambda\vert\psi_\lambda\rangle\langle\psi_\lambda\vert$ can be viewed as a measurement in physics. They are called <em>observables</em> and most physical quantities are observables e.g. position, momentum, electric field, strength, number of photon</p>
 </li>
 </ul>
-<p><img src="https://i.imgur.com/XuPeScW.jpg =500x" alt=""></p>
+<p><img src="https://i.imgur.com/XuPeScW.jpg" width="500px">)</p>
 <h3 id="2-2-6-POVM-measurements"><a href="#2-2-6-POVM-measurements" class="headerlink" title="2.2.6 POVM measurements"></a>2.2.6 POVM measurements</h3><ul>
 <li>POVM (Positive Operator-Valued Measure)<script type="math/tex; mode=display">
 E_m\equiv M^\dagger_mM_m</script></li>

@@ -47,7 +47,7 @@
 <meta property="og:image" content="https://i.imgur.com/qJk8fnu.png">
 <meta property="og:image" content="https://i.imgur.com/W6cIhAs.png">
 <meta property="article:published_time" content="2021-01-09T14:31:02.000Z">
-<meta property="article:modified_time" content="2021-01-27T13:00:32.600Z">
+<meta property="article:modified_time" content="2021-01-31T15:19:19.298Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="Note">
 <meta property="article:tag" content="Quantum Computing">
@@ -257,7 +257,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2021-01-27 21:00:32" itemprop="dateModified" datetime="2021-01-27T21:00:32+08:00">2021-01-27</time>
+                <time title="修改時間：2021-01-31 23:19:19" itemprop="dateModified" datetime="2021-01-31T23:19:19+08:00">2021-01-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -588,7 +588,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 <li>Still has $O(\sqrt N)$ quantum alg. through quantum walk</li>
 </ul>
 <h4 id="Collision-problem"><a href="#Collision-problem" class="headerlink" title="Collision problem"></a>Collision problem</h4><ul>
-<li>Given blacbox access to the function $f:\{1,2,\dots,N\}\to\{1,2,\dots,N\}$</li>
+<li>Given blackbox access to the function $f:\{1,2,\dots,N\}\to\{1,2,\dots,N\}$</li>
 <li>Promise: $f$ is either one-to-one or two-to-one (has lots of collision)<ul>
 <li>e.g. one-to-one $f:1\to1,~2\to2,~3\to4,~4\to3$</li>
 <li>e.g. two-to-one $f:1\to1,~2\to4,~3\to1,~4\to4$</li>
@@ -621,11 +621,11 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 <li>Problem: determine whether $f$ is one-to-one (ie. whether $f$ have collision)<ul>
 <li>Classical: $\Theta(N)$</li>
 <li>Quantum alg 1: $O(N^{3/4})$<ul>
-<li>Divide the inputs isno $\sqrt{N}$ blocks of size $\sqrt{N}$</li>
+<li>Divide the inputs into $\sqrt{N}$ blocks of size $\sqrt{N}$</li>
 <li>Outer Grover search through each block $s$ and query all elements in it (check collision inside)</li>
 <li>Inner Grover search between pair ($x\in s, y\in s$)</li>
 <li>If $s$ contain an element of the collision, we find it $\Rightarrow$ prob $\frac{1}{\sqrt N}$</li>
-<li>Total queries: $\sqrt{\sqrt N}\cdot \sqrt{\sqrt N}=O(N^{3/4})$</li>
+<li>Total queries: $\sqrt{\sqrt N}\cdot \sqrt{N}=O(N^{3/4})$</li>
 </ul>
 </li>
 <li>Quantum alg 2: $O(N^{2/3})$ by quantum walk<ul>
@@ -726,6 +726,9 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
       <div class="popular-posts-title"><a href="/Ending2015a/33975/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Midterm exam</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Ending2015a/28314/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Final exam</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/Ending2015a/56696/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Chapter 4: Quantum Circuits</a></div>
     </li>
     <li class="popular-posts-item">
@@ -733,9 +736,6 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/Ending2015a/51732/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Chapter 3: Introduction to compuer science</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/Ending2015a/55689/" rel="bookmark">[Note] Quantum Computation and Quantum Information - Chapter 2: Introduction to quantum mechanics</a></div>
     </li>
   </ul>
 
@@ -773,7 +773,10 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
     <a href="/Ending2015a/16720/" rel="prev" title="[Note] Quantum Computation and Quantum Information - Chapter 5: The quantum Fourier transform and its applications">
       <i class="fa fa-chevron-left"></i> [Note] Quantum Computation and Quantum Information - Chapter 5: The quantum Fourier transform and its applications
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/Ending2015a/28314/" rel="next" title="[Note] Quantum Computation and Quantum Information - Final exam">
+      [Note] Quantum Computation and Quantum Information - Final exam <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -849,7 +852,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -924,12 +927,12 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="總字數">183k</span>
+    <span title="總字數">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="所需總閱讀時間">7:38</span>
+    <span title="所需總閱讀時間">8:01</span>
 </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
 
 
