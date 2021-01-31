@@ -56,7 +56,7 @@
 <meta property="og:image" content="https://i.imgur.com/UBxN26v.png">
 <meta property="og:image" content="https://i.imgur.com/NUGOXTW.png">
 <meta property="article:published_time" content="2020-09-02T09:35:38.000Z">
-<meta property="article:modified_time" content="2021-01-31T15:30:04.581Z">
+<meta property="article:modified_time" content="2021-01-31T15:38:49.604Z">
 <meta property="article:author" content="Joe Hsiao">
 <meta property="article:tag" content="Note">
 <meta property="article:tag" content="Deep Learning">
@@ -268,7 +268,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2021-01-31 23:30:04" itemprop="dateModified" datetime="2021-01-31T23:30:04+08:00">2021-01-31</time>
+                <time title="修改時間：2021-01-31 23:38:49" itemprop="dateModified" datetime="2021-01-31T23:38:49+08:00">2021-01-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -407,7 +407,7 @@ J(\mu_\theta)
     &=\int_\mathcal{S}\rho^\mu(s)\nabla_\theta\mu_\theta(s)\nabla_a Q^{\mu^k}(s, a)\Big|_{a=\mu_\theta(s)}ds\\
     &=E_{s\sim\rho^u}\left[ \nabla_\theta\mu_\theta(s)\nabla_a Q^{\mu^k}(s, a)\Big|_{a=\mu_\theta(s)} \right]
 \end{align}</script><p>使用 DDPG 更新，有 4 個 network：一個 actor $\mu_{\theta^\mu}(s)$，一個 critic $Q_{\theta^Q}(s, a)$，另外兩個是 target network $\mu’_{\theta^{\mu’}}(s)$ 和 $Q’_{\theta^{Q’}}(s, a)$。random mini-batch with size $N$，transition tuple $(s_i, a_i, r_i, s_{i+1})$。當時的 state-of-the-art。</p>
-<p><img src="https://i.imgur.com/6U4HTDS.png" width="500px">)</p>
+<p><img src="https://i.imgur.com/6U4HTDS.png" width="500px"></p>
 <p><strong>DRL formulation</strong> 找到一組 optimal set of threshold $\{\alpha_i\}$ 來 minimize average FCT，把這個目標轉換成 DRL problem。設 cumulative density function of flow size distribution as $F(x)$，因此 $F(x)$ 代表 probability that a flow size is no larger than $x$。$L_i$ 表示 the number of packets a given flow brings in queue $Q_i$ for $i=1,\dots, K$。因此，$E[L_i]\le (\alpha_i-\alpha_{i-1})(1-F(\alpha_{i-1}))$。設 flow arrival rate as $\lambda$，則 packet arrival rate to queue $Q_i$ 是 $\lambda_i=\lambda E[L_i]$。設 $P_1$ service rate $\mu_1=\mu$ 其中 $\mu$ 是 link 的 service rate。則 $Q_1$ 的 idle rate 就是 $(1-\rho_1)$ 其中 $\rho_i=\lambda_i/\mu_i$ 是 $Q_i$ 的 utilization rate。$Q_2$ 的 service rate 則是 $\mu_2=(1-\rho_1)\mu$。<br>得到 $\mu_i=\Pi^{i-1}_{j=0}(1-\rho_{j})\mu$，其中 $\rho_0=0$。因此 $T_i=1/(\mu_i-\lambda_i)$ 就會是 average delay。對於一個 size $[\alpha_{i-1}, \alpha_{i})$ 的 flow 來說，在不同的 queue 會經歷不同的 delay。若說 $T_i$ 是 $Q_i$ 所需的 average spent time，設 $i_{max}(x)$ 代表比 flow size $x$ 還大一個層級的 threshold，則 flow size $x$ 的 average FCT $T(x)$ 會有 upper bound: $\sum^{i_{max}(x)}_{i=1}T_i$。</p>
 <div class="note info">
             <ul><li>$\alpha_i$ 是 threshold 其實就是 flow 的 size</li><li>$\mu$ 代表 link 的使用 rate，$\rho_i$ 代表某 queue $Q_i$ 佔用 link 的比例，由於先給 priority 高的使用因此 priority 低的就用剩下的部份，低 priority 的 service rate (佔 link 的比例) 就會是 $\mu_i=\Pi^{i-1}_{j=0}(1-\rho_{j})\mu$ (link 的 total capacity 乘上前面所有 queue 用剩的比例)</li></ul>
