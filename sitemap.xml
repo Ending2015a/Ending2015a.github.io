@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ending2015a.github.io/Ending2015a/62651/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ending2015a.github.io/Ending2015a/28314/</loc>
     
     <lastmod>2021-02-03</lastmod>
@@ -269,6 +276,20 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://ending2015a.github.io/tags/NIPS-2020/</loc>
+    <lastmod>2021-02-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ending2015a.github.io/tags/Paper-List/</loc>
+    <lastmod>2021-02-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   
   <url>
@@ -336,6 +357,13 @@
   
   <url>
     <loc>https://ending2015a.github.io/categories/Linear-Algebra/</loc>
+    <lastmod>2021-02-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ending2015a.github.io/categories/Paper-List/</loc>
     <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
