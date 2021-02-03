@@ -121,7 +121,6 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
         <tag>Computer Graphics</tag>
         <tag>Physics Simulation</tag>
         <tag>Fluid Simulation</tag>
-        <tag>Position Based Fluids</tag>
       </tags>
   </entry>
   <entry>
@@ -170,6 +169,7 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
       </categories>
       <tags>
         <tag>Note</tag>
+        <tag>Course Note</tag>
         <tag>Quantum Computing</tag>
         <tag>Quantum Algorithm</tag>
       </tags>
@@ -264,6 +264,7 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
       </categories>
       <tags>
         <tag>Note</tag>
+        <tag>Course Note</tag>
         <tag>Quantum Computing</tag>
         <tag>Quantum Algorithm</tag>
         <tag>Quantum Circuits</tag>
@@ -1035,6 +1036,7 @@ s\cdot &z_k=0 &~~\Rightarrow~ &s_1z_{n1}+s_2z_{n2}+\cdots+s_nz_{kn}&=0
       </categories>
       <tags>
         <tag>Note</tag>
+        <tag>Course Note</tag>
         <tag>Quantum Computing</tag>
         <tag>Quantum Algorithm</tag>
         <tag>Quantum Circuits</tag>
@@ -1547,6 +1549,7 @@ r\mid(P-1)\Rightarrow (P-1)=c\cdot r\Rightarrow x^{(P-1)}=(x^r)^c\equiv 1(\text{
       </categories>
       <tags>
         <tag>Note</tag>
+        <tag>Course Note</tag>
         <tag>Quantum Computing</tag>
         <tag>Quantum Algorithm</tag>
         <tag>Quantum Circuits</tag>
@@ -1973,6 +1976,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
       </categories>
       <tags>
         <tag>Note</tag>
+        <tag>Course Note</tag>
         <tag>Quantum Computing</tag>
         <tag>Quantum Algorithm</tag>
         <tag>Quantum Circuits</tag>
@@ -2128,12 +2132,14 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 ]]></content>
       <categories>
         <category>C++</category>
-        <category>Metaprogramming</category>
+        <category>Meta-programming</category>
       </categories>
       <tags>
         <tag>Note</tag>
         <tag>C++</tag>
-        <tag>Metaprogramming</tag>
+        <tag>C++17</tag>
+        <tag>Programming</tag>
+        <tag>Meta-programming</tag>
       </tags>
   </entry>
   <entry>
@@ -2511,11 +2517,11 @@ p(m) &= \sum_i p(m\vert i)p_i\\
       </tags>
   </entry>
   <entry>
-    <title>[Tuto] 夢魘のCUDA: 使用 Preconditioned Conjugate Gradient 輕鬆解決大型稀疏線性方程組</title>
+    <title>[教學] 夢魘のCUDA: 使用 Preconditioned Conjugate Gradient 輕鬆解決大型稀疏線性方程組</title>
     <url>/Ending2015a/52045/</url>
     <content><![CDATA[<p><img src="https://i.imgur.com/Duz436p.png" width="60%"><br><em>圖片來源：<a href="http://fourier.eng.hmc.edu/e176/lectures/NM/node29.html">http://fourier.eng.hmc.edu/e176/lectures/NM/node29.html</a></em></p>
 <div class="note info">
-            <p>閱讀難度：</p><ul><li>線性代數：✦✦✧✧✧ (高手)</li><li>程式設計：✦✦✧✧✧ (高手)</li></ul>
+            <p>閱讀難度 ✦✦✧✧✧</p>
           </div>
 <p>特別感謝 <em>冠大大</em>、<em>王大大</em>。</p>
 <p>《夢魘のCUDA》是 CUDA Programming 系列，<strong>此系列不會介紹任何 CUDA 的基礎知識</strong>，而會介紹一些 CUDA 相關的應用。本篇作為《夢魘のCUDA》系列的首篇文，將會介紹既實用又不實用的兩套 CUDA 內建 Library — cuBLAS / cuSPARSE；除此之外，本篇也會講解如何使用這兩套 Library 實作出經典應用 — Preconditioned Conjugate Gradient。之所以說是經典應用的原因是因為，cuSPARSE 幾乎是為了這個應用而誕生的。</p>
@@ -3372,7 +3378,8 @@ y\gets \alpha \text{OP}(A)x+\beta y</script><p><img src="https://i.imgur.com/zxs
       </categories>
       <tags>
         <tag>C++</tag>
-        <tag>Tuto</tag>
+        <tag>Programming</tag>
+        <tag>教學</tag>
         <tag>Linear Algebra</tag>
         <tag>Numerical Analysis</tag>
         <tag>CUDA</tag>
