@@ -320,17 +320,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img src="https://i.imgur.com/xLpxJlN.png" alt=""></p>
+        <html><head></head><body><p><img src="https://i.imgur.com/xLpxJlN.png" alt></p>
 <blockquote>
 <p>原論文：Li Chen, J. Lingys, Kai Chen and Feng Liu. AuTO: Scaling Deep Reinforcement Learnign for Datacenter-Scale Automatic Traffic Optimization. SIGCOMM 2018.</p>
 </blockquote>
 <a id="more"></a>
 <div class="pdfobject-container" data-target="https://conferences.sigcomm.org/events/apnet2018/papers/auto.pdf" data-height="500px"></div>
-<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><p>Traffic optimization (TO) 是很重要的 datacenter management 問題，包括：</p>
+<h2 id="1-Introduction" class="heading-control"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction<a class="heading-anchor" href="#1-Introduction" aria-hidden="true"></a></h2><p>Traffic optimization (TO) 是很重要的 datacenter management 問題，包括：</p>
 <ul>
 <li>flow/coflow scheduling</li>
 <li>congestion control</li>
-<li>load balancing &amp; routing</li>
+<li>load balancing & routing</li>
 </ul>
 <p>目前 TO 普遍仰賴專家 heuristics 來 hand-craft，但實際上 TO 很注重 parameter 的 setting。如果 parameter mismatch 的話，TO 的效能反而會變得更差。例如：</p>
 <ul>
@@ -356,12 +356,12 @@
           </div>
 <p>使用 Python 實做 AuTO，因此 AuTO can compatible with popular learning frameworks, such as Keras/TensorFlow。</p>
 <p>使用 32 台 server 接上 2 台 switch 來測試 AuTO 的效果。經實驗證實，在 traffic 是 stable load and flow size sidtribution 的情況下，經過 8 小時的 training，AuTO 能夠改善效能 48.14% (與 huristics 比較) 。也顯示 AuTO 能夠穩定的學習且應用到 temporally and spatially heterogeneous traffic: 經過 8 小時的 training，AuTO 能夠減少 8.71%(9.18%) 的 average FCT (與 huristics 比較)。</p>
-<h2 id="2-Background-and-Motivation"><a href="#2-Background-and-Motivation" class="headerlink" title="2. Background and Motivation"></a>2. Background and Motivation</h2><h3 id="2-1-Deep-Reinforcement-Learning-DRL"><a href="#2-1-Deep-Reinforcement-Learning-DRL" class="headerlink" title="2.1 Deep Reinforcement Learning (DRL)"></a>2.1 Deep Reinforcement Learning (DRL)</h3><p><img src="https://i.imgur.com/jkGb0Vn.png" alt=""></p>
+<h2 id="2-Background-and-Motivation" class="heading-control"><a href="#2-Background-and-Motivation" class="headerlink" title="2. Background and Motivation"></a>2. Background and Motivation<a class="heading-anchor" href="#2-Background-and-Motivation" aria-hidden="true"></a></h2><h3 id="2-1-Deep-Reinforcement-Learning-DRL" class="heading-control"><a href="#2-1-Deep-Reinforcement-Learning-DRL" class="headerlink" title="2.1 Deep Reinforcement Learning (DRL)"></a>2.1 Deep Reinforcement Learning (DRL)<a class="heading-anchor" href="#2-1-Deep-Reinforcement-Learning-DRL" aria-hidden="true"></a></h3><p><img src="https://i.imgur.com/jkGb0Vn.png" alt></p>
 <p>使用 policy gradient。</p>
-<h3 id="2-2-Example-DRL-for-Flow-Scheduling"><a href="#2-2-Example-DRL-for-Flow-Scheduling" class="headerlink" title="2.2 Example: DRL for Flow Scheduling"></a>2.2 Example: DRL for Flow Scheduling</h3><p>解釋如何將 Flow scheduling 轉換為 DRL settings</p>
-<p><strong>Flow scheduling problem</strong> 假設很多 server 跟一台 switch，network 是 non-blocking，full-bisection bandwidth 且是 proper load-balancing。在這個情況下 flow scheduling problem 可以簡化為決定 flow 的發送順序。preemptive scheduling，strict priority queuing。在每個 server 都建立 $K$ 個等級的 priority queue 來分類 flow，並遵守 strict pripority queuing。這 $K$ 個 queue 能夠透過 switches 控制，每個 flow 的 priority 能夠動態控制。每個 flow 的 packet 都會 tag 上他的 priority number。<br><div class="note info">
+<h3 id="2-2-Example-DRL-for-Flow-Scheduling" class="heading-control"><a href="#2-2-Example-DRL-for-Flow-Scheduling" class="headerlink" title="2.2 Example: DRL for Flow Scheduling"></a>2.2 Example: DRL for Flow Scheduling<a class="heading-anchor" href="#2-2-Example-DRL-for-Flow-Scheduling" aria-hidden="true"></a></h3><p>解釋如何將 Flow scheduling 轉換為 DRL settings</p>
+<p><strong>Flow scheduling problem</strong> 假設很多 server 跟一台 switch，network 是 non-blocking，full-bisection bandwidth 且是 proper load-balancing。在這個情況下 flow scheduling problem 可以簡化為決定 flow 的發送順序。preemptive scheduling，strict priority queuing。在每個 server 都建立 $K$ 個等級的 priority queue 來分類 flow，並遵守 strict pripority queuing。這 $K$ 個 queue 能夠透過 switches 控制，每個 flow 的 priority 能夠動態控制。每個 flow 的 packet 都會 tag 上他的 priority number。<br></p><div class="note info">
             <ul><li>Preemptive scheduling: Running process 可以被更高 priority 的 process 中斷</li><li>strict priority queueing: 分成 $K$ 個等級的 Queue，高等級的 process 會優先分配到 Resource。低等級的會餓死。</li></ul>
-          </div></p>
+          </div><p></p>
 <p><strong>DRL formulation</strong><br>Action space: Mapping from Active flows to priorities<br>State space: 不考量 routing 跟 load-balancing，state 只包含 flow states。flow states 用 5-tuple 表示，其中 active flow 為 $F^t_a$，deactive float (finished flow) 為 $F^t_d$，tuple 則是 source/desination IP, source/destination port numbers, and transport protocol。active flow 還多一項 priority，而 finished flow 則多兩項：FCT 跟 flow size。</p>
 <p>Rewards: Reward 只有在 finished flow 才會給，finished flow $f$ 的 average throughput ${Tput}_f=\frac{\text{Size}_f}{\text{FCT}_f}$。Reward model 成與前一個 timestep $t-1$ 的總 throughput 的 ratio。</p>
 <script type="math/tex; mode=display">
@@ -369,29 +369,29 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
 <p><strong>DRL algorithm</strong> 使用 update rule</p>
 <script type="math/tex; mode=display">
 \theta \leftarrow \theta + \alpha + \sum_t \nabla_\theta \log\pi_\theta(s_t, a_t)(v_t -baseline)</script><p>其中 $v_t$ 是 empirical reward，$baseline$ 則是 cumulative average of experienced rewards per server。</p>
-<h3 id="2-3-Problem-Identified"><a href="#2-3-Problem-Identified" class="headerlink" title="2.3 Problem Identified"></a>2.3 Problem Identified</h3><p>使用 PG algorithm，agent 只有一層 hidden layer。使用 two servers，一台負責 train DRL agent，另一台負責用 RPC interface 傳 traffic information，sending rate 設 1000 flows per second。</p>
+<h3 id="2-3-Problem-Identified" class="heading-control"><a href="#2-3-Problem-Identified" class="headerlink" title="2.3 Problem Identified"></a>2.3 Problem Identified<a class="heading-anchor" href="#2-3-Problem-Identified" aria-hidden="true"></a></h3><p>使用 PG algorithm，agent 只有一層 hidden layer。使用 two servers，一台負責 train DRL agent，另一台負責用 RPC interface 傳 traffic information，sending rate 設 1000 flows per second。</p>
 <p>統計不同 implementation 的 processing latency: finish sending flow information 直到 receiving the DRL action。得到下圖：</p>
-<p><img src="https://i.imgur.com/B2pNTBR.png" alt=""></p>
+<p><img src="https://i.imgur.com/B2pNTBR.png" alt></p>
 <p>由上圖可看出，即使只有 1 hidden layer，處理一次 flow 的 delay 還是需要至少 60ms，相當於在 1 Gbps bandwidth 上流過 7.5MB 的資料量。但根據某 well-known traffic trace 網站 與 Microsoft datacenter 的統計，7.5MB 的 flow 分別大於 99.9% 與 95.13% 的 flow。這表示大部分的 DRL action 都將無用。</p>
-<h2 id="3-Auto-Design"><a href="#3-Auto-Design" class="headerlink" title="3. Auto Design"></a>3. Auto Design</h2><h3 id="3-1-Overview"><a href="#3-1-Overview" class="headerlink" title="3.1 Overview"></a>3.1 Overview</h3><p>DRL system 最關鍵的問題在於他的蒐集資料與下決策的 long latency。目前主流 datacenter 都使用 $\ge 10 Gbps$ link speed，如此一來 round-trip latency 必須至少是 sub-millisecond 等級。因此問題在於要如何利用 DRL 達成 datacenter scale 的 TO？</p>
+<h2 id="3-Auto-Design" class="heading-control"><a href="#3-Auto-Design" class="headerlink" title="3. Auto Design"></a>3. Auto Design<a class="heading-anchor" href="#3-Auto-Design" aria-hidden="true"></a></h2><h3 id="3-1-Overview" class="heading-control"><a href="#3-1-Overview" class="headerlink" title="3.1 Overview"></a>3.1 Overview<a class="heading-anchor" href="#3-1-Overview" aria-hidden="true"></a></h3><p>DRL system 最關鍵的問題在於他的蒐集資料與下決策的 long latency。目前主流 datacenter 都使用 $\ge 10 Gbps$ link speed，如此一來 round-trip latency 必須至少是 sub-millisecond 等級。因此問題在於要如何利用 DRL 達成 datacenter scale 的 TO？</p>
 <p>近期研究指出，大部分的 flow 都是 short flow，但大部分的 traffic bytes 都是 from long flow。因此，有個方法是，將 short flow 的都委派給 end-host 自己處理，然後 long flow 再用 DRL algorithm 處理。</p>
 <p>將 AuTO 設計成 two-level system，模仿 Peripheral and Central Nervous Systems in animals。Peripheral Systems (PS) 在 end-host 上運行，負責蒐集資料、下 short flow 的決策以減少 delay。Central System (CS) 則下 long flow 的 decision。除此之外，PS 下 decision 的條件會經由 CS 蒐集、處理 global traffic information 後設定。</p>
-<p><img src="https://i.imgur.com/arRlkCw.png" alt=""></p>
-<h3 id="3-2-Peripheral-System"><a href="#3-2-Peripheral-System" class="headerlink" title="3.2 Peripheral System"></a>3.2 Peripheral System</h3><p>AuTO 的 scalability 的關鍵在於，PS 利用 local information 根據 globally informed TO 來下 short flow 的決策。PS 有兩個 module: enforce module and monitoring module。</p>
+<p><img src="https://i.imgur.com/arRlkCw.png" alt></p>
+<h3 id="3-2-Peripheral-System" class="heading-control"><a href="#3-2-Peripheral-System" class="headerlink" title="3.2 Peripheral System"></a>3.2 Peripheral System<a class="heading-anchor" href="#3-2-Peripheral-System" aria-hidden="true"></a></h3><p>AuTO 的 scalability 的關鍵在於，PS 利用 local information 根據 globally informed TO 來下 short flow 的決策。PS 有兩個 module: enforce module and monitoring module。</p>
 <p><strong>Enforcement module</strong> 使用 Multi-Level Feedback Queueing (MLFQ) 來 schedule flows。Perform packet tagging in the DSCP field of IP packets at each end-host。總共 $K$ 個 Priorities $P_i$ 其中 $1\le i\le K$，$(K-1)$ 個 threshold $\alpha_j$，$1\le j\le K-1$。設定所有 switchs 根據 DSCP field 執行 strict priority queueing。當一個 flow 在 end-host 產生時，他會先被 tag 為 $P_1$，隨著傳輸的 bytes 增加，Priority 會往後調整 $P_j$ ($2\le j \le K$)。</p>
-<p><img src="https://i.imgur.com/isqJQ2o.png" alt=""></p>
+<p><img src="https://i.imgur.com/isqJQ2o.png" alt></p>
 <p>使用 MLFQ 可以有以下特性：</p>
 <ul>
 <li>PS 可以馬上根據 local information 與 threshold 來下 decisions。</li>
 <li>可以適用到 global traffic variations。CS 不直接下 flow 的 decision，而是根據 global information 來控制 PS 的 threshold。</li>
 <li>short flow 與 long flow 會很自然的分開，short flow 會在前面一點的 priority queue，long flow 則會到後面的 Queue。CS 可以個別處理 long flow，決定他的 routing、rate limit、 priority。</li>
 </ul>
-<p><img src="https://i.imgur.com/NCEBLSh.png" alt=""></p>
+<p><img src="https://i.imgur.com/NCEBLSh.png" alt></p>
 <p><strong>Monitoring Module</strong> 負責蒐集 flow size 與 completion times，讓 CS 能夠分析 flow 的 distribution，並制定適當的 threshold。如果出現 long flow 的話 monitoring module 也會負責回報給 CS，讓 CS 能夠下決策。</p>
-<h3 id="3-3-Central-System"><a href="#3-3-Central-System" class="headerlink" title="3.3 Central System"></a>3.3 Central System</h3><p>CS 上有兩個 DRL agents：short flow RLA 負責優化 thresholds for MLFQ，long flow RLA (lRLA) 負責決定 long flow 的 rates, routes, priorities。sRLA 解決 FCT minimization 問題，使用 Deep Deterministic Policy Gradient。lRLA 使用 PG algorithm (Sec. 2.2)。</p>
-<h2 id="4-DRL-Formulation-and-Solutions"><a href="#4-DRL-Formulation-and-Solutions" class="headerlink" title="4. DRL Formulation and Solutions"></a>4. DRL Formulation and Solutions</h2><h3 id="4-1-Optimizing-MLFQ-thresholds"><a href="#4-1-Optimizing-MLFQ-thresholds" class="headerlink" title="4.1 Optimizing MLFQ thresholds"></a>4.1 Optimizing MLFQ thresholds</h3><p>flow sheduling 在每個 hosts 與 network switches 上執行，使用 $K$ strict priority queues，並在每個 flow 的 IP header 的 DSCP field 設定 priority。根據 Shortest-Job-First (SJF) 的特性，愈長的 flow 則愈低 priority。</p>
+<h3 id="3-3-Central-System" class="heading-control"><a href="#3-3-Central-System" class="headerlink" title="3.3 Central System"></a>3.3 Central System<a class="heading-anchor" href="#3-3-Central-System" aria-hidden="true"></a></h3><p>CS 上有兩個 DRL agents：short flow RLA 負責優化 thresholds for MLFQ，long flow RLA (lRLA) 負責決定 long flow 的 rates, routes, priorities。sRLA 解決 FCT minimization 問題，使用 Deep Deterministic Policy Gradient。lRLA 使用 PG algorithm (Sec. 2.2)。</p>
+<h2 id="4-DRL-Formulation-and-Solutions" class="heading-control"><a href="#4-DRL-Formulation-and-Solutions" class="headerlink" title="4. DRL Formulation and Solutions"></a>4. DRL Formulation and Solutions<a class="heading-anchor" href="#4-DRL-Formulation-and-Solutions" aria-hidden="true"></a></h2><h3 id="4-1-Optimizing-MLFQ-thresholds" class="heading-control"><a href="#4-1-Optimizing-MLFQ-thresholds" class="headerlink" title="4.1 Optimizing MLFQ thresholds"></a>4.1 Optimizing MLFQ thresholds<a class="heading-anchor" href="#4-1-Optimizing-MLFQ-thresholds" aria-hidden="true"></a></h3><p>flow sheduling 在每個 hosts 與 network switches 上執行，使用 $K$ strict priority queues，並在每個 flow 的 IP header 的 DSCP field 設定 priority。根據 Shortest-Job-First (SJF) 的特性，愈長的 flow 則愈低 priority。</p>
 <p>其中一項難點就是要如何優化 MLFQ 的 threshold。前作 [8, 9, 14] 都是使用 mathematical analysis。[9] 則建議使用 collected flow-level traces weekly/monthly re-compute threshold。AuTO 則是直接使用 DRL 方式來預測 threshold $\alpha$。<br>Sec 2.2 的 PG 是最基本的 algorithm。Agent 目標在最佳化 policy $\pi_\theta(a|s)$ parameterized by $\theta$。然而，REINFORCE 與其他 PG algorithm 都是 stochastic policies，$\pi_\theta(a|s)=P[a|s;\theta]$。PG 沒有辦法處理 real values 的 action，因此，使用類似 Deterministic Policy Gradient (DPG) 的方法來處理 real value action $\{a_0, a_1, \dots, a_n\}$，給定 state $s$，$\alpha_i=\mu_\theta(s)$。DPG 是一種 actor-critic algorithm 用來訓練 deterministic policy，actor function $\mu_\theta$ 用來表示目前的 policy，critic neural network $Q(s, a)$ 用 Bellman equation 更新。</p>
-<p><img src="https://i.imgur.com/pLzg9rQ.png" alt=""></p>
+<p><img src="https://i.imgur.com/pLzg9rQ.png" alt></p>
 <p>Agent 的 actor 負責 sample environment 並使用下式更新 parameters $\theta$：</p>
 <script type="math/tex; mode=display">
 \theta^{k+1} \leftarrow \theta^k+\alpha E_{s\sim\rho^{\mu^k}}\left[\nabla_\theta\mu_\theta(s)\nabla_a Q^{\mu^k}(s, a)\middle|_{a=\mu_\theta(s)}\right]</script><p>其中 $\rho^{\mu^k}$ 是 state distribution at time $k$</p>
@@ -423,28 +423,28 @@ J(\mu_\theta)
 <p><em>Action space</em>: action space 由 centralized agent, sRLA 處理。action 是一組 MLFQ threshold ${\alpha^t_i}$。</p>
 <p><em>Rewards</em>: Reward 是 delayed feedback 來告訴 agent 在前一個 timestep 的 action 如何。reward 設為與前一個 objective (expectation of FCT) 的 ratio $r_t=\frac{\mathcal{T}^{t-1}}{\mathcal{T}^{t}}$，如果效能變差了 $r_t\le1$，變好了則 $r_t\ge 1$。</p>
 <p><strong>DRL algorithm</strong> 使用 buffer 儲存 tuple $(s_t, a_t, r_t, s_{t+1})$。</p>
-<h3 id="4-2-Optimizing-Long-Flows"><a href="#4-2-Optimizing-Long-Flows" class="headerlink" title="4.2 Optimizing Long Flows"></a>4.2 Optimizing Long Flows</h3><p>MLFQ thresholds $\alpha_{K-1}$ 將 long flow 與 short flow 區分出來，$\alpha_{K_1}$ 是會動態更新的，不像前作是 fixed [1, 22] 的。lRLA 使用 PG algorithm，差別只在於 Action space。</p>
+<h3 id="4-2-Optimizing-Long-Flows" class="heading-control"><a href="#4-2-Optimizing-Long-Flows" class="headerlink" title="4.2 Optimizing Long Flows"></a>4.2 Optimizing Long Flows<a class="heading-anchor" href="#4-2-Optimizing-Long-Flows" aria-hidden="true"></a></h3><p>MLFQ thresholds $\alpha_{K-1}$ 將 long flow 與 short flow 區分出來，$\alpha_{K_1}$ 是會動態更新的，不像前作是 fixed [1, 22] 的。lRLA 使用 PG algorithm，差別只在於 Action space。</p>
 <p><em>Action space</em>: 對每個 active flow $f$ 在 timestep $t$ 時的 action 是 $\{Prio_t(f), Rate_t(f), Path_t(f)\}$。其中 $Prio_t(f)$ 是 flow priority，$Rate_t(f)$ 是 rate limit，$Path_t(f)$ 是 path to take for flow $f$。假設 path 是跟前作 XPath [32] 一樣的方式定義。</p>
 <p><em>State space</em>: 同 Sec 2.2</p>
 <p><em>Rewards</em>: Reward 由 finished flows 定義，可以是：difference or ratios of sending rate, link utilization, throughput in consecutive timesteps。在 $10Gbps$ 的 link 下很難測量 active flows 的時間性的 flow-level information，因此只使用 finished flows，並使用 average throughputs 的 ratio。</p>
 <script type="math/tex; mode=display">
-r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput}^{t-1}_f }</script><h2 id="5-Implementation"><a href="#5-Implementation" class="headerlink" title="5. Implementation"></a>5. Implementation</h2><p>使用 Python 2.7、Keras</p>
-<h3 id="5-1-Peripheral-System"><a href="#5-1-Peripheral-System" class="headerlink" title="5.1 Peripheral System"></a>5.1 Peripheral System</h3><p>PS 有 Monitoring Module (MM) 跟 Enforcement Module (EM)。MM 負責蒐集 information，包括 recently finished flows 以及 presently active long flows。MM 會固定時間回傳資訊給 CS。EM 則負責 tagging active flows，以及 routing、rate limiting、priority tagging for long flows。本篇使用 Remote Procedure Call (RPC) 來實作傳輸界面。</p>
-<h4 id="5-1-1-Monitoring-Module"><a href="#5-1-1-Monitoring-Module" class="headerlink" title="5.1.1 Monitoring Module"></a>5.1.1 Monitoring Module</h4><p>MM 雖然可以實做成 Linux kernel module，如 PIAS [8]，但因為這次實驗是用 flow generator 來產生 flow，所以 Monitoring Module 直接實做在 generator 裡面。</p>
+r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput}^{t-1}_f }</script><h2 id="5-Implementation" class="heading-control"><a href="#5-Implementation" class="headerlink" title="5. Implementation"></a>5. Implementation<a class="heading-anchor" href="#5-Implementation" aria-hidden="true"></a></h2><p>使用 Python 2.7、Keras</p>
+<h3 id="5-1-Peripheral-System" class="heading-control"><a href="#5-1-Peripheral-System" class="headerlink" title="5.1 Peripheral System"></a>5.1 Peripheral System<a class="heading-anchor" href="#5-1-Peripheral-System" aria-hidden="true"></a></h3><p>PS 有 Monitoring Module (MM) 跟 Enforcement Module (EM)。MM 負責蒐集 information，包括 recently finished flows 以及 presently active long flows。MM 會固定時間回傳資訊給 CS。EM 則負責 tagging active flows，以及 routing、rate limiting、priority tagging for long flows。本篇使用 Remote Procedure Call (RPC) 來實作傳輸界面。</p>
+<h4 id="5-1-1-Monitoring-Module" class="heading-control"><a href="#5-1-1-Monitoring-Module" class="headerlink" title="5.1.1 Monitoring Module"></a>5.1.1 Monitoring Module<a class="heading-anchor" href="#5-1-1-Monitoring-Module" aria-hidden="true"></a></h4><p>MM 雖然可以實做成 Linux kernel module，如 PIAS [8]，但因為這次實驗是用 flow generator 來產生 flow，所以 Monitoring Module 直接實做在 generator 裡面。</p>
 <p>每 $T$ 秒，MM 會將 $n_l$ 個 active long flows (6 個 attributes) 跟 $m_l$ 個 finished long flows (7 個 attributes) 以及 $m_s$ 個 active short flows (7個 attributes) 整合起來回傳給 CS。</p>
-<p>$\{n_l,m_l,m_s\}$ 根據 traffic load 跟 $T$ 來決定，這幾個變數會是 upper-bound，若每 $T$ 秒無法蒐集齊的話，會 zero-padding，會這樣做是因為 DNN 的 Input 大小是固定的。而因實驗使用 flow generator，所以這部份可以控制。本篇使用 $\{n_l=11,m_l=10.m_s=100\}$<br><div class="note success">
+<p>$\{n_l,m_l,m_s\}$ 根據 traffic load 跟 $T$ 來決定，這幾個變數會是 upper-bound，若每 $T$ 秒無法蒐集齊的話，會 zero-padding，會這樣做是因為 DNN 的 Input 大小是固定的。而因實驗使用 flow generator，所以這部份可以控制。本篇使用 $\{n_l=11,m_l=10.m_s=100\}$<br></p><div class="note success">
             <p>Future work: Dynamic DNN、RNN (Dynamic input size)</p>
-          </div></p>
-<h4 id="5-1-2-Enforcement-Module"><a href="#5-1-2-Enforcement-Module" class="headerlink" title="5.1.2 Enforcement Module"></a>5.1.2 Enforcement Module</h4><p>EM 會定期接收 CS 的 action。包括 MLDQ thresholds 跟 local long flows 的 TO decisions。EM 是建立在 PIAS [8] kernel module，並加上可以 dynamic configuration threshold。</p>
+          </div><p></p>
+<h4 id="5-1-2-Enforcement-Module" class="heading-control"><a href="#5-1-2-Enforcement-Module" class="headerlink" title="5.1.2 Enforcement Module"></a>5.1.2 Enforcement Module<a class="heading-anchor" href="#5-1-2-Enforcement-Module" aria-hidden="true"></a></h4><p>EM 會定期接收 CS 的 action。包括 MLDQ thresholds 跟 local long flows 的 TO decisions。EM 是建立在 PIAS [8] kernel module，並加上可以 dynamic configuration threshold。</p>
 <p>short flow 使用 ECMP 處理 routing 跟 load-balancing，因為 short flow 不需要 centralized per-flow control 跟 DCTCP for congestion control。</p>
 <p>long flows 則使用 TO actions，包括 priority、rate limiting、routing。使用相同的 kernel module 還做 priority tagging。Rate limiting 使用 Hierarchical token bucket (HTB) queueing discipline in Linux traffic control (TC)。使用 parent class in HTB 來控制 total outbound bandwidth，讓 CS 能夠控制每個 Node 的 outbound rate limit。每當一個 flow 被判定為 long flow (掉到 MLFQ 最後一個 queue) EM 就會 create 一個 HTB filter，利用 5-tuple 來 filter 掉 long flow。當 EM 收到 rate allocation decisions from the CS，EM 就會發送 Netlink messages 到 Linux kernel 來更新 the child class of the particular flow：TC class 的 rate 設定成 CS 指定的 rate，而 TC class 的 rate 的 ceiling 則是設定成 CS 指定的兩倍但不超過 original rate。</p>
-<h3 id="5-2-Central-System"><a href="#5-2-Central-System" class="headerlink" title="5.2 Central System"></a>5.2 Central System</h3><p>CS run RL agents (sRLA &amp; lRLA) 來 optimize TO decisions。使用 SEDA-link architecture [58] 來處理 incoming updates 並 sending actions to PS。architecture 分成幾個 stages：http request handling，Deep network learning/processing，response sending。每個 stage 都會有各自的 processes，之間使用 queue 來傳輸訊息。確保 CS 的 cores 都能夠被用上、處理所有 PS 的 requests、分攤 load。</p>
-<h4 id="5-2-1-sRLA"><a href="#5-2-1-sRLA" class="headerlink" title="5.2.1 sRLA"></a>5.2.1 sRLA</h4><p>使用 Keras 實做 sRLA 並使用 DDPG algorithm。<br><em>Actors</em>: two fully-connected hidden layers with 600 and 600 neurons。output layer with $K-1$ output units (one for each threshold)。input layer 吃 states (700 features per-sever ($m_s=100$)) and outputs MLFQ thresholds for each host for timestep $t$</p>
+<h3 id="5-2-Central-System" class="heading-control"><a href="#5-2-Central-System" class="headerlink" title="5.2 Central System"></a>5.2 Central System<a class="heading-anchor" href="#5-2-Central-System" aria-hidden="true"></a></h3><p>CS run RL agents (sRLA & lRLA) 來 optimize TO decisions。使用 SEDA-link architecture [58] 來處理 incoming updates 並 sending actions to PS。architecture 分成幾個 stages：http request handling，Deep network learning/processing，response sending。每個 stage 都會有各自的 processes，之間使用 queue 來傳輸訊息。確保 CS 的 cores 都能夠被用上、處理所有 PS 的 requests、分攤 load。</p>
+<h4 id="5-2-1-sRLA" class="heading-control"><a href="#5-2-1-sRLA" class="headerlink" title="5.2.1 sRLA"></a>5.2.1 sRLA<a class="heading-anchor" href="#5-2-1-sRLA" aria-hidden="true"></a></h4><p>使用 Keras 實做 sRLA 並使用 DDPG algorithm。<br><em>Actors</em>: two fully-connected hidden layers with 600 and 600 neurons。output layer with $K-1$ output units (one for each threshold)。input layer 吃 states (700 features per-sever ($m_s=100$)) and outputs MLFQ thresholds for each host for timestep $t$</p>
 <p><em>Critics</em>: three hidden layers。輸入 states，最後一層 hidden layer 前會 concat output from actors。</p>
 <p>從 replay buffer 裡面 sample mini-batches of experiences: $\{s_t,a_t,r_t,s_{t+1}\}$。</p>
-<h4 id="5-2-2-lRLA"><a href="#5-2-2-lRLA" class="headerlink" title="5.2.2 lRLA"></a>5.2.2 lRLA</h4><p>10 hidden layers 全部都是 fully-connected layer with 300 neurons。input states (136 features per-server ($n_l=11,m_l=10$)) output probabilities for the actions for all the active flows。</p>
+<h4 id="5-2-2-lRLA" class="heading-control"><a href="#5-2-2-lRLA" class="headerlink" title="5.2.2 lRLA"></a>5.2.2 lRLA<a class="heading-anchor" href="#5-2-2-lRLA" aria-hidden="true"></a></h4><p>10 hidden layers 全部都是 fully-connected layer with 300 neurons。input states (136 features per-server ($n_l=11,m_l=10$)) output probabilities for the actions for all the active flows。</p>
 <p><strong>Summary</strong><br>hyper-parameters 是經過實驗挑選的，發現更深的 network 並沒有表現的多好反而花更長時間 training。綜合所有考量 (準確度、training 時間、時間延遲)，認為這樣的參數設定是最好的。</p>
-<h2 id="6-Evaluation"><a href="#6-Evaluation" class="headerlink" title="6. Evaluation"></a>6. Evaluation</h2><p>主要 evaluate</p>
+<h2 id="6-Evaluation" class="heading-control"><a href="#6-Evaluation" class="headerlink" title="6. Evaluation"></a>6. Evaluation<a class="heading-anchor" href="#6-Evaluation" aria-hidden="true"></a></h2><p>主要 evaluate</p>
 <ol>
 <li>在 Stable traffic (固定 flow size distribution and traffic load) 情況下 AuTO 與 standard heuristics 的差</li>
 <li>在 varying traffic characteristics 情況下 AuTO 適不適用</li>
@@ -455,63 +455,63 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
 <ul>
 <li><strong>Homogeneous</strong>: fixed flow size distribution 跟 load 情況下，AuTO 的 threshold 能 converge 且 average FCT 表現的比 standard heuristics 快 48.14% </li>
 <li><strong>Spatially Heterogeneous</strong>: 將 server 分成 4 個 clusters，各自產生不同 flow size distribution 跟 load；AuTO 的 threshold 能 converge，且 average FCT 表現的比 standard heuristics 快 37.20%</li>
-<li><strong>Spatially &amp; Temporally Heterogeneous</strong>: 同上述情景，但 flow size distribution 跟 load 會回時間改變，AuTO 能夠 learning 且展現很好的 adaptation。跟 fixed heuristics 比較，heuristics 只有在某些特定的 traffic settings combination 下能夠險勝 AuTO。</li>
+<li><strong>Spatially & Temporally Heterogeneous</strong>: 同上述情景，但 flow size distribution 跟 load 會回時間改變，AuTO 能夠 learning 且展現很好的 adaptation。跟 fixed heuristics 比較，heuristics 只有在某些特定的 traffic settings combination 下能夠險勝 AuTO。</li>
 <li><strong>System Overhead</strong>: AuTO implementation 能夠在 10ms 內給予立即的 state 更新。AuTO 同時也展現在 CPU urilization 和 throughput degradation 方面的 minimal end-host overhead。</li>
 </ul>
 <p><strong>Setting</strong> AuTO 實驗使用 32 台 server。Switch 支援 ECN 跟 struct priority queueing 最多有 8 個 queues。Server 則是 Dell PowerEdge R320 + 4-core Intel E5-1410 2.8GHz CPU，8G memory，and Broadcom BCM5719 NetXtreme Gigabit Ethernet NIC with 4x1Gbps ports。系統則是 64-bit Debian 8.7 (3.16.39-1 Kernel)。By default, advanced NIC offload mechanisms are enabled to reduce the CPU overhead. The base round-trip time (RTT) of our testbed is 100us。</p>
-<p><img src="https://i.imgur.com/pzANneq.png" alt=""></p>
+<p><img src="https://i.imgur.com/pzANneq.png" alt></p>
 <p>使用前作 [2, 7, 9, 15] 使用的 traffic generator [20]，給定 flow size distribution 跟 traffic load 來自動產生 traffic flows。</p>
-<p>使用兩種 realistic workloads：web search workload 跟 data mining workload。其中 15 台負責產生 flow 的叫做 application server，剩下一台就是 CS。每台 application server 會有 3 個 ports 連到 data plane switch，剩下的 port (1個) 連到 control plane switch 跟 CS 溝通。3 個 port 設定在不同的 subnet。兩台 Switch 都是 Pronto-3297 48-port Gigabit Ethernet switch。<br><img src="https://i.imgur.com/v6AZRML.png" alt=""></p>
+<p>使用兩種 realistic workloads：web search workload 跟 data mining workload。其中 15 台負責產生 flow 的叫做 application server，剩下一台就是 CS。每台 application server 會有 3 個 ports 連到 data plane switch，剩下的 port (1個) 連到 control plane switch 跟 CS 溝通。3 個 port 設定在不同的 subnet。兩台 Switch 都是 Pronto-3297 48-port Gigabit Ethernet switch。<br><img src="https://i.imgur.com/v6AZRML.png" alt></p>
 <p><strong>Comparison Targets</strong> 跟兩種 heuristics 比較：Shortest-Job-First (SJF) 與 Least-Attained-Service-First (LAS)。差異在於，SJF 需要在一開始就給定 flow size。這兩個算法都需要蒐集一段時間才能決定 threshold，通常會蒐集幾周 (表示每更新一次 threshold 都需要隔幾周)。<br>實驗使用 quantized SJF 跟 LAS with 4 priority levels。</p>
 <ul>
-<li>Quantized SJF (QSJF): 三個 thresholds $\alpha_0&lt;\alpha_1&lt;\alpha_2$。直接從 flow generator 得到 flow size。最小 size 的 flow 有最高 priority。</li>
-<li>Quantized LAS (QLAS): 三個 thresholds $\beta_0&lt;\beta_1&lt;\beta_2$。每個 flow 一開始都是最高 priority 直到送超過 $\beta_i$ 時就會降低 priority。</li>
+<li>Quantized SJF (QSJF): 三個 thresholds $\alpha_0<\alpha_1<\alpha_2$。直接從 flow generator 得到 flow size。最小 size 的 flow 有最高 priority。</li>
+<li>Quantized LAS (QLAS): 三個 thresholds $\beta_0<\beta_1<\beta_2$。每個 flow 一開始都是最高 priority 直到送超過 $\beta_i$ 時就會降低 priority。</li>
 </ul>
 <p>Thresholds 則是根據 flow size distribution and traffic load 按照 [14] 方式計算。除非有指定，否則都是使用 DCTCP distribution at 80% load 情景計算出來的 thresholds。</p>
-<h3 id="6-1-Experiments"><a href="#6-1-Experiments" class="headerlink" title="6.1 Experiments"></a>6.1 Experiments</h3><h4 id="6-1-1-Homogeneous-traffic"><a href="#6-1-1-Homogeneous-traffic" class="headerlink" title="6.1.1 Homogeneous traffic"></a>6.1.1 Homogeneous traffic</h4><p>flow size distribution 跟 load 都固定。Web Search (WS) 跟 Data Mining (DM) distribution 設定 80% load。這兩個 distribution 分別代表不同 group 的 flows: a mixture of short and long flows (WS), a set of short flows (DM)。average 跟 99th percentile FCT 如下：<br><img src="https://i.imgur.com/H1BypuL.png" alt=""></p>
+<h3 id="6-1-Experiments" class="heading-control"><a href="#6-1-Experiments" class="headerlink" title="6.1 Experiments"></a>6.1 Experiments<a class="heading-anchor" href="#6-1-Experiments" aria-hidden="true"></a></h3><h4 id="6-1-1-Homogeneous-traffic" class="heading-control"><a href="#6-1-1-Homogeneous-traffic" class="headerlink" title="6.1.1 Homogeneous traffic"></a>6.1.1 Homogeneous traffic<a class="heading-anchor" href="#6-1-1-Homogeneous-traffic" aria-hidden="true"></a></h4><p>flow size distribution 跟 load 都固定。Web Search (WS) 跟 Data Mining (DM) distribution 設定 80% load。這兩個 distribution 分別代表不同 group 的 flows: a mixture of short and long flows (WS), a set of short flows (DM)。average 跟 99th percentile FCT 如下：<br><img src="https://i.imgur.com/H1BypuL.png" alt></p>
 <p>Train AuTO 8小時，使用 train 完後的 model schedule flow for one hour。</p>
 <ul>
 <li>mixture of short and long flow (WS)，AuTO 比 standard heuristics 快 48.14% average FCT。因為 AuTO 可以動態調整 long flow 的 priority 避免 starvation problem。</li>
 <li>short flows (DM)，AuTO 表現跟 heuristics 差不多，因為 AuTO 在一開始也是給所有 flow 最高的 priority，因此表現結果跟 QLAS 差不多。</li>
-<li>RL Training 期間能夠讓 average FCT 減少 18.61% 跟 4.12% for WS&amp;DM。</li>
+<li>RL Training 期間能夠讓 average FCT 減少 18.61% 跟 4.12% for WS&DM。</li>
 <li>將 incast traffic 獨立出來看，發現 QLAS 跟 QSJF 表現差不多，因為這在 congestion control 就已經處理好。DCTCP 已經把 incast 處理的很好。<div class="note info">
             <p>incast traffic: 多對一傳輸</p>
           </div>
 </li>
 </ul>
-<h4 id="6-1-2-Spatially-heterogeneous-traffic"><a href="#6-1-2-Spatially-heterogeneous-traffic" class="headerlink" title="6.1.2 Spatially heterogeneous traffic"></a>6.1.2 Spatially heterogeneous traffic</h4><p>把 server 分成 4 個 clusters，create spatially hetrogeneous traffic。分別分成四種不同的 load 跟 distribution：<WS 60%>，<WS 80%>，<DM 60%>，<DM 60%></p>
-<p><img src="https://i.imgur.com/fMKDPEf.png" alt=""></p>
+<h4 id="6-1-2-Spatially-heterogeneous-traffic" class="heading-control"><a href="#6-1-2-Spatially-heterogeneous-traffic" class="headerlink" title="6.1.2 Spatially heterogeneous traffic"></a>6.1.2 Spatially heterogeneous traffic<a class="heading-anchor" href="#6-1-2-Spatially-heterogeneous-traffic" aria-hidden="true"></a></h4><p>把 server 分成 4 個 clusters，create spatially hetrogeneous traffic。分別分成四種不同的 load 跟 distribution：<ws 60%>，<ws 80%>，<dm 60%>，<dm 60%></dm></dm></ws></ws></p>
+<p><img src="https://i.imgur.com/fMKDPEf.png" alt></p>
 <p>heuristics 的 thresholds 4 個 clusters 分別根據 distribution 與 load 計算。比較結果後發現跟 homogeneous traffic 的情況很像。 AuTO 跟 QLAS 比，average FCT 快 37.20%，99th percentile FCT 快 19.78%；跟 QSJF 比，average FCT 快 27.95%，99th percentile FCT 快 11.98%。</p>
-<h4 id="6-1-3-Temporally-amp-spatially-heterogeneous-traffic"><a href="#6-1-3-Temporally-amp-spatially-heterogeneous-traffic" class="headerlink" title="6.1.3 Temporally &amp; spatially heterogeneous traffic"></a>6.1.3 Temporally &amp; spatially heterogeneous traffic</h4><p>每小時改變 flow size distribution 與 network load：load value 為 {60%, 70%, 80%}，distribution 則是隨機挑選，並確保每個小時的 load 與 distribution 會不同。實驗 run 8 小時。</p>
-<p><img src="https://i.imgur.com/yEUC2Xx.png" alt=""><br><img src="https://i.imgur.com/G5axuHf.png" alt=""></p>
+<h4 id="6-1-3-Temporally-amp-spatially-heterogeneous-traffic" class="heading-control"><a href="#6-1-3-Temporally-amp-spatially-heterogeneous-traffic" class="headerlink" title="6.1.3 Temporally & spatially heterogeneous traffic"></a>6.1.3 Temporally & spatially heterogeneous traffic<a class="heading-anchor" href="#6-1-3-Temporally-amp-spatially-heterogeneous-traffic" aria-hidden="true"></a></h4><p>每小時改變 flow size distribution 與 network load：load value 為 {60%, 70%, 80%}，distribution 則是隨機挑選，並確保每個小時的 load 與 distribution 會不同。實驗 run 8 小時。</p>
+<p><img src="https://i.imgur.com/yEUC2Xx.png" alt><br><img src="https://i.imgur.com/G5axuHf.png" alt></p>
 <ul>
 <li>heuristics with fixed parameters，當 traffic 特性 match 到 parameters 的時候 average 99th percentile FCT 都表現的比其他方法好。但當 mismatch 時，FCT 瞬間變差，顯示他的適應 dynamic traffic 的能力差。</li>
 <li>AuTO 能夠學習適應 dynamiccally changed traffic，最後一個 hour，AuTO achieves 8.71%(9.18%) average (99th percentile) FCT compared to QSJF。這是因為 AuTO 使用 2 個 agent 來學習並動態調整 priorities of flows。不需人為干涉，能夠自動調整。</li>
 </ul>
 <p>觀察 AuTO 可以發現 a constant decline in FCTs 表示他能夠在 dynamic traffic 下學習，最後收斂到 local optimum。表示 datacenter traffic scheduling 可以轉換為 RL problem and DRL techniques can be applied to solve it。</p>
-<h3 id="6-2-Deep-Dive"><a href="#6-2-Deep-Dive" class="headerlink" title="6.2 Deep Dive"></a>6.2 Deep Dive</h3><h4 id="6-2-1-Optimizing-MLFQ-thresholds-using-DRL"><a href="#6-2-1-Optimizing-MLFQ-thresholds-using-DRL" class="headerlink" title="6.2.1 Optimizing MLFQ thresholds using DRL"></a>6.2.1 Optimizing MLFQ thresholds using DRL</h4><p>在 60% load 的環境下 train sRLA for 8 小時之後，跟 PIAS 方法算出來的 threshold 做比較，發現除了最後一個 threshold 有差之外其他都差不多。</p>
-<p><img src="https://i.imgur.com/HVzSsc3.png" alt=""></p>
+<h3 id="6-2-Deep-Dive" class="heading-control"><a href="#6-2-Deep-Dive" class="headerlink" title="6.2 Deep Dive"></a>6.2 Deep Dive<a class="heading-anchor" href="#6-2-Deep-Dive" aria-hidden="true"></a></h3><h4 id="6-2-1-Optimizing-MLFQ-thresholds-using-DRL" class="heading-control"><a href="#6-2-1-Optimizing-MLFQ-thresholds-using-DRL" class="headerlink" title="6.2.1 Optimizing MLFQ thresholds using DRL"></a>6.2.1 Optimizing MLFQ thresholds using DRL<a class="heading-anchor" href="#6-2-1-Optimizing-MLFQ-thresholds-using-DRL" aria-hidden="true"></a></h4><p>在 60% load 的環境下 train sRLA for 8 小時之後，跟 PIAS 方法算出來的 threshold 做比較，發現除了最後一個 threshold 有差之外其他都差不多。</p>
+<p><img src="https://i.imgur.com/HVzSsc3.png" alt></p>
 <p>把 average FCT 跟 99t percentile FCT 畫出來看發現，兩個的 performance 差不多。因此下結論，AuTO train 8 個小時後 performance 跟 PIAS 差不多。</p>
-<p><img src="https://i.imgur.com/nWnlRe2.png" alt=""><br><img src="https://i.imgur.com/ocnTpii.png" alt=""></p>
-<h4 id="6-2-2-Optimizing-Long-Flows-using-DRL"><a href="#6-2-2-Optimizing-Long-Flows-using-DRL" class="headerlink" title="6.2.2 Optimizing Long Flows using DRL"></a>6.2.2 Optimizing Long Flows using DRL</h4><p>在 experiment (Sec 6.1.3) 時持續 5 分鐘紀錄 long flow 的數量。設 $L$ 表示 the set of all links，$N_l(t)$ 表示 the number of long flows on link $l\in L$。$N(t)=\{N_l(t),\forall l\}$，下圖表示 $\max(N(t))-min(N(t))m \forall t$，用來說明 load imbalance。</p>
-<p><img src="https://i.imgur.com/aaAxoY6.png" alt=""></p>
+<p><img src="https://i.imgur.com/nWnlRe2.png" alt><br><img src="https://i.imgur.com/ocnTpii.png" alt></p>
+<h4 id="6-2-2-Optimizing-Long-Flows-using-DRL" class="heading-control"><a href="#6-2-2-Optimizing-Long-Flows-using-DRL" class="headerlink" title="6.2.2 Optimizing Long Flows using DRL"></a>6.2.2 Optimizing Long Flows using DRL<a class="heading-anchor" href="#6-2-2-Optimizing-Long-Flows-using-DRL" aria-hidden="true"></a></h4><p>在 experiment (Sec 6.1.3) 時持續 5 分鐘紀錄 long flow 的數量。設 $L$ 表示 the set of all links，$N_l(t)$ 表示 the number of long flows on link $l\in L$。$N(t)=\{N_l(t),\forall l\}$，下圖表示 $\max(N(t))-min(N(t))m \forall t$，用來說明 load imbalance。</p>
+<p><img src="https://i.imgur.com/aaAxoY6.png" alt></p>
 <p>發現通常 imbalance 不超過 10 個 flow。即使偶爾發生很不 imbalance 的情況，lRLA 會自動調整將過多的 flow 送到比較少的 link 上。這是因為如 Sec 2.2 所說，使用 Throughput 當作 reward，當多個 flows 集中在同一條 link 上，他的 throughput 會比分散在各個 link 上還低。</p>
-<h4 id="6-2-3-System-Overhead"><a href="#6-2-3-System-Overhead" class="headerlink" title="6.2.3 System Overhead"></a>6.2.3 System Overhead</h4><p>探討 AuTO performance 跟 System overhead。首先先探討 CS 的 response latency，以及 scalability。接著探討 end-host PS 的 overhead</p>
-<p><strong>CS Response Latency</strong> 測量方式如下：$t_u$ 代表 CS 收到 update 的時間點，$t_s$ 代表 CS 回饋 action 的時間點。response time 是 $t_s-t_u$。發現 CS 平均可以在 10ms 內回應所有 server。這個時間是由 computation overhead of DNN 跟 update queueing delay 造成。AuTO 目前只用 CPU。<br><div class="note success">
+<h4 id="6-2-3-System-Overhead" class="heading-control"><a href="#6-2-3-System-Overhead" class="headerlink" title="6.2.3 System Overhead"></a>6.2.3 System Overhead<a class="heading-anchor" href="#6-2-3-System-Overhead" aria-hidden="true"></a></h4><p>探討 AuTO performance 跟 System overhead。首先先探討 CS 的 response latency，以及 scalability。接著探討 end-host PS 的 overhead</p>
+<p><strong>CS Response Latency</strong> 測量方式如下：$t_u$ 代表 CS 收到 update 的時間點，$t_s$ 代表 CS 回饋 action 的時間點。response time 是 $t_s-t_u$。發現 CS 平均可以在 10ms 內回應所有 server。這個時間是由 computation overhead of DNN 跟 update queueing delay 造成。AuTO 目前只用 CPU。<br></p><div class="note success">
             <p>能夠保證降低 latency 的方式是 CPU-GPU hybrid training and serving，CPU 負責 interfact with the environment，GPU 負責在背景 training model。</p>
-          </div><br><img src="https://i.imgur.com/UBxN26v.png" alt=""></p>
-<p>Response latency 也會隨 DNN computation complexity 增加。AuTO 的 network size 是由 $\{n_l, m_l, m_s\}$ 決定。若把 $\{n_l, m_l\}$ 從 ${11, 10}$ 增加到 ${1000, 1000}$，average response time 會變成 81.82ms。下圖為增加 $m_s$ 數量的走勢圖。<br><img src="https://i.imgur.com/NUGOXTW.png" alt=""></p>
-<p>發現 $m_s$ 越大， response latency 增加愈慢，因為 $m_s$ 數量會決定 input layer size。只會影響 input layer 到第一層 hidden layer 的 matrix size。<br><div class="note success">
+          </div><br><img src="https://i.imgur.com/UBxN26v.png" alt><p></p>
+<p>Response latency 也會隨 DNN computation complexity 增加。AuTO 的 network size 是由 $\{n_l, m_l, m_s\}$ 決定。若把 $\{n_l, m_l\}$ 從 ${11, 10}$ 增加到 ${1000, 1000}$，average response time 會變成 81.82ms。下圖為增加 $m_s$ 數量的走勢圖。<br><img src="https://i.imgur.com/NUGOXTW.png" alt></p>
+<p>發現 $m_s$ 越大， response latency 增加愈慢，因為 $m_s$ 數量會決定 input layer size。只會影響 input layer 到第一層 hidden layer 的 matrix size。<br></p><div class="note success">
             <p>未來如果 AuTO 使用更複雜的 DNN，可以利用 parallelization techniques for DRL [6, 25, 27, 39] 來 reduce the response latency。</p>
-          </div></p>
-<p><strong>CS Scalability</strong> 實驗環境比較小，CS 的 NIC capacity 並沒有用滿，monitoring flow 所使用的 bandwidth 只有 12.40Kbps per server。假設 1Gbps network interface，CS 最多可以 monitor 80.64K servers。或是利用下列方法提昇 CS scalability<br><div class="note success">
+          </div><p></p>
+<p><strong>CS Scalability</strong> 實驗環境比較小，CS 的 NIC capacity 並沒有用滿，monitoring flow 所使用的 bandwidth 只有 12.40Kbps per server。假設 1Gbps network interface，CS 最多可以 monitor 80.64K servers。或是利用下列方法提昇 CS scalability<br></p><div class="note success">
             <ol><li>現行的 datacenter 使用 10Gbps 或更高的 network interface</li><li>CS 使用 GPUs 或其他加速計算的裝置</li><li>reduce the bandwidth of monitoring flows by compression</li></ol>
-          </div></p>
+          </div><p></p>
 <p><strong>PS Overhead</strong> 測量 CPU utilization，跟 throughput reduction。嘗試測量沒有使用 MM 跟 EM 發現 overhead 差異極小 (CPU utilization 差異少於 1%)，表示 AuTO 的 throughput 跟 GPU overhead 極小，跟 PIAS 差不多。</p>
-<h2 id="7-Related-Works"><a href="#7-Related-Works" class="headerlink" title="7. Related Works"></a>7. Related Works</h2><h2 id="8-Conclution-Remarks"><a href="#8-Conclution-Remarks" class="headerlink" title="8.Conclution Remarks"></a>8.Conclution Remarks</h2><div class="note success">
+<h2 id="7-Related-Works" class="heading-control"><a href="#7-Related-Works" class="headerlink" title="7. Related Works"></a>7. Related Works<a class="heading-anchor" href="#7-Related-Works" aria-hidden="true"></a></h2><h2 id="8-Conclution-Remarks" class="heading-control"><a href="#8-Conclution-Remarks" class="headerlink" title="8.Conclution Remarks"></a>8.Conclution Remarks<a class="heading-anchor" href="#8-Conclution-Remarks" aria-hidden="true"></a></h2><div class="note success">
             <p>RL algorithm for congestion control and task scheduling<br>WAN bandwidth management</p>
           </div>
-
+</body></html>
     </div>
 
     

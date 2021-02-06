@@ -290,11 +290,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>上課筆記，原文書:</p>
+        <html><head></head><body><p>上課筆記，原文書:</p>
 <blockquote>
-<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen & Isaac L. Chuang</p>
 </blockquote>
-<h2 id="2-1-Linear-algebra"><a href="#2-1-Linear-algebra" class="headerlink" title="2.1 Linear algebra"></a>2.1 Linear algebra</h2><div class="table-container">
+<h2 id="2-1-Linear-algebra" class="heading-control"><a href="#2-1-Linear-algebra" class="headerlink" title="2.1 Linear algebra"></a>2.1 Linear algebra<a class="heading-anchor" href="#2-1-Linear-algebra" aria-hidden="true"></a></h2><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -333,7 +333,7 @@
 </tr>
 <tr>
 <td>$A^\dagger$</td>
-<td>Hermitian conjugate or adjoint of the $A$ matrix, $A^\dagger=(A^T)^*$. $\left[\begin{matrix}a &amp; b\\ c &amp; d\end{matrix}\right]^\dagger = \left[\begin{matrix} a^* &amp; c^*\\b^* &amp; d^*\end{matrix}\right]$</td>
+<td>Hermitian conjugate or adjoint of the $A$ matrix, $A^\dagger=(A^T)^*$. $\left[\begin{matrix}a & b\\ c & d\end{matrix}\right]^\dagger = \left[\begin{matrix} a^* & c^*\\b^* & d^*\end{matrix}\right]$</td>
 </tr>
 <tr>
 <td>$\langle \varphi\vert A\vert\psi \rangle$</td>
@@ -343,18 +343,18 @@
 </table>
 </div>
 <a id="more"></a>
-<h3 id="2-1-1-Bases-and-linear-independence"><a href="#2-1-1-Bases-and-linear-independence" class="headerlink" title="2.1.1 Bases and linear independence"></a>2.1.1 Bases and linear independence</h3><ul>
+<h3 id="2-1-1-Bases-and-linear-independence" class="heading-control"><a href="#2-1-1-Bases-and-linear-independence" class="headerlink" title="2.1.1 Bases and linear independence"></a>2.1.1 Bases and linear independence<a class="heading-anchor" href="#2-1-1-Bases-and-linear-independence" aria-hidden="true"></a></h3><ul>
 <li>Spanning set：a set of vectors $\vert v_1\rangle,\dots,\vert v_n\rangle$ such that any vector $\vert v\rangle$ in the vector space can be written as a linear combination $\vert v \rangle=\sum_i a_i\vert v_i\rangle$ of vectors in that set.</li>
 <li>A set of non-zero vectors $\vert v_1 \rangle, \dots, \vert v_n\rangle$ are <em>lineraly dependent</em> if there exists a set of complex numbers $a_1,\dots, a_n$ with $a_i\ne 0$ for at least one value of $i$, such that<script type="math/tex; mode=display">
 a_i\vert v_1\rangle + a_2\vert v_2\rangle + \cdots + a_n\vert v_n\rangle = 0</script></li>
 </ul>
-<h3 id="2-1-2-Linear-operators-and-matrics"><a href="#2-1-2-Linear-operators-and-matrics" class="headerlink" title="2.1.2 Linear operators and matrics"></a>2.1.2 Linear operators and matrics</h3><ul>
+<h3 id="2-1-2-Linear-operators-and-matrics" class="heading-control"><a href="#2-1-2-Linear-operators-and-matrics" class="headerlink" title="2.1.2 Linear operators and matrics"></a>2.1.2 Linear operators and matrics<a class="heading-anchor" href="#2-1-2-Linear-operators-and-matrics" aria-hidden="true"></a></h3><ul>
 <li>$A: V\to W$ is said to be a linear operator between vector spaces $V$ and $W$ if<script type="math/tex; mode=display">
 A\left(\sum_i a_i\vert v_i\rangle\right)=\sum_i a_i A\vert v_i\rangle</script></li>
 <li>Suppose $A:V\to W$ is a linear operator between vector spaces $V$ and $W$. Suppose $\vert v_1\rangle,\dots,\vert v_m\rangle$ is a basis for $V$ and $\vert w_1\rangle,\dots, \vert w_n\rangle$ is a basis for $W$. Then for each $j$ in the range $1,\dots,m$, there exist complex numbers $A_{1j}$ through $A_{nj}$ such that<script type="math/tex; mode=display">
 A\vert v_j \rangle=\sum_i A_{ij} \vert w_i\rangle</script></li>
 </ul>
-<h3 id="2-1-3-The-Pauli-matrics"><a href="#2-1-3-The-Pauli-matrics" class="headerlink" title="2.1.3 The Pauli matrics"></a>2.1.3 The Pauli matrics</h3><script type="math/tex; mode=display">
+<h3 id="2-1-3-The-Pauli-matrics" class="heading-control"><a href="#2-1-3-The-Pauli-matrics" class="headerlink" title="2.1.3 The Pauli matrics"></a>2.1.3 The Pauli matrics<a class="heading-anchor" href="#2-1-3-The-Pauli-matrics" aria-hidden="true"></a></h3><script type="math/tex; mode=display">
 \begin{eqnarray*}
 \sigma_0 \equiv I \equiv \left[\begin{matrix} 1 & 0 \\0 & 1\end{matrix}\right] \quad & \sigma_1\equiv\sigma_x\equiv X\equiv \left[\begin{matrix} 0 & 1\\ 1 & 0 \end{matrix}\right]\\
 \sigma_2\equiv\sigma_y\equiv Y\equiv \left[\begin{matrix} 0 & -i\\ i & 0 \end{matrix}\right] \quad & \sigma_3\equiv\sigma_z\equiv Z\equiv\left[\begin{matrix}1&0\\0&-1\end{matrix}\right]
@@ -364,7 +364,7 @@ A\vert v_j \rangle=\sum_i A_{ij} \vert w_i\rangle</script></li>
 <li>$X\vert +\rangle=\vert +\rangle$, $X\vert -\rangle=(-1)\vert -\rangle$<br><br>where $\vert+\rangle=\frac{1}{\sqrt{2}}(\vert 0\rangle + \vert 1\rangle)$, and $\vert-\rangle=\frac{1}{\sqrt{2}}(\vert 0\rangle - \vert 1\rangle)$</li>
 </ul>
 <p>The $X$ and $Z$ are also sometimes referred toas the <em>bit flip</em> and <em>phase flip</em> matrices. $Z\vert 1\rangle=(-1)\vert 1\rangle$, $-1$ is known as a <em>phase factor</em>.</p>
-<h3 id="2-1-4-Inner-products"><a href="#2-1-4-Inner-products" class="headerlink" title="2.1.4 Inner products"></a>2.1.4 Inner products</h3><ol>
+<h3 id="2-1-4-Inner-products" class="heading-control"><a href="#2-1-4-Inner-products" class="headerlink" title="2.1.4 Inner products"></a>2.1.4 Inner products<a class="heading-anchor" href="#2-1-4-Inner-products" aria-hidden="true"></a></h3><ol>
 <li>$(\cdot,\cdot)$ is linear in the second argument,<script type="math/tex; mode=display">
 \left(\vert v\rangle, \sum_i\lambda_i\vert w_i\rangle\right)=\sum_i\lambda_i\left(\vert v\rangle, \vert w_i\rangle\right)</script></li>
 <li>$\left(\vert v\rangle, \vert w\rangle\right)=\left(\vert w\rangle, \vert v\rangle\right)^*$</li>
@@ -375,11 +375,11 @@ A\vert v_j \rangle=\sum_i A_{ij} \vert w_i\rangle</script></li>
 \begin{align*}
 \langle v\vert w\rangle &= \left(\sum_j v_i\vert i \rangle, \sum_i w_j\vert j \rangle\right) = \sum_{ij}v^*_iw_j\delta_{ij}=\sum_iv^*_iw_i\\
 &= \left[\begin{matrix}v^*_1 \dots v^*_n\end{matrix}\right]\left[\begin{matrix}w_1\\ \vdots\\w_n\end{matrix}\right]
-\end{align*}</script><h3 id="2-1-5-Eigenvectors-and-eigenvalues"><a href="#2-1-5-Eigenvectors-and-eigenvalues" class="headerlink" title="2.1.5 Eigenvectors and eigenvalues"></a>2.1.5 Eigenvectors and eigenvalues</h3><ul>
+\end{align*}</script><h3 id="2-1-5-Eigenvectors-and-eigenvalues" class="heading-control"><a href="#2-1-5-Eigenvectors-and-eigenvalues" class="headerlink" title="2.1.5 Eigenvectors and eigenvalues"></a>2.1.5 Eigenvectors and eigenvalues<a class="heading-anchor" href="#2-1-5-Eigenvectors-and-eigenvalues" aria-hidden="true"></a></h3><ul>
 <li>An <em>eigenvector</em> of a linear operator $A$ on a vector space is a non-zero vector $\vert v \rangle$ such that $A\vert v \rangle=\lambda\vert v\rangle$, where $\lambda$ is a complex number knwon as the <em>eigenvalue</em> of $A$ corresponding to $\vert v \rangle$.</li>
 <li>The <em>characteristic function</em> is defined to be $c(\lambda)\equiv\det\vert A-\lambda I\vert$, where $\det$ is the <em>determinant</em> function for matrics.</li>
 </ul>
-<h3 id="2-1-6-Adjoints-and-Hermitian-operators"><a href="#2-1-6-Adjoints-and-Hermitian-operators" class="headerlink" title="2.1.6 Adjoints and Hermitian operators"></a>2.1.6 Adjoints and Hermitian operators</h3><ul>
+<h3 id="2-1-6-Adjoints-and-Hermitian-operators" class="heading-control"><a href="#2-1-6-Adjoints-and-Hermitian-operators" class="headerlink" title="2.1.6 Adjoints and Hermitian operators"></a>2.1.6 Adjoints and Hermitian operators<a class="heading-anchor" href="#2-1-6-Adjoints-and-Hermitian-operators" aria-hidden="true"></a></h3><ul>
 <li>Suppose $A$ is any linear operator on a Hilbert space, $V$. It turns out that there exists a unique linear operator $A^\dagger$ on $V$ such that for all vectors $\vert v\rangle, \vert w \rangle\in V$,<script type="math/tex; mode=display">
 (\vert v \rangle, A\vert w\rangle)=(A^\dagger\vert v\rangle, \vert w\rangle)</script></li>
 <li>$(AB)^\dagger=B^\dagger A^\dagger$</li>
@@ -387,9 +387,9 @@ A\vert v_j \rangle=\sum_i A_{ij} \vert w_i\rangle</script></li>
 <li>A matrix $U$ is said to be <em>unitary</em> if $U^\dagger U=I$.</li>
 <li>Unitary operators preserve inner products between vectors. Let $\vert v\rangle$ and $\vert w \rangle$ be any two vectors.<script type="math/tex; mode=display">
 (U\vert v \rangle, U\vert w \rangle)=\langle v\vert U^\dagger U\vert w\rangle=\langle v \vert I\vert w\rangle=\langle v\vert w \rangle</script></li>
-<li>A <em>positive operator</em> $A$ is defined to be an operator such that for any vector $\vert v\rangle$, $(\vert v\rangle, A\vert v\rangle)$ is a real, non-negative number. If $(\vert v\rangle, A\vert v\rangle)&gt;0, ~~\forall \vert v\rangle \ne 0$，we say that $A$ is <em>positive definite</em>.</li>
+<li>A <em>positive operator</em> $A$ is defined to be an operator such that for any vector $\vert v\rangle$, $(\vert v\rangle, A\vert v\rangle)$ is a real, non-negative number. If $(\vert v\rangle, A\vert v\rangle)>0, ~~\forall \vert v\rangle \ne 0$，we say that $A$ is <em>positive definite</em>.</li>
 </ul>
-<h3 id="2-1-7-Tensor-products"><a href="#2-1-7-Tensor-products" class="headerlink" title="2.1.7 Tensor products"></a>2.1.7 Tensor products</h3><ul>
+<h3 id="2-1-7-Tensor-products" class="heading-control"><a href="#2-1-7-Tensor-products" class="headerlink" title="2.1.7 Tensor products"></a>2.1.7 Tensor products<a class="heading-anchor" href="#2-1-7-Tensor-products" aria-hidden="true"></a></h3><ul>
 <li>Suppose $V$ and $W$ are vector spaces of dimension $m$ and $n$ respectively, then $V\otimes W$ (read V tensor W) is a $mn$ dimensional vector space.</li>
 <li>The elements of $V\otimes W$ are linear combinations of tensor products $\vert v\rangle \otimes \vert w \rangle, ~~\text{where}~\vert v\rangle\in V, \vert w\rangle\in W$</li>
 <li>$\vert i\rangle\otimes \vert j\rangle$ is a basis for $V\otimes W$ if $\vert i\rangle$ and $\vert j\rangle$ are orthonormal bases for the spaces $V$ and $W$</li>
@@ -420,16 +420,16 @@ A\otimes B = \underbrace{\left.\left[
               \,mp\text{ rows}</script><ul>
 <li>$\vert \psi\rangle^{\otimes k}$ means $\vert \psi\rangle$ tensored with itself $k$ times.</li>
 </ul>
-<h3 id="2-1-8-Operator-functions"><a href="#2-1-8-Operator-functions" class="headerlink" title="2.1.8 Operator functions"></a>2.1.8 Operator functions</h3><blockquote>
+<h3 id="2-1-8-Operator-functions" class="heading-control"><a href="#2-1-8-Operator-functions" class="headerlink" title="2.1.8 Operator functions"></a>2.1.8 Operator functions<a class="heading-anchor" href="#2-1-8-Operator-functions" aria-hidden="true"></a></h3><blockquote>
 <p>待補</p>
 </blockquote>
-<h3 id="2-1-9-The-commutator-and-anti-commutator"><a href="#2-1-9-The-commutator-and-anti-commutator" class="headerlink" title="2.1.9 The commutator and anti-commutator"></a>2.1.9 The commutator and anti-commutator</h3><blockquote>
+<h3 id="2-1-9-The-commutator-and-anti-commutator" class="heading-control"><a href="#2-1-9-The-commutator-and-anti-commutator" class="headerlink" title="2.1.9 The commutator and anti-commutator"></a>2.1.9 The commutator and anti-commutator<a class="heading-anchor" href="#2-1-9-The-commutator-and-anti-commutator" aria-hidden="true"></a></h3><blockquote>
 <p>待補</p>
 </blockquote>
-<h3 id="2-1-10-The-polar-and-singular-value-decompositions"><a href="#2-1-10-The-polar-and-singular-value-decompositions" class="headerlink" title="2.1.10 The polar and singular value decompositions"></a>2.1.10 The polar and singular value decompositions</h3><blockquote>
+<h3 id="2-1-10-The-polar-and-singular-value-decompositions" class="heading-control"><a href="#2-1-10-The-polar-and-singular-value-decompositions" class="headerlink" title="2.1.10 The polar and singular value decompositions"></a>2.1.10 The polar and singular value decompositions<a class="heading-anchor" href="#2-1-10-The-polar-and-singular-value-decompositions" aria-hidden="true"></a></h3><blockquote>
 <p>待補</p>
 </blockquote>
-<h2 id="2-2-The-postulates-of-quantum-mechanics"><a href="#2-2-The-postulates-of-quantum-mechanics" class="headerlink" title="2.2 The postulates of quantum mechanics"></a>2.2 The postulates of quantum mechanics</h2><h3 id="2-2-1-State-space"><a href="#2-2-1-State-space" class="headerlink" title="2.2.1 State space"></a>2.2.1 State space</h3><div class="note success">
+<h2 id="2-2-The-postulates-of-quantum-mechanics" class="heading-control"><a href="#2-2-The-postulates-of-quantum-mechanics" class="headerlink" title="2.2 The postulates of quantum mechanics"></a>2.2 The postulates of quantum mechanics<a class="heading-anchor" href="#2-2-The-postulates-of-quantum-mechanics" aria-hidden="true"></a></h2><h3 id="2-2-1-State-space" class="heading-control"><a href="#2-2-1-State-space" class="headerlink" title="2.2.1 State space"></a>2.2.1 State space<a class="heading-anchor" href="#2-2-1-State-space" aria-hidden="true"></a></h3><div class="note success">
             <p><strong>Postulate 1</strong>: Associated to any isolated physical system is a complex vector space with inner product (that is, a <u>Hilbert space</u>) known as the <em>state space</em> of the system. The system is completely described by its <em>state vector</em>, which is a <u>unit vector</u> in the system’s state space.</p>
           </div>
 <ul>
@@ -439,7 +439,7 @@ A\otimes B = \underbrace{\left.\left[
 <li>$\vert \psi\rangle$ is a unit vector implies that $\langle \psi \vert \psi \rangle=1$, and also equivalent to $\vert a\vert^2 + \vert b\vert^2=1$.</li>
 <li>We say that any linear combination $\sum_i\alpha_i\vert \psi_i\rangle$ is a superposition of the states $\vert \psi_i\rangle$ with <em>amplitude $\alpha_i$ for the state $\vert \psi_i\rangle$.</em></li>
 </ul>
-<h3 id="2-2-2-Evolution"><a href="#2-2-2-Evolution" class="headerlink" title="2.2.2 Evolution"></a>2.2.2 Evolution</h3><div class="note success">
+<h3 id="2-2-2-Evolution" class="heading-control"><a href="#2-2-2-Evolution" class="headerlink" title="2.2.2 Evolution"></a>2.2.2 Evolution<a class="heading-anchor" href="#2-2-2-Evolution" aria-hidden="true"></a></h3><div class="note success">
             <p><strong>Postulate 2</strong>: The evolution of a <em>closed</em> quantum system is described by a <em>unitary transformation</em>. That is, the state $\vert \psi \rangle$ of the system at time $t_1$ is related to the state $\vert \psi’\rangle$ of the system at time $t_2$ by unitary operator $U$ which depends only on the times $t_1$ and $t_2$,</p><script type="math/tex; mode=display">\vert \psi'\rangle=U\vert \psi\rangle</script>
           </div>
 <p><em>Hadamard gate</em> $H$ is an unitary operator：</p>
@@ -452,7 +452,7 @@ H=\frac{1}{\sqrt2}\left[\begin{matrix}1&1\\1&-1\end{matrix}\right]</script><p>Th
 <div class="note success">
             <p><strong>Postulate 2’</strong>: The time evolution of the state of a closed quantum system is described by the <em>Schrödinger equation</em>,</p><script type="math/tex; mode=display">i\hbar\frac{d}{dt}\vert \psi(t)\rangle=\hat{H}\vert\psi(t)\rangle</script><ul><li>$\hbar$ is known as <em>Planck’s constant</em></li><li>$\hat{H}$ is referred to <em>Hamiltonian operator</em>.</li></ul>
           </div>
-<h3 id="2-2-3-Quantum-measurement"><a href="#2-2-3-Quantum-measurement" class="headerlink" title="2.2.3 Quantum measurement"></a>2.2.3 Quantum measurement</h3><div class="note success">
+<h3 id="2-2-3-Quantum-measurement" class="heading-control"><a href="#2-2-3-Quantum-measurement" class="headerlink" title="2.2.3 Quantum measurement"></a>2.2.3 Quantum measurement<a class="heading-anchor" href="#2-2-3-Quantum-measurement" aria-hidden="true"></a></h3><div class="note success">
             <p><strong>Postulate 3</strong>: Quantum measurements are described by a collection $\{M_m\}$ of <em>measurement operators</em>. These are opaertors acting on the state space of the system being measured. The index $m$ refers to the measurement outcomes that may occur in the experiment. If the state of the quantum system is $\vert\psi\rangle$ immediately before the measurement then the probability that result $m$ occurs is given by</p><script type="math/tex; mode=display">p(m)=\langle\psi\vert M^\dagger_m M_m\vert\psi\rangle</script><p>and the state of the system after the measurement (post-measurement state) is </p><script type="math/tex; mode=display">\frac{M_m\vert\psi\rangle}{\sqrt{\langle\psi\vert M^\dagger_m M_m\vert\psi\rangle}}</script><p>The measurement operators satisfy the <em>completeness equation</em>,</p><script type="math/tex; mode=display">\sum_m M^\dagger_m M_m=I</script><p>The completeness equation expresses the fact that probabilities sum to one:</p><script type="math/tex; mode=display">1=\sum_m p(m)=\sum_m\langle\psi\vert M^\dagger_m M_m\vert \psi\rangle</script>
           </div>
 <ul>
@@ -474,12 +474,12 @@ X\vert 0\rangle = \vert 1\rangle, &\quad X\vert 1\rangle = \vert 0\rangle\\
 X\vert +\rangle = \vert +\rangle, &\quad X\vert -\rangle = (-1)\vert -\rangle
 \end{align*}</script></li>
 </ul>
-<h3 id="2-2-4-Distinguishing-quantum-states"><a href="#2-2-4-Distinguishing-quantum-states" class="headerlink" title="2.2.4 Distinguishing quantum states"></a>2.2.4 Distinguishing quantum states</h3><ul>
+<h3 id="2-2-4-Distinguishing-quantum-states" class="heading-control"><a href="#2-2-4-Distinguishing-quantum-states" class="headerlink" title="2.2.4 Distinguishing quantum states"></a>2.2.4 Distinguishing quantum states<a class="heading-anchor" href="#2-2-4-Distinguishing-quantum-states" aria-hidden="true"></a></h3><ul>
 <li>Non-orthogonal quantum states cannot be distinguished.</li>
 <li>Orthogonal quantum states are perfectly distinguishable</li>
 </ul>
-<p><img src="https://i.imgur.com/ELjQSWC.png" alt=""></p>
-<h3 id="2-2-5-Projective-measurement"><a href="#2-2-5-Projective-measurement" class="headerlink" title="2.2.5 Projective measurement"></a>2.2.5 Projective measurement</h3><ul>
+<p><img src="https://i.imgur.com/ELjQSWC.png" alt></p>
+<h3 id="2-2-5-Projective-measurement" class="heading-control"><a href="#2-2-5-Projective-measurement" class="headerlink" title="2.2.5 Projective measurement"></a>2.2.5 Projective measurement<a class="heading-anchor" href="#2-2-5-Projective-measurement" aria-hidden="true"></a></h3><ul>
 <li>The special class of measurements (Postulate 3) is known as <em>projective measurements</em>.</li>
 <li>Primarily concerned measurements with <em>projective measurements</em>.</li>
 <li>$P_i^2=P_i$, where $P_i$ is a measurement operator, and is called <em>projector</em>.</li>
@@ -508,7 +508,7 @@ X\vert +\rangle = \vert +\rangle, &\quad X\vert -\rangle = (-1)\vert -\rangle
 </li>
 </ul>
 <p><img src="https://i.imgur.com/XuPeScW.jpg" width="500px"></p>
-<h3 id="2-2-6-POVM-measurements"><a href="#2-2-6-POVM-measurements" class="headerlink" title="2.2.6 POVM measurements"></a>2.2.6 POVM measurements</h3><ul>
+<h3 id="2-2-6-POVM-measurements" class="heading-control"><a href="#2-2-6-POVM-measurements" class="headerlink" title="2.2.6 POVM measurements"></a>2.2.6 POVM measurements<a class="heading-anchor" href="#2-2-6-POVM-measurements" aria-hidden="true"></a></h3><ul>
 <li>POVM (Positive Operator-Valued Measure)<script type="math/tex; mode=display">
 E_m\equiv M^\dagger_mM_m</script></li>
 <li>$E_m$ is a positive operator such that $\sum_mE_m=I$ and $p(m)=\langle\psi\vert E_m\vert\psi\rangle$<ul>
@@ -530,7 +530,7 @@ E_3 &= Id-E_1-E_2 \quad \text{(Should check if $E_3$ is a positive operator)}
 <li>If we see outcome 2, it must be $\vert 0\rangle$.</li>
 <li>If we see outcome 3, we cannot distinguish it.</li>
 </ol>
-<h3 id="2-2-7-Phase"><a href="#2-2-7-Phase" class="headerlink" title="2.2.7 Phase"></a>2.2.7 Phase</h3><p><strong>Global state</strong>:<br>Consider the state $e^{i\theta}\vert\psi\rangle$</p>
+<h3 id="2-2-7-Phase" class="heading-control"><a href="#2-2-7-Phase" class="headerlink" title="2.2.7 Phase"></a>2.2.7 Phase<a class="heading-anchor" href="#2-2-7-Phase" aria-hidden="true"></a></h3><p><strong>Global state</strong>:<br>Consider the state $e^{i\theta}\vert\psi\rangle$</p>
 <ul>
 <li>$\vert\psi\rangle$ is a state vector</li>
 <li>$e^{i\theta}$ is the <em>global phase factor</em></li>
@@ -542,7 +542,7 @@ p'_i &= \langle \psi'\vert M^\dagger_iM_i\vert\psi'\rangle\\
 \end{align*}</script></li>
 </ul>
 <p><strong>Relative state</strong>:<br>Consider $\vert+\rangle=\frac{1}{\sqrt{2}}\vert 0\rangle+\frac{1}{\sqrt{2}}\vert 1\rangle$, $\vert-\rangle=\frac{1}{\sqrt{2}}\vert0\rangle-\frac{1}{\sqrt{2}}\vert1\rangle$. The relative phase of the state $\vert 1\rangle$ in $\vert+\rangle$ and $\vert-\rangle$ are orthogonal.</p>
-<h3 id="2-2-8-Composite-systems"><a href="#2-2-8-Composite-systems" class="headerlink" title="2.2.8 Composite systems"></a>2.2.8 Composite systems</h3><div class="note success">
+<h3 id="2-2-8-Composite-systems" class="heading-control"><a href="#2-2-8-Composite-systems" class="headerlink" title="2.2.8 Composite systems"></a>2.2.8 Composite systems<a class="heading-anchor" href="#2-2-8-Composite-systems" aria-hidden="true"></a></h3><div class="note success">
             <p><strong>Postulate 4</strong>: The state space of a composite physical system is the tensor product of the state spaces of the component physical systems. Moreover, if we have systems numbered $1$ through $n$, and system number $i$ is prepared in the state $\vert \psi_i\rangle$, then the joint state of the total system is $\vert \psi_1\rangle\otimes\vert\psi_2\rangle\otimes\cdots\otimes\vert\psi_n\rangle$</p>
           </div>
 <ul>
@@ -558,13 +558,13 @@ U\vert\psi\rangle\vert0\rangle\equiv\sum_m M_m\vert\psi\rangle\vert m\rangle</sc
     &= \sum_{m,m'}\langle\varphi\vert M_m^\dagger M_{m'}\vert\psi\rangle\langle m\vert m'\rangle\\
     &= \sum_{m}\langle\varphi\vert M^\dagger_m M_m\vert\phi\rangle\\
     &= \langle \varphi\vert\psi\rangle
-\end{align*}</script><p>We have proved that $U: Q\to Q\otimes M$ is an unitary operator If we can prove Exercise 2.67, then we can say $U$ can be extended to a unitary operator on the space $Q\otimes M$.<br><div class="note info">
+\end{align*}</script><p>We have proved that $U: Q\to Q\otimes M$ is an unitary operator If we can prove Exercise 2.67, then we can say $U$ can be extended to a unitary operator on the space $Q\otimes M$.<br></p><div class="note info">
             <p><em>Exercise 2.67</em>: Suppose $V$ is a Hilbert space with a subspace $W$. Suppose $U:W\to V$ is a linear operator which preserves inner products, that is, for any $\vert w_1\rangle$ and $\vert w_2\rangle$ in W,</p><script type="math/tex; mode=display">\langle w_1\vert U^\dagger U\vert w_2\rangle = \langle w_1\vert w_2\rangle</script><p>Prove that there exists a unitary operator $U’:V\to V$ which extends $U$. That is, $U’\vert w\rangle=U\vert w\rangle$ for all $\vert w\rangle$ in $W$, but $U’$ is defined on the entire space $V$.</p><p><em>Proof</em>: In order to complete the proof, we first show that $U’$ is an unitary operator, then we show that $U’ \vert w\rangle=U\vert w\rangle$ is hold for all $\vert w\rangle$ in $W$:</p><p>Let $\vert v\rangle=U\vert w\rangle$, where $\vert v\rangle \in V$, $\vert w\rangle \ne \vert w_2\rangle$ is in $W$. It is reasonable to define $U=\vert v\rangle\langle w\vert$ and the conjugate transpose $U^\dagger=\vert w\rangle\langle v\vert$, since $\vert v\rangle=\vert v\rangle\langle w\vert w\rangle=U\vert w\rangle$. However, we discovered that $U^\dagger U=\vert w\rangle\langle v\vert v\rangle\langle w\vert =\vert w\rangle\langle w\vert \ne I$, which means $\langle w_1\vert U^\dagger U\vert w_2\rangle = \langle w_1\vert w_2\rangle$ is not hold unless we can show that $U^\dagger U=\sum_i\vert w_i\rangle\langle w_i\vert=I$ for any orthonormal basis $\{\vert w_i\rangle\}$ in $W$. </p><p>Hense, we let $\{\vert w_i\rangle\}$ and $\{\vert v_k\rangle\}$ be an orthonormal basis that span $W$ and $V$, where $i\in\dim(W)$ and $k\in\dim(V)$. We redefine $U=\sum_i\vert v_i\rangle\langle w_i\vert$ and the conjugate transpose $U^\dagger=\sum_i\vert w_i\rangle\langle v_i\vert$. Now the equation holds, since</p><script type="math/tex; mode=display">\begin{align*}U^\dagger U    =\left(\sum_i\vert w_i\rangle\langle v_i\vert\right)\left(\sum_i\vert v_i\rangle\langle w_i\vert\right)    =\sum_i \vert w_i\rangle\langle v_i\vert v_i\rangle\langle w_i\vert    =\sum_i\vert w_i\rangle\langle w_i\vert=I\end{align*}</script><p>Let $\{\vert x_j\rangle\}$ be an orthonormal basis in complement space $X=V\setminus W$, where $j\in\dim(X)$. The mutually orthogonal set $\{\vert w_i\rangle, \vert x_j\rangle~\vert~ \forall i, j\}$, which can span $V$, is also an orthonormal basis in $V$. We then define $U’=\sum_i\vert v_i\rangle\langle w_i\vert + \sum_j\vert v_j\rangle\langle x_j\vert$, and the conjugate transpose $(U’)^\dagger = \sum_i\vert w_i\rangle\langle v_i\vert + \sum_j\vert x_j\rangle\langle v_j\vert$. As such, we can show that $U’$ is an unitary operator by</p><script type="math/tex; mode=display">\begin{align*}(U')^\dagger U' &= \left(\sum_i\vert w_i\rangle\langle v_i\vert + \sum_j\vert x_j\rangle\langle v_j\vert\right)\left(\sum_i\vert v_i\rangle\langle w_i\vert + \sum_j\vert v_j\rangle\langle x_j\vert\right)\\    &= \left(\sum_i\vert w_i\rangle\langle v_i\vert\right)\left(\sum_i\vert v_i\rangle\langle w_i\vert\right)+\left(\sum_j\vert x_j\rangle\langle v_j\vert\right)\left(\sum_j\vert v_j\rangle\langle x_j\vert\right)\\    &= \sum_i\vert w_i\rangle\langle w_i\vert + \sum_j \vert x_j\rangle\langle x_j \vert = I\end{align*}</script><p>Same for $U’(U’)^\dagger = I$. Next, we show that $U’$ extends $U$</p><script type="math/tex; mode=display">\begin{align*}U'\vert w\rangle &= \left(\sum_i\vert v_i\rangle\langle w_i\vert + \sum_j\vert v_j\rangle\langle x_j\vert\right)\vert w\rangle\\    &= \left(\sum_i\vert v_i\rangle\langle w_i\vert\right)\vert w\rangle \quad\quad(\because \vert x_j\rangle \bot \vert w\rangle, ~\forall~\vert x_j\rangle\in X\\     &= U\vert w\rangle\end{align*}</script>
-          </div></p>
-<h2 id="2-3-Application-superdense-coding"><a href="#2-3-Application-superdense-coding" class="headerlink" title="2.3 Application: superdense coding"></a>2.3 Application: superdense coding</h2><blockquote>
+          </div><p></p>
+<h2 id="2-3-Application-superdense-coding" class="heading-control"><a href="#2-3-Application-superdense-coding" class="headerlink" title="2.3 Application: superdense coding"></a>2.3 Application: superdense coding<a class="heading-anchor" href="#2-3-Application-superdense-coding" aria-hidden="true"></a></h2><blockquote>
 <p>待補</p>
 </blockquote>
-<h2 id="2-4-The-density-operator"><a href="#2-4-The-density-operator" class="headerlink" title="2.4 The density operator"></a>2.4 The density operator</h2><h3 id="2-4-1-Ensembles-of-quantum-states"><a href="#2-4-1-Ensembles-of-quantum-states" class="headerlink" title="2.4.1 Ensembles of quantum states"></a>2.4.1 Ensembles of quantum states</h3><ul>
+<h2 id="2-4-The-density-operator" class="heading-control"><a href="#2-4-The-density-operator" class="headerlink" title="2.4 The density operator"></a>2.4 The density operator<a class="heading-anchor" href="#2-4-The-density-operator" aria-hidden="true"></a></h2><h3 id="2-4-1-Ensembles-of-quantum-states" class="heading-control"><a href="#2-4-1-Ensembles-of-quantum-states" class="headerlink" title="2.4.1 Ensembles of quantum states"></a>2.4.1 Ensembles of quantum states<a class="heading-anchor" href="#2-4-1-Ensembles-of-quantum-states" aria-hidden="true"></a></h3><ul>
 <li><p>Density operator, or density matrix:</p>
 <script type="math/tex; mode=display">
 \rho\equiv\sum_i p_i\vert \psi_i\rangle\langle \psi_i\vert</script><p>where $\vert \psi_i\rangle$ is an unknown state, $p_i$ is its probability. Then we call $\{p_i, \vert\psi_i\rangle\}$ an <strong>ensemble of pure states</strong>.</p>
@@ -599,7 +599,7 @@ p(m) &= \sum_i p(m\vert i)p_i\\
 </blockquote>
 <ul>
 <li>A quantum systen whose state $\vert \psi\rangle$ is known exactly is said to be in a <strong>pure state</strong>, the density operator is $\rho=\vert\psi\rangle\langle \psi \vert$. Otherwise, $\rho$ is in <strong>mixed state</strong> (a <strong>mixture</strong> of the different pure state).</li>
-<li>A pure state $\text{tr}(\rho^2)=1$, mixed state $\text{tr}(\rho^2)&lt;1$</li>
+<li>A pure state $\text{tr}(\rho^2)=1$, mixed state $\text{tr}(\rho^2)<1$</li>
 <li>A quantum system in mixed state $\rho_i$ arising from some ensemble $\{p_{i, j}, \vert \psi_{ij}\rangle\}$ of pure states with probability $p_i$. The density matrix for the system is <script type="math/tex; mode=display">
 \rho = \sum_{ij}p_ip_{ij}\vert \psi_{ij}\rangle\langle\psi_{ij}\vert=\sum_i p_i\rho_i</script>We say $\rho$ is a <em>mixture</em> of the state $\rho_i$ with probabilities $p_i$.</li>
 <li>A quantum system is in the state $\rho_m$ with probability $p(m)$ after the measurement $m$. The state of the quantum system would be described by the density operator<script type="math/tex; mode=display">
@@ -609,16 +609,16 @@ p(m) &= \sum_i p(m\vert i)p_i\\
   &= \sum_m M_m\rho M^\dagger_m
 \end{align*}</script></li>
 </ul>
-<h3 id="2-4-2-General-properties-of-the-density-operator"><a href="#2-4-2-General-properties-of-the-density-operator" class="headerlink" title="2.4.2 General properties of the density operator"></a>2.4.2 General properties of the density operator</h3><div class="note success">
+<h3 id="2-4-2-General-properties-of-the-density-operator" class="heading-control"><a href="#2-4-2-General-properties-of-the-density-operator" class="headerlink" title="2.4.2 General properties of the density operator"></a>2.4.2 General properties of the density operator<a class="heading-anchor" href="#2-4-2-General-properties-of-the-density-operator" aria-hidden="true"></a></h3><div class="note success">
             <p><em>Theorem 2.5</em> (<strong>Characterization of density operators</strong>) An operator $\rho$ is the density operator associated to some ensemble $\{p_i, \vert \psi_i\rangle\}$ if and only if satisfies the conditions:</p><ol><li>(<strong>Trace condition</strong>) $\rho$ has trace equal to one.</li><li>(<strong>Positive condition</strong>) $\rho$ is a positive operator.</li></ol><p><em>Proof</em><br>Suppose $\rho=\sum_ip_i\vert\psi_i\rangle\langle\psi_i\vert$ is a density operator. Then</p><script type="math/tex; mode=display">\text{tr}(\rho)=\sum_ip_i\text{tr}(\vert\psi_i\rangle\langle\psi_i\vert)=\sum_ip_i=1</script><p>so the trace condition $\text{tr}(\rho)=1$ is satisfied. Suppose $\vert\varphi\rangle$ is an arbitrary vector in state space. Then</p><script type="math/tex; mode=display">\begin{align*}\langle \varphi\vert\rho\vert\varphi\rangle    &= \sum_ip_i\langle\varphi\vert\psi_i\rangle\langle\psi_i\vert\varphi\rangle\\    &= \sum_i p_i\vert\langle \varphi\vert\psi_i\rangle\vert^2\\    & \ge 0\end{align*}</script><p>Conversely, suppose $\rho$ is any operator satifsying the trace and positivity conditions. Since $\rho$ is positive, it must have a spectral decomposition</p><script type="math/tex; mode=display">\rho = \sum_j\lambda_j\vert j\rangle\langle j\vert</script><p>where the vectors $\vert j\rangle$ are orthogonal, and $\lambda_j$ are real, non-negative eigenvalues of $\rho$.</p><p>From the trace condition we see that $\sum_j \lambda_j=1$. Therefore, a system in state $\vert j\rangle$ with probability $\lambda_j$ will have density opeartor $\rho$. That is, the ensemble $\{\lambda_j, \vert j\rangle\}$ is an ensemble of states giving rise to the density operator $\rho$.</p>
           </div>
-<p>We can reformulate the postulates:<br><div class="note success">
+<p>We can reformulate the postulates:<br></p><div class="note success">
             <p><strong>Postulate 1</strong>: Associated to any isolated physical system is a complex vector space with inner product (that is, a Hilbert space) known as the <em>state space</em> of the system. The system is completely discribed by its <em>density operator</em>, which is a positive operator $\rho$ with trace one, acting on the state space of the system. If a quantum system is in the state $\rho_i$ with probability $p_i$, then the density operator for the system is $\sum_i p_i\rho_i$.</p><p><strong>Postulate 2</strong>: The evolution of a <em>closed</em> quantum system is described by a <em>unitary transformation</em> That is, the state $\rho$ of the system at time $t_1$ is related to the state $\rho’$ of th esystem at time $t_2$ by a unitary operator $U$ which depends only on the times $t_1$ and $t_2$,</p><script type="math/tex; mode=display">\rho' = U\rho U^\dagger</script><p><strong>Postulate 3</strong>: Quantum measurements are described by a collection $\{M_m\}$ of <em>measurement operators</em>. These are operators acting on the state space of the system being measured. The index $m$ refers to the measurement outcomes that may occur in the experiment. If the state of the quantum system is $\rho$ immediately before the measurement then the probability that result $m$ occurs is given by</p><script type="math/tex; mode=display">p(m)=\text{tr}(M^\dagger_mM_m\rho)</script><p>and the state of the system after the measurement is </p><script type="math/tex; mode=display">\frac{M_m\rho M^\dagger_m}{\text{tr}(M^\dagger_mM_m\rho)}</script><p>The measurement operators satisfy the <em>completeness equation</em>,</p><script type="math/tex; mode=display">\sum_m M^\dagger_mM_m=I</script><p><strong>Postulate 4</strong>: The state space of a composite physical system is the tensor product of the state spaces of the compoenet physical systems. Moreover, if we have systems numbered $1$ through $n$, and system number $i$ is prepared in the state $\rho_i$, then the joint state of the total system is $\rho_1\otimes \rho_2\otimes \dots \otimes \rho_n$</p>
-          </div></p>
+          </div><p></p>
 <div class="note success">
             <p><em>Theorem 2.6</em> (<strong>Unitary freedom in the ensemble for density matrices</strong>) The sets $\vert\tilde{\psi}_i\rangle$ amd $\vert\tilde{\varphi}_j\rangle$ generate the same density matrix if and only if</p><script type="math/tex; mode=display">\vert\tilde{\psi}_i\rangle=\sum_j u_{ij}\vert\tilde\varphi_j\rangle</script><p>where $u_{ij}$ is a unitary matrix of complex numbers, with indices $i$ and $j$, and we ‘pad’ whichever set of vectors $\vert\tilde\psi_i\rangle$ or $\vert\tilde\varphi_j\rangle$ is smaller with additional vectors $0$ so that the two sets have the same number of elements.</p><p>Also, $\rho=\sum_ip_i\vert\psi_i\rangle\langle\psi_i\vert=\sum_jq_j\vert\varphi_j\rangle\langle\varphi_j\vert$ if and only if</p><script type="math/tex; mode=display">\sqrt{p_i}\vert\psi_i\rangle=\sum_j u_{ij}\sqrt{q_j}\vert\varphi_j\rangle</script><p>where $u_{ij}$ is the element of some unitary matrix $U$.</p><p><em>Proof</em><br>Suppose $\vert\tilde\psi_i\rangle=\sum_ju_{ij}\vert\tilde\varphi_j\rangle$ for some unitary $u_{ij}$. Then</p><script type="math/tex; mode=display">\begin{align*}\sum_i\vert\tilde\psi_i\rangle\langle\tilde\psi_i\vert &= \sum_{ijk}u_{ij}u_{ik}^*\vert\tilde\varphi_j\rangle\langle\tilde\varphi_k\vert\\    &= \sum_{jk}\left(\sum_i u_{ki}^\dagger u_{ij}\right)\vert\tilde\varphi_j\rangle\langle\tilde\varphi_k\vert\\    &= \sum_{jk}\delta_{kj}\vert\tilde\varphi_j\rangle\langle\tilde\varphi_k\vert\\    &= \sum_j \vert\tilde\varphi_j\rangle\langle\tilde\varphi_j\vert\end{align*}</script><p>Conversely, suppose</p><script type="math/tex; mode=display">A=\sum_i\vert\tilde\psi_i\rangle\langle\tilde\psi_i\vert=\sum_j\vert\tilde\varphi_j\rangle\langle\tilde\varphi_j\vert</script><p>Let $A=\sum_k\lambda_k\vert k\rangle\langle k\vert$ be a spectral decomposition for $A$ such that states $\vert k \rangle$ are orthonormal, and the $\lambda_k$ are strictly positive. Our strategy is to relate the states $\vert\tilde\psi_i\rangle$ to the states $\vert\tilde k\rangle\equiv\sqrt{\lambda_k}\vert k\rangle$, and similarly relate the states $\vert \tilde\varphi_j\rangle$ to the states $\vert\tilde k\rangle$. Combining the two relations will give the result. Let $\vert\psi\rangle$ be any vector orthonormal to the space spanned by the $\vert\tilde k\rangle$, so $\langle \psi\vert\tilde k\rangle\langle\tilde k\vert\psi\rangle=0$ for all $k$, abd thus we see that</p><script type="math/tex; mode=display">0=\langle\psi\vert A\vert\psi\rangle=\sum_i\langle\psi\vert\tilde\psi_i\rangle\langle\tilde\psi_i\vert\psi\rangle=\sum_i\vert\langle\psi\vert\tilde\psi_i\rangle\vert^2</script><p>Thus $\langle\psi\vert\tilde\psi_i\rangle=0$ for all $i$ and all $\vert\psi\rangle$ orthonormal to the space spanned by the $\vert\tilde k\rangle$. It follows that each $\vert\tilde\psi\rangle$ can be expressed as a linear combination of the $\vert\tilde k\rangle$, $\vert\tilde\psi_i\rangle=\sum_kc_{ik}\vert\tilde k\rangle$. Since $A=\sum_k\vert \tilde k \rangle\langle\tilde k\vert=\sum_i\vert\tilde\psi_i\rangle\langle\tilde\psi_i\vert$ we see that</p><script type="math/tex; mode=display">\sum_k\vert\tilde k\rangle\langle \tilde k\vert = \sum_{kl}\left(\sum_i c_{ik}c_{il}^*\right)\vert\tilde k\rangle\langle\tilde l\vert</script><p>The operator $\vert\tilde k\rangle\langle \tilde l\vert$ are easily seen to be linearly independent, and thus it must be that $\sum_i c_{ik}c_{il}^*=\delta_{kl}$. This ensures that we may append extra columns to $c$ to obtain a unitary matrix $v$ such that $\vert\tilde\psi_i\rangle=\sum_kv_{ik}\vert\tilde k\rangle$, where we have appended zero vectors to the list of $\vert\tilde k \rangle$. Similarly, we can find a unitary matrix $w$ such that $\vert\tilde\varphi_j\rangle=\sum_kw_{jk}\vert\tilde k\rangle$. Thus $\vert\tilde\psi_i\rangle=\sum_j u_{ij}\vert\tilde\varphi_j\rangle$<br>, where $u=vw^\dagger$ is unitary.</p>
           </div>
-<h3 id="2-4-3-The-reduced-density-operator"><a href="#2-4-3-The-reduced-density-operator" class="headerlink" title="2.4.3 The reduced density operator"></a>2.4.3 The reduced density operator</h3><p>Suppose we have physical systems $A$ and $B$, whose state is described by a density operator $\rho^{AB}$.</p>
+<h3 id="2-4-3-The-reduced-density-operator" class="heading-control"><a href="#2-4-3-The-reduced-density-operator" class="headerlink" title="2.4.3 The reduced density operator"></a>2.4.3 The reduced density operator<a class="heading-anchor" href="#2-4-3-The-reduced-density-operator" aria-hidden="true"></a></h3><p>Suppose we have physical systems $A$ and $B$, whose state is described by a density operator $\rho^{AB}$.</p>
 <ul>
 <li><p>The <strong>reduced density operator</strong> for system $A$ is</p>
 <script type="math/tex; mode=display">
@@ -629,7 +629,7 @@ p(m) &= \sum_i p(m\vert i)p_i\\
 <script type="math/tex; mode=display">
 \rho^A=\text{tr}_B(\rho\otimes\sigma)=\rho\text{tr}(\sigma) = \rho</script></li>
 </ul>
-<h2 id="2-5-The-Schmidt-decomposition-and-purification"><a href="#2-5-The-Schmidt-decomposition-and-purification" class="headerlink" title="2.5 The Schmidt decomposition and purification"></a>2.5 The Schmidt decomposition and purification</h2><div class="note success">
+<h2 id="2-5-The-Schmidt-decomposition-and-purification" class="heading-control"><a href="#2-5-The-Schmidt-decomposition-and-purification" class="headerlink" title="2.5 The Schmidt decomposition and purification"></a>2.5 The Schmidt decomposition and purification<a class="heading-anchor" href="#2-5-The-Schmidt-decomposition-and-purification" aria-hidden="true"></a></h2><div class="note success">
             <p><em>Theorem 2.7</em> (<strong>Schmidt decomposition</strong>) Suppose $\vert\psi\rangle$ is a pure state of a composite system, $AB$. Then there exist orthonormal states $\vert i_A\rangle$ for system $A$, and orthonormal states $\vert i_B\rangle$ of system $B$ such that</p><script type="math/tex; mode=display">\vert \psi\rangle = \sum_i \lambda_i \vert i_A\rangle\vert i_B\rangle</script><p>where $\lambda_i$ are non-negative real numbers satisfying $\sum_i \lambda_i^2=1$ known as <em>Schmidt co-efficients</em>.</p><p><em>Proof</em><br>Let $\vert j\rangle$ and $\vert k\rangle$ be any fixed orthonormal bases for systems $A$ and $B$, respectively. Then $\vert \psi\rangle$ can be written</p><script type="math/tex; mode=display">\vert \psi\rangle = \sum_{jk} a_{jk}\vert j\rangle \vert k\rangle</script><p>for some matrix $A$ of complex numbers $a_{jk}$. By the singular value decomposition $A=UDV$, where $D$ is a positive, diagonal matrix. $U$ and $V$ are unitary matrices. Thus</p><script type="math/tex; mode=display">\vert \psi\rangle = \sum_{ijk}u_{ji}d_{ii}v_{ik}\vert j\rangle\vert k\rangle</script><p>Defining $\vert i_A\rangle\equiv\sum_{j}u_{ji}\vert j\rangle$, $\vert i_B\rangle\equiv\sum_k v_{ik}\vert k\rangle$, and $\lambda_i\equiv d_{ii}$, this gives</p><script type="math/tex; mode=display">\vert\psi\rangle\equiv\sum_i\lambda_i\vert i_A\rangle\vert i_B\rangle</script><p>It is easy to check that $\vert i_A\rangle$ forms an orthonormal set, from the unitarity of $u$ and the orthonormality of $\vert j\rangle$, and similarlt that the $\vert i_B\rangle$ form an orthonormal set.</p>
           </div>
 <ul>
@@ -649,10 +649,10 @@ p(m) &= \sum_i p(m\vert i)p_i\\
 <div class="note success">
             <p><em>Theorem</em> Every density matrix $\rho$ can be purified.</p><p><em>Proof</em><br>To prove that we can purify any state in system $A$, we show that we can construct a system $R$ and purification $\vert AR\rangle$ for $\rho^A$:</p><p>Suppose the orthonormal decomposition for $\rho^A=\sum_i p_i\vert i^A\rangle\langle i^A\vert$. We introduce a system $R$ which has the same state space as system $A$, with orthonormal basis states $\vert i^R\rangle$, and define a pure state for the combined system:</p><script type="math/tex; mode=display">\vert AR\rangle\equiv\sum_i \sqrt{p_i}\vert i^A\rangle\vert i^R\rangle</script><p>Verify that $\vert AR\rangle$ is actually a purification of $\rho^A$</p><script type="math/tex; mode=display">\begin{align*}\text{tr}_R(\vert AR\rangle\langle AR\vert)    &= \sum_{ij}\sqrt{p_ip_j}\vert i^A\rangle\langle j^A\vert \text{tr}(\vert i^R\rangle\langle j^R\vert)\\    &= \sum_{ij}\sqrt{p_ip_j}\vert i^A\rangle\langle j^A\vert \delta_{ij}\\    &= \sum_i p_i\vert i^A\rangle\langle i^A\vert\\    &= \rho^A\end{align*}</script>
           </div>
-<h2 id="2-6-EPR-and-the-Bell-inequality"><a href="#2-6-EPR-and-the-Bell-inequality" class="headerlink" title="2.6 EPR and the Bell inequality"></a>2.6 EPR and the Bell inequality</h2><blockquote>
+<h2 id="2-6-EPR-and-the-Bell-inequality" class="heading-control"><a href="#2-6-EPR-and-the-Bell-inequality" class="headerlink" title="2.6 EPR and the Bell inequality"></a>2.6 EPR and the Bell inequality<a class="heading-anchor" href="#2-6-EPR-and-the-Bell-inequality" aria-hidden="true"></a></h2><blockquote>
 <p>待補</p>
 </blockquote>
-
+</body></html>
     </div>
 
     

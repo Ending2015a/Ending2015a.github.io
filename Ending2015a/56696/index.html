@@ -310,11 +310,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>上課筆記，原文書:</p>
+        <html><head></head><body><p>上課筆記，原文書:</p>
 <blockquote>
-<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen & Isaac L. Chuang</p>
 </blockquote>
-<h2 id="4-1-Quantum-algorithm"><a href="#4-1-Quantum-algorithm" class="headerlink" title="4.1 Quantum algorithm"></a>4.1 Quantum algorithm</h2><p><img src="https://i.imgur.com/nACul9I.png" alt=""></p>
+<h2 id="4-1-Quantum-algorithm" class="heading-control"><a href="#4-1-Quantum-algorithm" class="headerlink" title="4.1 Quantum algorithm"></a>4.1 Quantum algorithm<a class="heading-anchor" href="#4-1-Quantum-algorithm" aria-hidden="true"></a></h2><p><img src="https://i.imgur.com/nACul9I.png" alt></p>
 <a id="more"></a>
 <p>There are mainly two classes of algorithms:</p>
 <ol>
@@ -327,7 +327,7 @@
 </ul>
 </li>
 </ol>
-<h2 id="4-2-Single-qubit-operations"><a href="#4-2-Single-qubit-operations" class="headerlink" title="4.2 Single qubit operations"></a>4.2 Single qubit operations</h2><p>A single qubit: $\vert \psi\rangle=a\vert0\rangle+b\vert1\rangle$, where $a,b \in \mathbb{C}$ and $\vert a\vert^2+\vert b\vert^2=1$.</p>
+<h2 id="4-2-Single-qubit-operations" class="heading-control"><a href="#4-2-Single-qubit-operations" class="headerlink" title="4.2 Single qubit operations"></a>4.2 Single qubit operations<a class="heading-anchor" href="#4-2-Single-qubit-operations" aria-hidden="true"></a></h2><p>A single qubit: $\vert \psi\rangle=a\vert0\rangle+b\vert1\rangle$, where $a,b \in \mathbb{C}$ and $\vert a\vert^2+\vert b\vert^2=1$.</p>
 <p>Quantum gates (operations):</p>
 <ul>
 <li>Pauli matrices:<script type="math/tex; mode=display">
@@ -363,7 +363,7 @@ T\equiv\left[\begin{matrix}
 0 & \exp(i\pi/8)
 \end{matrix}\right]</script></li>
 </ul>
-<p><img src="https://i.imgur.com/odEIVnM.png" alt=""></p>
+<p><img src="https://i.imgur.com/odEIVnM.png" alt></p>
 <p>Bloch sphere representation: </p>
 <ul>
 <li>A single qubit can be visualized as a point $(\theta, \varphi)$ on the unit sphere.<script type="math/tex; mode=display">
@@ -393,7 +393,7 @@ e^{-i\theta/2} & 0\\
 R_{\hat{n}}(\theta)\equiv e^{-i\theta\hat{n}\cdot\vec{\sigma}/2}=\cos\left(\frac{\theta}{2}\right)I-i\sin\left(\frac{\theta}{2}\right)(n_xX+n_yY+n_zZ),</script><p>where $\vec{\sigma}$ denotes the three component vector $(X,Y,Z)$ of Pauli matrices.</p>
 <p>Operation function for diagonalizable matrix:<br>Let $A$ be an diagonalizable matrix $A=\sum_\lambda \lambda\vert \psi_\lambda\rangle\langle\psi_\lambda\vert$, an operation function $f: \mathbb{C}\to\mathbb{C}$. Then</p>
 <script type="math/tex; mode=display">
-f(A)=\sum_\lambda f(\lambda)\vert \psi_\lambda\rangle\langle\psi_\lambda\vert</script><p>For example, a diagonalizable matrix $Z=\vert 0\rangle\langle 0\vert - \vert 1\rangle\langle 1\vert=\left[\begin{matrix}1&amp;0\\0&amp;-1\end{matrix}\right]$, an operation function $f(x)=e^{\theta x}$. Then</p>
+f(A)=\sum_\lambda f(\lambda)\vert \psi_\lambda\rangle\langle\psi_\lambda\vert</script><p>For example, a diagonalizable matrix $Z=\vert 0\rangle\langle 0\vert - \vert 1\rangle\langle 1\vert=\left[\begin{matrix}1&0\\0&-1\end{matrix}\right]$, an operation function $f(x)=e^{\theta x}$. Then</p>
 <script type="math/tex; mode=display">
 f(Z)=e^{\theta Z}= e^\theta\vert 0\rangle\langle 0\vert + e^{-\theta}\vert 1\rangle\langle 1\vert=\left[\begin{matrix}e^\theta&0\\0&e^{-\theta}\end{matrix}\right].</script><p>For example, $f(x)=\sum_{n\ge0}a_nx^n$ (Taylor expantion).</p>
 <script type="math/tex; mode=display">
@@ -401,12 +401,12 @@ f(Z)=e^{\theta Z}= e^\theta\vert 0\rangle\langle 0\vert + e^{-\theta}\vert 1\ran
 f(A) &= \sum_\lambda f(\lambda)\vert \psi_\lambda\rangle\langle \psi_\lambda\vert = \sum_\lambda\sum_n a_n\lambda^n\vert \psi_\lambda\rangle\langle\psi_\lambda\vert\\
     &= \sum_n a_n\sum_\lambda \lambda^n\vert\psi_\lambda\rangle\langle\psi_\lambda\vert = \sum_n a_n A^n
 \end{align*}</script><div class="note success">
-            <p><strong>Theorem 4.1</strong>: ($Z$-$Y$ <strong>decomposition for a single qubit</strong>) Suppose $U$ is a unitary operation on a single qubit. Then there exist real numbers $\alpha, \beta, \gamma$ and $\delta$ such that</p><script type="math/tex; mode=display">U=e^{i\alpha}R_z(\beta)R_y(\gamma)R_z(\delta)</script><p><em>Proof</em>: Let a unitary matrix $U=\left[\begin{matrix}a&amp;c\\b&amp;d\end{matrix}\right]$</p><script type="math/tex; mode=display">\begin{align*}\vert a\vert^2+\vert b\vert^2=1 &\Rightarrow a\equiv e^{i\phi_1}\cos\frac{\gamma}{2},\quad b\equiv e^{i\phi_2}\sin\frac{\gamma}{2}\\\vert a\vert^2+\vert c\vert^2=1 &\Rightarrow c\equiv -e^{i\phi_3}\sin\frac{\gamma}{2}\\\vert c\vert^2+\vert d\vert^2=1 &\Rightarrow d\equiv e^{i\phi_4}\cos\frac{\gamma}{2}\\a^*c+b^*d=0 &\Rightarrow -e^{i(\phi_3-\phi_1)}+e^{i(\phi_4-\phi_2)}=0\\&\Rightarrow\phi_3-\phi_1=\phi_4-\phi_2\equiv \beta\end{align*}</script><p>Another independent variables:</p><script type="math/tex; mode=display">\phi_1+\phi_3\equiv2\alpha-\delta,\quad \phi_2+\phi_4\equiv 2\alpha+\delta</script><script type="math/tex; mode=display">\Rightarrow U=\left[ \begin{matrix}e^{i(\alpha-\beta/2-\delta/2)}\cos\frac{\gamma}{2} & -e^{i(\alpha-\beta/2+\delta/2)}\sin\frac{\gamma}{2}\\e^{i(\alpha+\beta/2-\delta/2)}\sin\frac{\gamma}{2} & e^{i(\alpha+\beta/2+\delta/2)}\cos\frac{\gamma}{2}\end{matrix}\right]</script>
+            <p><strong>Theorem 4.1</strong>: ($Z$-$Y$ <strong>decomposition for a single qubit</strong>) Suppose $U$ is a unitary operation on a single qubit. Then there exist real numbers $\alpha, \beta, \gamma$ and $\delta$ such that</p><script type="math/tex; mode=display">U=e^{i\alpha}R_z(\beta)R_y(\gamma)R_z(\delta)</script><p><em>Proof</em>: Let a unitary matrix $U=\left[\begin{matrix}a&c\\b&d\end{matrix}\right]$</p><script type="math/tex; mode=display">\begin{align*}\vert a\vert^2+\vert b\vert^2=1 &\Rightarrow a\equiv e^{i\phi_1}\cos\frac{\gamma}{2},\quad b\equiv e^{i\phi_2}\sin\frac{\gamma}{2}\\\vert a\vert^2+\vert c\vert^2=1 &\Rightarrow c\equiv -e^{i\phi_3}\sin\frac{\gamma}{2}\\\vert c\vert^2+\vert d\vert^2=1 &\Rightarrow d\equiv e^{i\phi_4}\cos\frac{\gamma}{2}\\a^*c+b^*d=0 &\Rightarrow -e^{i(\phi_3-\phi_1)}+e^{i(\phi_4-\phi_2)}=0\\&\Rightarrow\phi_3-\phi_1=\phi_4-\phi_2\equiv \beta\end{align*}</script><p>Another independent variables:</p><script type="math/tex; mode=display">\phi_1+\phi_3\equiv2\alpha-\delta,\quad \phi_2+\phi_4\equiv 2\alpha+\delta</script><script type="math/tex; mode=display">\Rightarrow U=\left[ \begin{matrix}e^{i(\alpha-\beta/2-\delta/2)}\cos\frac{\gamma}{2} & -e^{i(\alpha-\beta/2+\delta/2)}\sin\frac{\gamma}{2}\\e^{i(\alpha+\beta/2-\delta/2)}\sin\frac{\gamma}{2} & e^{i(\alpha+\beta/2+\delta/2)}\cos\frac{\gamma}{2}\end{matrix}\right]</script>
           </div>
 <div class="note success">
             <p>Corollery 4.2: Suppose $U$ is a unitary gate on a single qubit. Then there exist unitary operators $A$, $B$, $C$ on a single qubit such that $ABC=I$ and $U=e^{i\alpha}AXBXC$, where $\alpha$ is some overall phase factor.</p><p><em>Proof</em>: For $Z$-$Y$ decomposition of $U$, $U=e^{i\alpha}R_z(\beta)R_y(\gamma)R_z(\delta)$. Let</p><script type="math/tex; mode=display">\begin{align*}A &\equiv R_z(\beta)R_y(\frac{\gamma}{2})\\B &\equiv R_y(-\frac{\gamma}{2})R_z(\frac{-(\delta+\beta)}{2})\\C &\equiv R_z(\frac{\delta-\beta}{2})\end{align*}</script><p>Check that</p><script type="math/tex; mode=display">\begin{align*}ABC &= R_z(\beta)R_y(\frac{\gamma}{2})R_y(-\frac{\gamma}{2})R_z(\frac{-(\delta+\beta)}{2})R_z(\frac{\delta-\beta}{2})\\    &= R_z(\beta)R_y(0)R_z(-\beta)\\    &= I\end{align*}</script><p>Let $f(x)=\sum_na_nx^n$, we show that $Xf(Y)X=f(-Y)$:</p><ol><li>$XY=-YX~\Rightarrow XYX=-Y$</li><li>$Xf(Y)X=X\sum_na_nY^nX=\sum_n a_n(XYX)^n=\sum_na_n(-Y)^n=f(-Y)$</li></ol><p>Similar for $Xf(Z)X=f(-Z)$. Then we have </p><script type="math/tex; mode=display">XBX=XR_y(-\frac{\gamma}{2})XXR_z(-\frac{\delta+\beta}{2})X=R_y(\frac{\gamma}{2})R_z(\frac{\delta+\beta}{2})</script><p>Hence,</p><script type="math/tex; mode=display">\begin{align*}e^{i\alpha} AXBXC &= e^{i\alpha}R_z(\beta)R_y(\frac{\gamma}{2})R_y(\frac{\gamma}{2})R_z(\frac{\delta+\beta}{2})R_z(\frac{\delta-\beta}{2})\\    &= e^{i\alpha}R_z(\beta)R_y(\gamma)R_z(\delta)\\    &= U\end{align*}</script>
           </div>
-<h2 id="4-3-Controlled-operations"><a href="#4-3-Controlled-operations" class="headerlink" title="4.3 Controlled operations"></a>4.3 Controlled operations</h2><ul>
+<h2 id="4-3-Controlled-operations" class="heading-control"><a href="#4-3-Controlled-operations" class="headerlink" title="4.3 Controlled operations"></a>4.3 Controlled operations<a class="heading-anchor" href="#4-3-Controlled-operations" aria-hidden="true"></a></h2><ul>
 <li>controlled operation: If $A$ is true, then do $B$.</li>
 <li>controlled-NOT (CNOT): If $c=1$, the target $\vert t\rangle$ flipped, $\vert c\rangle\vert t\rangle\to\vert c\rangle\vert t\oplus c\rangle$<script type="math/tex; mode=display">
 \left[\begin{matrix}
@@ -467,30 +467,30 @@ I & 0\\
 </ol>
 <p>Conditioning multiple qubits: Suppose we have $n+k$ qubits, and $U$ is a $k$ qubit unitary operator. Then we define the controlled operation $C^n(U)$ by the eqution</p>
 <script type="math/tex; mode=display">
-C^n(U)\vert x_1x_2\dots x_n\rangle\vert \psi\rangle=\vert x_1x_2\dots x_n\rangle U^{x_1x_2\dots x_n}\vert\psi\rangle</script><p><img src="https://i.imgur.com/UnxIZxq.png" alt=""></p>
-<h2 id="4-4-Measurement"><a href="#4-4-Measurement" class="headerlink" title="4.4 Measurement"></a>4.4 Measurement</h2><ul>
+C^n(U)\vert x_1x_2\dots x_n\rangle\vert \psi\rangle=\vert x_1x_2\dots x_n\rangle U^{x_1x_2\dots x_n}\vert\psi\rangle</script><p><img src="https://i.imgur.com/UnxIZxq.png" alt></p>
+<h2 id="4-4-Measurement" class="heading-control"><a href="#4-4-Measurement" class="headerlink" title="4.4 Measurement"></a>4.4 Measurement<a class="heading-anchor" href="#4-4-Measurement" aria-hidden="true"></a></h2><ul>
 <li>Projective measurement in the computational basis<ul>
 <li>Any measurement can be constructed from adding ancilla qubits, performing a unitary, and followed by computational basis measurement.</li>
 </ul>
 </li>
 </ul>
 <div class="note success">
-            <p><strong>Principle 1: Principle of deferred measurement</strong><br>We can assume all measurements happens at the end of the circuit because you can always move a measurements in the middle of the circuit to the end, and replace classical controls of the measurement outcome with quantum control:<br><img src="https://i.imgur.com/fJruwPW.png" alt=""></p>
+            <p><strong>Principle 1: Principle of deferred measurement</strong><br>We can assume all measurements happens at the end of the circuit because you can always move a measurements in the middle of the circuit to the end, and replace classical controls of the measurement outcome with quantum control:<br><img src="https://i.imgur.com/fJruwPW.png" alt></p>
           </div>
 <div class="note success">
-            <p><strong>Principle 2: Principle of implicit measurement</strong><br>We can assume that every quantum wire is measured in the end, because measuring “leftover” wires does not change thet reduced density matrix of the wires that give result.<br><img src="https://i.imgur.com/GG60pDC.png" alt=""></p>
+            <p><strong>Principle 2: Principle of implicit measurement</strong><br>We can assume that every quantum wire is measured in the end, because measuring “leftover” wires does not change thet reduced density matrix of the wires that give result.<br><img src="https://i.imgur.com/GG60pDC.png" alt></p>
           </div>
 <div class="note info">
             <p><em>Exercise 4.33</em>: (<strong>Measurement in the Bell basis</strong>) Show that<br><img src="https://i.imgur.com/fwOGrrK.png" width="200px"><br>Performs a measurement in the bell basis.</p><script type="math/tex; mode=display">\begin{align*}(H\otimes I)CNOT &= (H\otimes I)(\vert 0\rangle\langle 0\vert \otimes I + \vert 1\rangle\langle 1 \vert\otimes X)\\    &= (\vert +\rangle\langle 0\vert \otimes I + \vert -\rangle\langle 1\vert X)\\    &= \frac{1}{\sqrt2}(\vert 0\rangle\langle 0\vert\otimes I + \vert 1\rangle\langle 0\vert\otimes I + \vert 0\rangle\langle 1\vert\otimes X - \vert 1\rangle\langle 1\vert\otimes X)\\    &= \frac{1}{\sqrt2}(\vert00\rangle(\langle00\vert+\langle11\vert)+\vert10\rangle(\langle00\vert-\langle11\vert)\\    &    \quad\quad\quad\quad+\vert01\rangle(\langle01\vert+\langle10\vert)+\vert11\rangle(\langle01\vert-\langle10\vert))\end{align*}</script><p>Projective measurements:</p><script type="math/tex; mode=display">\begin{align*}\vert 00\rangle\langle00\vert &\Rightarrow ((H\otimes I)CNOT)^\dagger \vert 00\rangle\langle00\vert (H\otimes I)CNOT \\    &= \frac{1}{2}(\vert00\rangle + \vert11\rangle)(\langle00\vert+\langle11\vert)\\    &= \vert\beta_{00}\rangle\langle\beta_{00}\vert\end{align*}</script><script type="math/tex; mode=display">\begin{align*}\vert 01\rangle\langle01\vert &\Rightarrow ((H\otimes I)CNOT)^\dagger \vert 01\rangle\langle01\vert (H\otimes I)CNOT \\    &= \frac{1}{2}(\vert01\rangle + \vert10\rangle)(\langle01\vert+\langle10\vert)\\    &= \vert\beta_{10}\rangle\langle\beta_{10}\vert\end{align*}</script><script type="math/tex; mode=display">\begin{align*}\vert 10\rangle\langle10\vert &\Rightarrow ((H\otimes I)CNOT)^\dagger \vert 10\rangle\langle10\vert (H\otimes I)CNOT \\    &= \frac{1}{2}(\vert00\rangle - \vert11\rangle)(\langle00\vert-\langle11\vert)\\    &= \vert\beta_{01}\rangle\langle\beta_{01}\vert\end{align*}</script><script type="math/tex; mode=display">\begin{align*}\vert 11\rangle\langle11\vert &\Rightarrow ((H\otimes I)CNOT)^\dagger \vert 11\rangle\langle11\vert (H\otimes I)CNOT \\    &= \frac{1}{2}(\vert01\rangle - \vert10\rangle)(\langle01\vert-\langle10\vert)\\    &= \vert\beta_{11}\rangle\langle\beta_{11}\vert\end{align*}</script>
           </div>
-<h2 id="4-5-Universal-quantum-gates"><a href="#4-5-Universal-quantum-gates" class="headerlink" title="4.5 Universal quantum gates"></a>4.5 Universal quantum gates</h2><p>A set of gates is said to be <em>universal for quantum computation</em> if any unitary operation may be <strong>approximated</strong> to <strong>arbitary accuracy</strong> by a quantum circuit involving only those gates.</p>
+<h2 id="4-5-Universal-quantum-gates" class="heading-control"><a href="#4-5-Universal-quantum-gates" class="headerlink" title="4.5 Universal quantum gates"></a>4.5 Universal quantum gates<a class="heading-anchor" href="#4-5-Universal-quantum-gates" aria-hidden="true"></a></h2><p>A set of gates is said to be <em>universal for quantum computation</em> if any unitary operation may be <strong>approximated</strong> to <strong>arbitary accuracy</strong> by a quantum circuit involving only those gates.</p>
 <p>Three step constructions:</p>
 <ol>
 <li>(exact) $\{\text{2-level unitaries}\}$ universal: an arbitrary unitary may be expressed as a product of unitary operators that each acts non-trivially only on a subspace spanned by two computational basis states.</li>
 <li>(exact) $\{\text{all single qubit } U, CNOT\}$ universal: an arbitrary unitary from the first step may be expressed using single qubit and <code>CNOT</code> gates.</li>
 <li>(approx) $\{H, T, CNOT\}$: single qubit operation from the second step may be approximated to arbitray accuracy using the Hadamard, phase, and $\pi/8$ gates ($T$). This implies that any unitary operation can be approximated to arbitrary accuracy using Hadamard, phase, <code>CNOT</code>, and $\pi/8$ gates.</li>
 </ol>
-<h3 id="4-5-1-Two-level-unitary-gates-are-universal"><a href="#4-5-1-Two-level-unitary-gates-are-universal" class="headerlink" title="4.5.1 Two-level unitary gates are universal"></a>4.5.1 Two-level unitary gates are universal</h3><ul>
+<h3 id="4-5-1-Two-level-unitary-gates-are-universal" class="heading-control"><a href="#4-5-1-Two-level-unitary-gates-are-universal" class="headerlink" title="4.5.1 Two-level unitary gates are universal"></a>4.5.1 Two-level unitary gates are universal<a class="heading-anchor" href="#4-5-1-Two-level-unitary-gates-are-universal" aria-hidden="true"></a></h3><ul>
 <li>Two-level unitary: unitary that only acts non-trivially on two computational basis.<script type="math/tex; mode=display">
 \left[\begin{matrix}
 \begin{matrix} a & c \\ b & d \end{matrix} & 0\\
@@ -506,12 +506,12 @@ C^n(U)\vert x_1x_2\dots x_n\rangle\vert \psi\rangle=\vert x_1x_2\dots x_n\rangle
 \end{matrix}\right]</script></li>
 </ul>
 <div class="note success">
-            <p>Any unitary $U$ can be decomposed into two-level unitaries</p><p><em>Example</em>: $U\in C^{3\times 3}$, $U=\left[\begin{matrix} a &amp; d &amp; g\\ b &amp; e &amp; h\\ c &amp; f &amp; j\end{matrix}\right]$, find two-level unitaries $U_1, U_2, U_3$ s.t. $U_3U_2U_1U=I\Rightarrow U=U_1^\dagger U_2^\dagger U_3^\dagger$.</p><p>Find $U_1$: </p><ul><li>If $b=0$, $U_1=I$, </li><li>If $b\ne0$, $U_1=\left[\begin{matrix}\frac{a^*}{\sqrt{\vert a\vert^2+\vert b\vert^2}} &amp; \frac{b^*}{\sqrt{\vert a\vert^2+\vert b\vert^2}} &amp; 0\\\frac{b}{\sqrt{\vert a\vert^2+\vert b\vert^2}} &amp; \frac{-a}{\sqrt{\vert a\vert^2+\vert b\vert^2}} &amp; 0\\0&amp;0&amp;I\end{matrix}\right]$</li></ul><p>$\Rightarrow U_1U=\left[\begin{matrix}a’&amp;d’&amp;g’\\0&amp;e’&amp;h’\\c’&amp;f’&amp;j’\end{matrix}\right]$</p><p>Find $U_2$:</p><ul><li>If $c’=0$, $U_2=\left[\begin{matrix}a’^\dagger &amp; 0&amp;0\\0&amp;1&amp;0\\0&amp;0&amp;1\end{matrix}\right]$</li><li>If $c’\ne 0$, $U_2=\left[\begin{matrix} \frac{a’^*}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}}&amp;0&amp;\frac{c’^*}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}} \\ 0&amp;1&amp;0\\ \frac{c’}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}}&amp;0&amp;\frac{-a’}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}}\end{matrix}\right]$</li></ul><p>$\Rightarrow U_2U_1U=\left[\begin{matrix}1&amp;d’’&amp;g’’\\0&amp;e’’&amp;h’’\\0&amp;f’’&amp;j’’\end{matrix}\right]=\left[\begin{matrix}1&amp;0&amp;0\\0&amp;e’’&amp;h’’\\0&amp;f’’&amp;j’’\end{matrix}\right]$, because $U_2U_1U$ is a unitary.</p><p>Find $U_3$:<br>$U_3=\left[\begin{matrix}1&amp;0&amp;0\\0&amp;e’’^\dagger&amp;f’’^\dagger\\0&amp;h’’^\dagger&amp;j’’^\dagger\end{matrix}\right]$</p><p>$\Rightarrow U_3U_2U_1U=I$<br>\<br><em>Proof</em>. For general case, prove by induction.</p><ul><li>We can decompose $2\times 2$ U</li><li>If we can decompose $(d-1)\times(d-1)$ unitaries, then given any $U\in C^{d\times d}$, we can find $U_1, \dots, U_{d-1}$ s.t. $U_{d-1}U_{d-2}\dots U_1U=\left[\begin{matrix}1&amp;\begin{matrix}0&amp;0&amp;\cdots&amp;0\end{matrix}\\\begin{matrix}0\\0\\\vdots\\0\end{matrix} &amp; U’\end{matrix}\right]$. By assumption, we can decompose $U’$ because it is a $(d-1)\times(d-1)$ unitary $\Rightarrow$ We can decompose any $U\in C^{d\times d}$ i.e. $U=U_1U_2\cdots U_k$ where $\{U_i\}$ are two level unitaries (and $k\le \frac{d(d-1)}{2}$)</li></ul>
+            <p>Any unitary $U$ can be decomposed into two-level unitaries</p><p><em>Example</em>: $U\in C^{3\times 3}$, $U=\left[\begin{matrix} a & d & g\\ b & e & h\\ c & f & j\end{matrix}\right]$, find two-level unitaries $U_1, U_2, U_3$ s.t. $U_3U_2U_1U=I\Rightarrow U=U_1^\dagger U_2^\dagger U_3^\dagger$.</p><p>Find $U_1$: </p><ul><li>If $b=0$, $U_1=I$, </li><li>If $b\ne0$, $U_1=\left[\begin{matrix}\frac{a^*}{\sqrt{\vert a\vert^2+\vert b\vert^2}} & \frac{b^*}{\sqrt{\vert a\vert^2+\vert b\vert^2}} & 0\\\frac{b}{\sqrt{\vert a\vert^2+\vert b\vert^2}} & \frac{-a}{\sqrt{\vert a\vert^2+\vert b\vert^2}} & 0\\0&0&I\end{matrix}\right]$</li></ul><p>$\Rightarrow U_1U=\left[\begin{matrix}a’&d’&g’\\0&e’&h’\\c’&f’&j’\end{matrix}\right]$</p><p>Find $U_2$:</p><ul><li>If $c’=0$, $U_2=\left[\begin{matrix}a’^\dagger & 0&0\\0&1&0\\0&0&1\end{matrix}\right]$</li><li>If $c’\ne 0$, $U_2=\left[\begin{matrix} \frac{a’^*}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}}&0&\frac{c’^*}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}} \\ 0&1&0\\ \frac{c’}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}}&0&\frac{-a’}{\sqrt{\vert a’\vert^2+\vert c’\vert^2}}\end{matrix}\right]$</li></ul><p>$\Rightarrow U_2U_1U=\left[\begin{matrix}1&d’’&g’’\\0&e’’&h’’\\0&f’’&j’’\end{matrix}\right]=\left[\begin{matrix}1&0&0\\0&e’’&h’’\\0&f’’&j’’\end{matrix}\right]$, because $U_2U_1U$ is a unitary.</p><p>Find $U_3$:<br>$U_3=\left[\begin{matrix}1&0&0\\0&e’’^\dagger&f’’^\dagger\\0&h’’^\dagger&j’’^\dagger\end{matrix}\right]$</p><p>$\Rightarrow U_3U_2U_1U=I$<br>\<br><em>Proof</em>. For general case, prove by induction.</p><ul><li>We can decompose $2\times 2$ U</li><li>If we can decompose $(d-1)\times(d-1)$ unitaries, then given any $U\in C^{d\times d}$, we can find $U_1, \dots, U_{d-1}$ s.t. $U_{d-1}U_{d-2}\dots U_1U=\left[\begin{matrix}1&\begin{matrix}0&0&\cdots&0\end{matrix}\\\begin{matrix}0\\0\\\vdots\\0\end{matrix} & U’\end{matrix}\right]$. By assumption, we can decompose $U’$ because it is a $(d-1)\times(d-1)$ unitary $\Rightarrow$ We can decompose any $U\in C^{d\times d}$ i.e. $U=U_1U_2\cdots U_k$ where $\{U_i\}$ are two level unitaries (and $k\le \frac{d(d-1)}{2}$)</li></ul>
           </div>
 <div class="note success">
             <p><strong>Corollary</strong>: Unitaries on $n$-qubit can be decomposed as $2^{n-1}(2^n-1)$ two-level unitaries.</p>
           </div>
-<h3 id="4-5-2-Single-qubit-and-CNOT-gates-are-universal"><a href="#4-5-2-Single-qubit-and-CNOT-gates-are-universal" class="headerlink" title="4.5.2 Single qubit and CNOT gates are universal"></a>4.5.2 Single qubit and <code>CNOT</code> gates are universal</h3><p>Recall any unitary $U$ can be decomposed into two-level unitaries. Now we decompose two-level unitaries into multi-controlled unitaries where the target is a single qubit.</p>
+<h3 id="4-5-2-Single-qubit-and-CNOT-gates-are-universal" class="heading-control"><a href="#4-5-2-Single-qubit-and-CNOT-gates-are-universal" class="headerlink" title="4.5.2 Single qubit and CNOT gates are universal"></a>4.5.2 Single qubit and <code>CNOT</code> gates are universal<a class="heading-anchor" href="#4-5-2-Single-qubit-and-CNOT-gates-are-universal" aria-hidden="true"></a></h3><p>Recall any unitary $U$ can be decomposed into two-level unitaries. Now we decompose two-level unitaries into multi-controlled unitaries where the target is a single qubit.</p>
 <ol>
 <li>Suppose unitary $U$ acts non-trivially on the two computational basis $\vert s\rangle=\vert s_1s_2\dots s_n\rangle$ and $\vert t\rangle=\vert t_1t_2\dots t_n\rangle$. Let $\tilde{U}$ be the non-trivial $2\times 2$ unitary submatrix of $U$:<script type="math/tex; mode=display">
 U=
@@ -554,7 +554,7 @@ g_1&0&0&0\\
 g_2&0&0&1\\
 g_3&0&1&1\\
 g_4&1&1&1
-\end{matrix}</script><p>Construct the circuit:<br><img src="https://i.imgur.com/9OIt2Sw.png" alt=""></p>
+\end{matrix}</script><p>Construct the circuit:<br><img src="https://i.imgur.com/9OIt2Sw.png" alt></p>
 <p>$\Rightarrow$ we can decompose any two-level unitaries into multi-controlled single qubit unitaries.</p>
 <p>$\Rightarrow$ $\{\text{single qubit } U, CNOT\}$ universal.</p>
 <p>Complexity:</p>
@@ -563,7 +563,7 @@ g_4&1&1&1
 <li>Each two-level $U$: $O(n^2)$ gates</li>
 <li>Each unitary: $O((2^n)^2)=O(2^{2n})$ two-level unitaries $=O(n^22^{2n})$ gates.</li>
 </ul>
-<h3 id="4-5-3-A-discrete-set-of-universal-operations"><a href="#4-5-3-A-discrete-set-of-universal-operations" class="headerlink" title="4.5.3 A discrete set of universal operations"></a>4.5.3 A discrete set of universal operations</h3><p>$\{H, T\}$ approximate single qubit unitaries.</p>
+<h3 id="4-5-3-A-discrete-set-of-universal-operations" class="heading-control"><a href="#4-5-3-A-discrete-set-of-universal-operations" class="headerlink" title="4.5.3 A discrete set of universal operations"></a>4.5.3 A discrete set of universal operations<a class="heading-anchor" href="#4-5-3-A-discrete-set-of-universal-operations" aria-hidden="true"></a></h3><p>$\{H, T\}$ approximate single qubit unitaries.</p>
 <ul>
 <li>Solovay-Kitaev theorem<ul>
 <li>$O(m\log^c(m/\varepsilon))$ gates</li>
@@ -586,13 +586,13 @@ g_4&1&1&1
 <blockquote>
 <p>待補</p>
 </blockquote>
-<h2 id="4-6-Summary-of-the-quantum-circuit-model-of-computation"><a href="#4-6-Summary-of-the-quantum-circuit-model-of-computation" class="headerlink" title="4.6 Summary of the quantum circuit model of computation"></a>4.6 Summary of the quantum circuit model of computation</h2><blockquote>
+<h2 id="4-6-Summary-of-the-quantum-circuit-model-of-computation" class="heading-control"><a href="#4-6-Summary-of-the-quantum-circuit-model-of-computation" class="headerlink" title="4.6 Summary of the quantum circuit model of computation"></a>4.6 Summary of the quantum circuit model of computation<a class="heading-anchor" href="#4-6-Summary-of-the-quantum-circuit-model-of-computation" aria-hidden="true"></a></h2><blockquote>
 <p>待補</p>
 </blockquote>
-<h2 id="4-7-Simulation-of-quantum-systems"><a href="#4-7-Simulation-of-quantum-systems" class="headerlink" title="4.7 Simulation of quantum systems"></a>4.7 Simulation of quantum systems</h2><blockquote>
+<h2 id="4-7-Simulation-of-quantum-systems" class="heading-control"><a href="#4-7-Simulation-of-quantum-systems" class="headerlink" title="4.7 Simulation of quantum systems"></a>4.7 Simulation of quantum systems<a class="heading-anchor" href="#4-7-Simulation-of-quantum-systems" aria-hidden="true"></a></h2><blockquote>
 <p>待補</p>
 </blockquote>
-<h2 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h2><h3 id="Quantum-oracle"><a href="#Quantum-oracle" class="headerlink" title="Quantum oracle"></a>Quantum oracle</h3><blockquote>
+<h2 id="Bonus" class="heading-control"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus<a class="heading-anchor" href="#Bonus" aria-hidden="true"></a></h2><h3 id="Quantum-oracle" class="heading-control"><a href="#Quantum-oracle" class="headerlink" title="Quantum oracle"></a>Quantum oracle<a class="heading-anchor" href="#Quantum-oracle" aria-hidden="true"></a></h3><blockquote>
 <p>Please refer to Section 6.1.1 The oracle</p>
 </blockquote>
 <p>Oracle: Blackbox for $f(x)$</p>
@@ -600,18 +600,18 @@ g_4&1&1&1
 <ul>
 <li>Example: $U_f(\vert x_1\rangle\vert y_1\rangle + \vert x_2\rangle \vert y_2\rangle)=\vert x_1\rangle \vert y_1\oplus f(x_1)\rangle + \vert x_2\rangle\vert y_2\oplus f(x_2)\rangle$</li>
 </ul>
-<p><img src="https://i.imgur.com/aV2BnxT.png" alt=""></p>
+<p><img src="https://i.imgur.com/aV2BnxT.png" alt></p>
 <ul>
 <li>Classical query complexity is also a big research area</li>
 <li>Gap between quantum query complexity v.s. classical query complexity?</li>
 </ul>
-<h3 id="Deutsch’s-algorithm"><a href="#Deutsch’s-algorithm" class="headerlink" title="Deutsch’s algorithm"></a>Deutsch’s algorithm</h3><blockquote>
+<h3 id="Deutsch’s-algorithm" class="heading-control"><a href="#Deutsch’s-algorithm" class="headerlink" title="Deutsch’s algorithm"></a>Deutsch’s algorithm<a class="heading-anchor" href="#Deutsch’s-algorithm" aria-hidden="true"></a></h3><blockquote>
 <p>Please refer to Section 1.4.3 Deutsch’s algorithm</p>
 </blockquote>
 <p><strong>Problem</strong>: Compute $f(0)+f(1)$ for some $f:\{0, 1\}\to\{0, 1\}$ (with $f$ given as a blackbox)</p>
 <p>Classical: need two quries, find $f(0)$ and $f(1)$, then compute $f(0)+f(1)$</p>
 <p>Quantum: Only one query:</p>
-<p><img src="https://i.imgur.com/DLBZoOn.png" alt=""></p>
+<p><img src="https://i.imgur.com/DLBZoOn.png" alt></p>
 <script type="math/tex; mode=display">
 \begin{align*}
 \vert \psi_1\rangle &= (H\vert 0\rangle) \otimes (HX\vert 0\rangle)\\
@@ -646,7 +646,7 @@ U_f \vert x\rangle \otimes \vert -\rangle &= \vert x\rangle\otimes \frac{1}{\sqr
 \begin{cases}
 0, &\text{if } f(0)=f(1)\\
 1, &\text{if } f(0)\ne f(1)
-\end{cases}</script><h3 id="Deutsch－Jozsa-algorithm"><a href="#Deutsch－Jozsa-algorithm" class="headerlink" title="Deutsch－Jozsa algorithm"></a>Deutsch－Jozsa algorithm</h3><blockquote>
+\end{cases}</script><h3 id="Deutsch－Jozsa-algorithm" class="heading-control"><a href="#Deutsch－Jozsa-algorithm" class="headerlink" title="Deutsch－Jozsa algorithm"></a>Deutsch－Jozsa algorithm<a class="heading-anchor" href="#Deutsch－Jozsa-algorithm" aria-hidden="true"></a></h3><blockquote>
 <p>Please refer to Section 1.4.4 The Deutsch-Jozsa algorithm</p>
 </blockquote>
 <p><strong>Problem</strong>: Given an black box quantum computer known as an oracle that implements some function $f:\{0,1\}^n\to\{0,1\}$. We are probmised that the function is either constant (0 on all outputs or 1 on all outputs, $f(x)=0, \forall x$, or $f(x)=1, \forall x$) or balanced (returns 1 for half of the input domain and 0 for the other half). The task then is to determine if $f$ is constant or balanced by using the oracle.</p>
@@ -656,7 +656,7 @@ U_f \vert x\rangle \otimes \vert -\rangle &= \vert x\rangle\otimes \frac{1}{\sqr
 <li>Using randomized algorithm only want constant (say less than $1/3$) error $\Rightarrow$ only need constant queries. Low probability that random queries or balanced $f$ all match.</li>
 </ul>
 <p>Quantum query, perfect with $1$ query:</p>
-<p><img src="https://i.imgur.com/VXXcUdM.png" alt=""></p>
+<p><img src="https://i.imgur.com/VXXcUdM.png" alt></p>
 <p>Note that:</p>
 <script type="math/tex; mode=display">
 \begin{align*}
@@ -707,7 +707,7 @@ H^{\otimes n}\vert x_1x_2\dots x_n\rangle
 \begin{cases}
 z=0^n, &\text{if $f(x)$ is constant}\\
 z\ne0^n, &\text{if $f(x)$ is balanced}
-\end{cases}</script><h3 id="Bernstain－Vazirani-algorithm"><a href="#Bernstain－Vazirani-algorithm" class="headerlink" title="Bernstain－Vazirani algorithm"></a>Bernstain－Vazirani algorithm</h3><blockquote>
+\end{cases}</script><h3 id="Bernstain－Vazirani-algorithm" class="heading-control"><a href="#Bernstain－Vazirani-algorithm" class="headerlink" title="Bernstain－Vazirani algorithm"></a>Bernstain－Vazirani algorithm<a class="heading-anchor" href="#Bernstain－Vazirani-algorithm" aria-hidden="true"></a></h3><blockquote>
 <p>Not on book</p>
 </blockquote>
 <p><strong>Problem</strong>: Given an oracle that implements a function $f:\{0,1\}^n\to\{0,1\}$ in which $f(x)$ is promised to be the dot product between $x$ and a secret string $s\in\{0,1\}^n$ module $2$, $f(x)=x\cdot s=x_1\cdot s_1+x_2\cdot s_2+\cdots +x_n\cdot s_n\mod 2$, find $s$.</p>
@@ -719,7 +719,7 @@ z\ne0^n, &\text{if $f(x)$ is balanced}
 <li>Claim: Can’t do better even with random algorithm because each query only gives one bit of information on $s$.</li>
 </ul>
 <p>Quantum: $1$ query. The algorithm is almost the same as Deutsch－Jozsn algorithm.</p>
-<p><img src="https://i.imgur.com/6ple5iU.png" alt=""></p>
+<p><img src="https://i.imgur.com/6ple5iU.png" alt></p>
 <script type="math/tex; mode=display">
 \begin{align*}
 \vert \psi_3\rangle &= \sum_{z\in\{0,1\}^n}\sum_{x\in\{0,1\}^n} \frac{(-1)^{z\cdot x + f(x)}}{2^n} \vert z\rangle\\
@@ -734,9 +734,9 @@ z\ne0^n, &\text{if $f(x)$ is balanced}
 <script type="math/tex; mode=display">
 \Rightarrow \vert\psi_3\rangle=\sum_{z\in\{0,1\}^n}\delta_{z\cdot s}\vert z\rangle=\vert s\rangle</script><p>Measurement result is $s$.</p>
 <div class="note info">
-            <p>Let $a=z\oplus s$, prove that if $a\ne 0^n$ (i.e. $z\ne s$), </p><script type="math/tex; mode=display">\sum_{x\in\{0,1\}^n} (-1)^{a\cdot x} = 0.</script><p><em>Proof</em>: Let $a_i$ and $x_i$ denote the $i^\text{th}$ element of $a$ and $x$, respectively. Suppose there are $k&gt;0$ bits in $a$ are $1$, then we can separate $a$ and $x$ into $\bar{a}=(a_i|a_i=0,\forall i)$, $\hat{a}=(a_i|a_i=1,\forall i)$, $\bar{x}=(x_i|a_i=0,\forall i)$ and $\hat{x}=(x_i|a_i=1,\forall i)$. Since $\bar{a}=0^{n-k}$ and $\hat{a}=1^k$, </p><script type="math/tex; mode=display">\sum_{x\in\{0,1\}^n}(-1)^{a\cdot x}=\sum_{\bar{x}\in\{0, 1\}^{n-k}}\sum_{\hat{x}\in\{0,1\}^k}(-1)^{\bar{a}\cdot\bar{x}+\hat{a}\cdot\hat{x}}=2^{n-k}\sum_{\hat{x}\in\{0,1\}^k}(-1)^{\hat{a}\cdot\hat{x}}</script><p>If the number of $1$-bits in $\hat{x}$ is odd, $(-1)^{\hat{a}\cdot\hat{x}}=-1$. Otherwise, $(-1)^{\hat{a}\cdot\hat{x}}=1$ if it is even. Thus, we can prove $\sum_{\hat{x}\in\{0,1\}^k}(-1)^{\hat{a}\cdot\hat{x}}=0$ if we show the number of $\hat{x}$ in which the number of $1$-bits is odd equals to that of the number of $1$-bits is even. We prove by induction:</p><ol><li><p><strong>Hypothesis</strong>: for $k&gt;0$, $\text{Odd}(k)=\text{Even}(k)$, where $\text{Odd}(k)$ denotes the number of $\hat{x}\in\{0,1\}^k$ in which the number of $1$ is odd, $\text{Even}(k)$ denotes the number of $\hat{x}\in\{0,1\}^k$ in which the number of $1$ is even.</p></li><li><p><strong>Base case</strong>: for $k=1$, the outcomes of $\hat{x}$ are $\{0, 1\}$ $\Rightarrow \text{Odd}(1)=\text{Even}(1)=1$.</p></li><li><p><strong>Induction step</strong>: suppose for $k&gt;1$, $\text{Odd}(k)=\text{Even}(k)$ is true. Then for $k+1$, $\text{Odd}(k+1)=\text{Odd}(k)+\text{Even}(k)$ as we add a $0$ for odd numbers they still remain odd, and add a $1$ for even numbers they become odd. Similar for $\text{Even}(k+1)=\text{Even}(k)+\text{Odd}(k)$. Thus, $\text{Odd}(k+1)=\text{Even}(k+1)$, the statement holds.</p></li></ol><p>Hence, $\sum_{\hat{x}\in\{0,1\}^k}(-1)^{\hat{a}\cdot\hat{x}}=0, \forall k&gt;0 \Longrightarrow \sum_{x\in\{0,1\}^n}(-1)^{a\cdot x}=0$, if $a\ne 0^n$.</p>
+            <p>Let $a=z\oplus s$, prove that if $a\ne 0^n$ (i.e. $z\ne s$), </p><script type="math/tex; mode=display">\sum_{x\in\{0,1\}^n} (-1)^{a\cdot x} = 0.</script><p><em>Proof</em>: Let $a_i$ and $x_i$ denote the $i^\text{th}$ element of $a$ and $x$, respectively. Suppose there are $k>0$ bits in $a$ are $1$, then we can separate $a$ and $x$ into $\bar{a}=(a_i|a_i=0,\forall i)$, $\hat{a}=(a_i|a_i=1,\forall i)$, $\bar{x}=(x_i|a_i=0,\forall i)$ and $\hat{x}=(x_i|a_i=1,\forall i)$. Since $\bar{a}=0^{n-k}$ and $\hat{a}=1^k$, </p><script type="math/tex; mode=display">\sum_{x\in\{0,1\}^n}(-1)^{a\cdot x}=\sum_{\bar{x}\in\{0, 1\}^{n-k}}\sum_{\hat{x}\in\{0,1\}^k}(-1)^{\bar{a}\cdot\bar{x}+\hat{a}\cdot\hat{x}}=2^{n-k}\sum_{\hat{x}\in\{0,1\}^k}(-1)^{\hat{a}\cdot\hat{x}}</script><p>If the number of $1$-bits in $\hat{x}$ is odd, $(-1)^{\hat{a}\cdot\hat{x}}=-1$. Otherwise, $(-1)^{\hat{a}\cdot\hat{x}}=1$ if it is even. Thus, we can prove $\sum_{\hat{x}\in\{0,1\}^k}(-1)^{\hat{a}\cdot\hat{x}}=0$ if we show the number of $\hat{x}$ in which the number of $1$-bits is odd equals to that of the number of $1$-bits is even. We prove by induction:</p><ol><li><p><strong>Hypothesis</strong>: for $k>0$, $\text{Odd}(k)=\text{Even}(k)$, where $\text{Odd}(k)$ denotes the number of $\hat{x}\in\{0,1\}^k$ in which the number of $1$ is odd, $\text{Even}(k)$ denotes the number of $\hat{x}\in\{0,1\}^k$ in which the number of $1$ is even.</p></li><li><p><strong>Base case</strong>: for $k=1$, the outcomes of $\hat{x}$ are $\{0, 1\}$ $\Rightarrow \text{Odd}(1)=\text{Even}(1)=1$.</p></li><li><p><strong>Induction step</strong>: suppose for $k>1$, $\text{Odd}(k)=\text{Even}(k)$ is true. Then for $k+1$, $\text{Odd}(k+1)=\text{Odd}(k)+\text{Even}(k)$ as we add a $0$ for odd numbers they still remain odd, and add a $1$ for even numbers they become odd. Similar for $\text{Even}(k+1)=\text{Even}(k)+\text{Odd}(k)$. Thus, $\text{Odd}(k+1)=\text{Even}(k+1)$, the statement holds.</p></li></ol><p>Hence, $\sum_{\hat{x}\in\{0,1\}^k}(-1)^{\hat{a}\cdot\hat{x}}=0, \forall k>0 \Longrightarrow \sum_{x\in\{0,1\}^n}(-1)^{a\cdot x}=0$, if $a\ne 0^n$.</p>
           </div>
-<h3 id="Simon’s-problem"><a href="#Simon’s-problem" class="headerlink" title="Simon’s problem"></a>Simon’s problem</h3><blockquote>
+<h3 id="Simon’s-problem" class="heading-control"><a href="#Simon’s-problem" class="headerlink" title="Simon’s problem"></a>Simon’s problem<a class="heading-anchor" href="#Simon’s-problem" aria-hidden="true"></a></h3><blockquote>
 <p>Please refer to Section 5.4.3 The hidden subgroup problem</p>
 </blockquote>
 <p><strong>Problem</strong>: Given an oracle $f:\{0,1\}^n\to\{0,1\}^n$, promised to satisfy the property that, for some $s\in\{0,1\}^n, s\ne 0^n$ and all $x,y\in\{0, 1\}^n$, $f(x)=f(x\oplus s)$. Find $s$.</p>
@@ -779,7 +779,7 @@ z\ne0^n, &\text{if $f(x)$ is balanced}
 <li>$\Rightarrow$ classical complexity $\Theta(2^\frac{n}{2})$</li>
 </ul>
 <p>Quantum complexity: $O(n)$ queries</p>
-<p><img src="https://i.imgur.com/KuPGt93.png" alt=""></p>
+<p><img src="https://i.imgur.com/KuPGt93.png" alt></p>
 <script type="math/tex; mode=display">
 \begin{align*}
 \vert \psi_1\rangle &= \frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\vert x\rangle \otimes \vert 0\rangle^{\otimes n}\\
@@ -806,7 +806,7 @@ s\cdot &z_k=0 &~~\Rightarrow~ &s_1z_{n1}+s_2z_{n2}+\cdots+s_nz_{kn}&=0
 <li>$365$ possible birthday $\Rightarrow$ $23$ people suffice.</li>
 <li>Number of pairs $\sim N^2$ $\Rightarrow$ $\sqrt{365}$ to find collision</li>
 </ul>
-
+</body></html>
     </div>
 
     

@@ -302,20 +302,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>上課筆記，原文書:</p>
+        <html><head></head><body><p>上課筆記，原文書:</p>
 <blockquote>
-<p>Quantum Computation and Quantum Information, Michael A. Nielsen &amp; Isaac L. Chuang</p>
+<p>Quantum Computation and Quantum Information, Michael A. Nielsen & Isaac L. Chuang</p>
 </blockquote>
-<p><img src="https://i.imgur.com/LMzyRKv.png" alt=""></p>
+<p><img src="https://i.imgur.com/LMzyRKv.png" alt></p>
 <a id="more"></a>
-<h2 id="6-1-The-quantum-search-algorithm"><a href="#6-1-The-quantum-search-algorithm" class="headerlink" title="6.1 The quantum search algorithm"></a>6.1 The quantum search algorithm</h2><ul>
+<h2 id="6-1-The-quantum-search-algorithm" class="heading-control"><a href="#6-1-The-quantum-search-algorithm" class="headerlink" title="6.1 The quantum search algorithm"></a>6.1 The quantum search algorithm<a class="heading-anchor" href="#6-1-The-quantum-search-algorithm" aria-hidden="true"></a></h2><ul>
 <li>Search marked items out of $N$ items<ul>
 <li>Classical: $\Theta(N)$ operations</li>
 <li>Quantum: $O(\sqrt N)$ operations, $\Omega(\sqrt N)$ matching lower bound</li>
 </ul>
 </li>
 </ul>
-<h3 id="6-1-1-The-oracle"><a href="#6-1-1-The-oracle" class="headerlink" title="6.1.1 The oracle"></a>6.1.1 The oracle</h3><ul>
+<h3 id="6-1-1-The-oracle" class="heading-control"><a href="#6-1-1-The-oracle" class="headerlink" title="6.1.1 The oracle"></a>6.1.1 The oracle<a class="heading-anchor" href="#6-1-1-The-oracle" aria-hidden="true"></a></h3><ul>
 <li>Use a blackbox $\tilde{O_f}$ to store information about a function $f: \{0, 1\}^k\to\{0,1\}$.<ul>
 <li>$\tilde{O_f}\vert x\rangle\vert q\rangle = \vert x\rangle\vert f(x)\oplus q\rangle$</li>
 <li>In the search problem, we think $f(x)=1$ as an marked item, i.e. we want to find an $x$ s.t. $f(x)=1$</li>
@@ -329,7 +329,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="Phase-version-of-quantum-oracle"><a href="#Phase-version-of-quantum-oracle" class="headerlink" title="Phase version of quantum oracle"></a>Phase version of quantum oracle</h4><script type="math/tex; mode=display">
+<h4 id="Phase-version-of-quantum-oracle" class="heading-control"><a href="#Phase-version-of-quantum-oracle" class="headerlink" title="Phase version of quantum oracle"></a>Phase version of quantum oracle<a class="heading-anchor" href="#Phase-version-of-quantum-oracle" aria-hidden="true"></a></h4><script type="math/tex; mode=display">
 \begin{align*}
     \tilde{O_f}\vert x\rangle\vert -\rangle 
         &= \tilde{O_f}\vert x\rangle \frac{1}{\sqrt 2}(\vert 0\rangle-\vert 1\rangle)\\
@@ -348,7 +348,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="6-1-2-The-procedure"><a href="#6-1-2-The-procedure" class="headerlink" title="6.1.2 The procedure"></a>6.1.2 The procedure</h3><p><img src="https://i.imgur.com/LMzyRKv.png" alt=""></p>
+<h3 id="6-1-2-The-procedure" class="heading-control"><a href="#6-1-2-The-procedure" class="headerlink" title="6.1.2 The procedure"></a>6.1.2 The procedure<a class="heading-anchor" href="#6-1-2-The-procedure" aria-hidden="true"></a></h3><p><img src="https://i.imgur.com/LMzyRKv.png" alt></p>
 <ul>
 <li><p>$G$ is the grover iteration, which composed of 4 steps:</p>
 <ol>
@@ -356,7 +356,7 @@
 <li>Apply $H^{\otimes n}$</li>
 <li>Apply an conditioned phase shift $(2\vert 0\rangle\langle 0\vert -I)$ (only $\vert 0\rangle$ get an extra phase of $-1$)<script type="math/tex; mode=display">
 \vert x\rangle \to -(-1)^{\delta_{x0}}\vert x\rangle</script></li>
-<li>Apply $H^{\otimes n}$<br><img src="https://i.imgur.com/QI4G07L.png" alt=""></li>
+<li>Apply $H^{\otimes n}$<br><img src="https://i.imgur.com/QI4G07L.png" alt></li>
 </ol>
 </li>
 <li><p>Step 3 is a reflection about $\vert 0\rangle$:</p>
@@ -372,7 +372,7 @@ H^{\otimes n}(2\vert 0\rangle\langle 0\vert - I)H^{\otimes n}
 <li>Step 2 3 4 no oracle calls, can be implemented efficiently $O(n)$ gates</li>
 <li>$G=(2\vert \psi\rangle\langle\psi\vert -I)O_f$</li>
 </ul>
-<h3 id="6-1-3-Geometric-visualization"><a href="#6-1-3-Geometric-visualization" class="headerlink" title="6.1.3 Geometric visualization"></a>6.1.3 Geometric visualization</h3><p>Suppose there are $M$ marked items (solutions), let $\vert \beta\rangle$ be the superposition of all marked items, $\vert \alpha\rangle$ be the superposition of non-marked items</p>
+<h3 id="6-1-3-Geometric-visualization" class="heading-control"><a href="#6-1-3-Geometric-visualization" class="headerlink" title="6.1.3 Geometric visualization"></a>6.1.3 Geometric visualization<a class="heading-anchor" href="#6-1-3-Geometric-visualization" aria-hidden="true"></a></h3><p>Suppose there are $M$ marked items (solutions), let $\vert \beta\rangle$ be the superposition of all marked items, $\vert \alpha\rangle$ be the superposition of non-marked items</p>
 <script type="math/tex; mode=display">
 \begin{align*}
 \vert \beta\rangle &\equiv \frac{1}{\sqrt M} \sum_{x:f(x)=1} \vert x\rangle\\
@@ -384,14 +384,14 @@ H^{\otimes n}(2\vert 0\rangle\langle 0\vert - I)H^{\otimes n}
 O_f(a\vert \alpha\rangle+b\vert \beta\rangle)=a\vert\alpha\rangle-b\vert \beta\rangle</script></li>
 <li>$(2\vert \psi\rangle\langle\psi\vert -I)$ performs a reflection about $\vert \psi\rangle$</li>
 <li>$G$ perfoms a rotation. Both $O_f$ and $(2\vert \psi\rangle\langle\psi\vert -I)$ doesn’t bring vectors outside of this 2D plane.<script type="math/tex; mode=display">
-G^k\vert \psi\rangle = \cos\left(\frac{2k+1}{2}\theta\right)\vert \alpha\rangle + \sin\left(\frac{2k+1}{2}\theta\right)\vert \beta\rangle</script><img src="https://i.imgur.com/McKd8nJ.png" alt=""></li>
+G^k\vert \psi\rangle = \cos\left(\frac{2k+1}{2}\theta\right)\vert \alpha\rangle + \sin\left(\frac{2k+1}{2}\theta\right)\vert \beta\rangle</script><img src="https://i.imgur.com/McKd8nJ.png" alt></li>
 <li>The Grover iteration can be written as<script type="math/tex; mode=display">
 G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matrix}\right)</script></li>
 </ul>
 </li>
 <li>After that, get $\vert \beta\rangle=\frac{1}{\sqrt M}\sum_{x:f(x)=1}\vert x\rangle \Rightarrow$ measure to get random $x$</li>
 </ul>
-<h3 id="6-1-4-Performance"><a href="#6-1-4-Performance" class="headerlink" title="6.1.4 Performance"></a>6.1.4 Performance</h3><ul>
+<h3 id="6-1-4-Performance" class="heading-control"><a href="#6-1-4-Performance" class="headerlink" title="6.1.4 Performance"></a>6.1.4 Performance<a class="heading-anchor" href="#6-1-4-Performance" aria-hidden="true"></a></h3><ul>
 <li>How many iterations does Grover’s search need?<ul>
 <li>$\displaystyle\langle \beta \vert \psi\rangle = \sqrt{\frac{M}{N}} = \sin\frac{\theta}{2}$</li>
 <li>Assume $\displaystyle M\ll N~\Rightarrow \sin\frac{\theta}{2}\approx \frac{\theta}{2}~\Rightarrow~\theta \approx 2\sqrt{\frac{M}{N}} =\Omega(\sqrt{\frac{M}{N}})$</li>
@@ -413,10 +413,10 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 <li>If you know $M$, it is possible to make success probability $100\%$. The idea is to make $\theta$ a little smaller so $k=\frac{\pi}{2\theta}-\frac{1}{2}$ is an integer</li>
 <li>If we don’t know $M$, we can do <strong>quantum counting</strong> to estimate $M$ first.</li>
 </ul>
-<h2 id="6-2-Quantum-search-as-a-quantum-simulation"><a href="#6-2-Quantum-search-as-a-quantum-simulation" class="headerlink" title="6.2 Quantum search as a quantum simulation"></a>6.2 Quantum search as a quantum simulation</h2><blockquote>
+<h2 id="6-2-Quantum-search-as-a-quantum-simulation" class="heading-control"><a href="#6-2-Quantum-search-as-a-quantum-simulation" class="headerlink" title="6.2 Quantum search as a quantum simulation"></a>6.2 Quantum search as a quantum simulation<a class="heading-anchor" href="#6-2-Quantum-search-as-a-quantum-simulation" aria-hidden="true"></a></h2><blockquote>
 <p>待補</p>
 </blockquote>
-<h2 id="6-3-Quantum-Counting"><a href="#6-3-Quantum-Counting" class="headerlink" title="6.3 Quantum Counting"></a>6.3 Quantum Counting</h2><ul>
+<h2 id="6-3-Quantum-Counting" class="heading-control"><a href="#6-3-Quantum-Counting" class="headerlink" title="6.3 Quantum Counting"></a>6.3 Quantum Counting<a class="heading-anchor" href="#6-3-Quantum-Counting" aria-hidden="true"></a></h2><ul>
 <li>Estimate the number of solutions $M$ from $N$ items with a probability of success at least $1-\varepsilon$<ul>
 <li>Classical: $\Omega(\frac{1}{\varepsilon^2}\frac{N}{M})$</li>
 <li>Quantum: $O(\frac{1}{\varepsilon}\sqrt{\frac{N}{M}})$ queries, for some $\varepsilon$ multiplicative error.</li>
@@ -433,21 +433,21 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 <ul>
 <li>Assume the search space is augmented $N\to2N$ for convenient, $\sin^2(\theta/2)=M/2N$. </li>
 <li>Use $t=m+\lceil\log(2+\frac{1}{2\varepsilon})\rceil$ bits.</li>
-<li>$\vert \psi\rangle=\sum_x\vert x\rangle$ as input to oracle (superposition of all possible states)<br><img src="https://i.imgur.com/sgs8t7h.png" alt=""></li>
+<li>$\vert \psi\rangle=\sum_x\vert x\rangle$ as input to oracle (superposition of all possible states)<br><img src="https://i.imgur.com/sgs8t7h.png" alt></li>
 </ul>
 <div class="note success">
-            <p><em>Proof</em></p><p>Recall that $\sin^2\frac{\theta}{2}=\frac{M}{2N}$, we estimate $M$ by estimating $\theta$ (assume $\theta&lt;\frac{\pi}{2}$)</p><script type="math/tex; mode=display">\begin{align*}\frac{\vert \Delta M\vert}{2N}     &= \left\vert \sin^2\frac{(\theta+\Delta\theta)}{2}-\sin^2\frac{\theta}{2} \right\vert\\    &= \left(\sin\frac{(\theta+\Delta\theta)}{2}+\sin\frac{\theta}{2}\right)\left\vert \sin\frac{(\theta+\Delta\theta)}{2}-\sin\frac{\theta}{2} \right\vert\end{align*}</script><p>Two parts:</p><script type="math/tex; mode=display">\begin{align*}\left\vert \sin\frac{(\theta+\Delta\theta)}{2}-\sin\frac{\theta}{2} \right\vert    &= \left\vert \cos\left(\frac{\theta}{2}+\frac{\Delta\theta}{4}\sin\frac{\Delta\theta}{4}\right) \right\vert \\    &\le \frac{\vert \Delta\theta\vert}{4}\le\frac{\vert \Delta\theta\vert}{2}\\\left\vert \sin\left(\frac{\theta+\Delta\theta}{2}\right)\right\vert    &= \left\vert \sin\frac{\theta}{2}\cos\frac{\Delta\theta}{2}+\sin\frac{\Delta\theta}{2}\cos\frac{\theta}{2} \right\vert\\    &\le \sin\frac{\theta}{2}+\frac{\vert\Delta\theta\vert}{2}\end{align*}</script><p>Implies:</p><script type="math/tex; mode=display">\begin{align*}\Rightarrow &&\frac{\vert\Delta M\vert}{2N}    &\le (2\sin\frac{\theta}{2}+\frac{\vert\Delta\theta\vert}{2})\frac{\vert\Delta\theta\vert}{2}\\    &&&\le \left(\sqrt{\frac{2M}{N}}+2^{-(m+1)}\right)\frac{2^{-m}}{2}\\\Rightarrow && \vert \Delta M\vert     &\le (\sqrt{2MN}+\frac{N}{2^{m+1}})2^{-m}\end{align*}</script><ul><li>Pick $\vert \Delta M\vert=\varepsilon M~\Rightarrow~ \varepsilon M\approx 2^{-m}\sqrt{MN}~\Rightarrow~2^m\approx\frac{1}{\varepsilon}\sqrt{\frac{N}{M}}$.</li><li>Use $t=m+\lceil\log(2+\frac{1}{2\delta})\rceil$ bits, need $2^0+2^1+…+2^{t-1}=2^t-1$ Grover iterations for phase estimation $\Rightarrow$ number of quries (oracle calls) $\sim 2^t$<script type="math/tex; mode=display">  2^t=2^m\cdot 2^{\lceil\log(2+\frac{1}{2\delta})\rceil}\approx \frac{1}{\varepsilon}\sqrt{\frac{N}{M}}\left(2+\frac{1}{2\delta}\right)=O(\frac{1}{\varepsilon}\sqrt\frac{N}{M})</script></li></ul>
+            <p><em>Proof</em></p><p>Recall that $\sin^2\frac{\theta}{2}=\frac{M}{2N}$, we estimate $M$ by estimating $\theta$ (assume $\theta<\frac{\pi}{2}$)</p><script type="math/tex; mode=display">\begin{align*}\frac{\vert \Delta M\vert}{2N}     &= \left\vert \sin^2\frac{(\theta+\Delta\theta)}{2}-\sin^2\frac{\theta}{2} \right\vert\\    &= \left(\sin\frac{(\theta+\Delta\theta)}{2}+\sin\frac{\theta}{2}\right)\left\vert \sin\frac{(\theta+\Delta\theta)}{2}-\sin\frac{\theta}{2} \right\vert\end{align*}</script><p>Two parts:</p><script type="math/tex; mode=display">\begin{align*}\left\vert \sin\frac{(\theta+\Delta\theta)}{2}-\sin\frac{\theta}{2} \right\vert    &= \left\vert \cos\left(\frac{\theta}{2}+\frac{\Delta\theta}{4}\sin\frac{\Delta\theta}{4}\right) \right\vert \\    &\le \frac{\vert \Delta\theta\vert}{4}\le\frac{\vert \Delta\theta\vert}{2}\\\left\vert \sin\left(\frac{\theta+\Delta\theta}{2}\right)\right\vert    &= \left\vert \sin\frac{\theta}{2}\cos\frac{\Delta\theta}{2}+\sin\frac{\Delta\theta}{2}\cos\frac{\theta}{2} \right\vert\\    &\le \sin\frac{\theta}{2}+\frac{\vert\Delta\theta\vert}{2}\end{align*}</script><p>Implies:</p><script type="math/tex; mode=display">\begin{align*}\Rightarrow &&\frac{\vert\Delta M\vert}{2N}    &\le (2\sin\frac{\theta}{2}+\frac{\vert\Delta\theta\vert}{2})\frac{\vert\Delta\theta\vert}{2}\\    &&&\le \left(\sqrt{\frac{2M}{N}}+2^{-(m+1)}\right)\frac{2^{-m}}{2}\\\Rightarrow && \vert \Delta M\vert     &\le (\sqrt{2MN}+\frac{N}{2^{m+1}})2^{-m}\end{align*}</script><ul><li>Pick $\vert \Delta M\vert=\varepsilon M~\Rightarrow~ \varepsilon M\approx 2^{-m}\sqrt{MN}~\Rightarrow~2^m\approx\frac{1}{\varepsilon}\sqrt{\frac{N}{M}}$.</li><li>Use $t=m+\lceil\log(2+\frac{1}{2\delta})\rceil$ bits, need $2^0+2^1+…+2^{t-1}=2^t-1$ Grover iterations for phase estimation $\Rightarrow$ number of quries (oracle calls) $\sim 2^t$<script type="math/tex; mode=display">  2^t=2^m\cdot 2^{\lceil\log(2+\frac{1}{2\delta})\rceil}\approx \frac{1}{\varepsilon}\sqrt{\frac{N}{M}}\left(2+\frac{1}{2\delta}\right)=O(\frac{1}{\varepsilon}\sqrt\frac{N}{M})</script></li></ul>
           </div>
-<h2 id="6-4-Speeding-up-the-solution-of-NP-complete-problems"><a href="#6-4-Speeding-up-the-solution-of-NP-complete-problems" class="headerlink" title="6.4 Speeding up the solution of NP-complete problems"></a>6.4 Speeding up the solution of NP-complete problems</h2><blockquote>
+<h2 id="6-4-Speeding-up-the-solution-of-NP-complete-problems" class="heading-control"><a href="#6-4-Speeding-up-the-solution-of-NP-complete-problems" class="headerlink" title="6.4 Speeding up the solution of NP-complete problems"></a>6.4 Speeding up the solution of NP-complete problems<a class="heading-anchor" href="#6-4-Speeding-up-the-solution-of-NP-complete-problems" aria-hidden="true"></a></h2><blockquote>
 <p>待補</p>
 </blockquote>
-<h2 id="6-5-Quantum-search-of-an-unstructured-database"><a href="#6-5-Quantum-search-of-an-unstructured-database" class="headerlink" title="6.5 Quantum search of an unstructured database"></a>6.5 Quantum search of an unstructured database</h2><blockquote>
+<h2 id="6-5-Quantum-search-of-an-unstructured-database" class="heading-control"><a href="#6-5-Quantum-search-of-an-unstructured-database" class="headerlink" title="6.5 Quantum search of an unstructured database"></a>6.5 Quantum search of an unstructured database<a class="heading-anchor" href="#6-5-Quantum-search-of-an-unstructured-database" aria-hidden="true"></a></h2><blockquote>
 <p>待補</p>
 </blockquote>
-<h2 id="6-6-Optimality-of-the-search-algorithm"><a href="#6-6-Optimality-of-the-search-algorithm" class="headerlink" title="6.6 Optimality of the search algorithm"></a>6.6 Optimality of the search algorithm</h2><ul>
+<h2 id="6-6-Optimality-of-the-search-algorithm" class="heading-control"><a href="#6-6-Optimality-of-the-search-algorithm" class="headerlink" title="6.6 Optimality of the search algorithm"></a>6.6 Optimality of the search algorithm<a class="heading-anchor" href="#6-6-Optimality-of-the-search-algorithm" aria-hidden="true"></a></h2><ul>
 <li>No quantum algorithm can perform oracle search using fewer than $\Omega(\sqrt N)$ quries.</li>
 <li>Idea: adversary method<ul>
-<li>Quantum query algorithms can be viewed as<br>  <img src="https://i.imgur.com/uFy7hCx.png" alt=""></li>
+<li>Quantum query algorithms can be viewed as<br>  <img src="https://i.imgur.com/uFy7hCx.png" alt></li>
 <li>Consider the distance between $\vert \psi^f_k\rangle$ and $\vert \psi^{f’}_k\rangle$ for some function $f$ and $f’$<script type="math/tex; mode=display">
   \left\Vert \vert \psi^f_k\rangle-\vert \psi^{f'}_k\rangle \right\Vert^2</script></li>
 <li>Start with zer odistance $\vert \psi^f_0\rangle=U_0\vert 0\rangle, ~\forall~f$</li>
@@ -518,18 +518,18 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 </ul>
 </li>
 </ul>
-<h2 id="6-7-Black-box-algorithm-limits"><a href="#6-7-Black-box-algorithm-limits" class="headerlink" title="6.7 Black box algorithm limits"></a>6.7 Black box algorithm limits</h2><blockquote>
+<h2 id="6-7-Black-box-algorithm-limits" class="heading-control"><a href="#6-7-Black-box-algorithm-limits" class="headerlink" title="6.7 Black box algorithm limits"></a>6.7 Black box algorithm limits<a class="heading-anchor" href="#6-7-Black-box-algorithm-limits" aria-hidden="true"></a></h2><blockquote>
 <p>待補</p>
 </blockquote>
-<h2 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h2><blockquote>
+<h2 id="Bonus" class="heading-control"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus<a class="heading-anchor" href="#Bonus" aria-hidden="true"></a></h2><blockquote>
 <p>待補</p>
 </blockquote>
-<h3 id="Better-bounds-on-distinguish-quantum-states"><a href="#Better-bounds-on-distinguish-quantum-states" class="headerlink" title="Better bounds on distinguish quantum states"></a>Better bounds on distinguish quantum states</h3><p>Suppose we have two quantum states $\vert a\rangle$, $\vert b\rangle$, projective measurements $\{P, I-P\}$ s.t. $\left\Vert P\vert a\rangle \right\Vert^2 \le \varepsilon$, $\left\Vert P\vert b\rangle \right\Vert^2\ge 1-\varepsilon$, $~\varepsilon\in [0, \frac{1}{2}]$.</p>
+<h3 id="Better-bounds-on-distinguish-quantum-states" class="heading-control"><a href="#Better-bounds-on-distinguish-quantum-states" class="headerlink" title="Better bounds on distinguish quantum states"></a>Better bounds on distinguish quantum states<a class="heading-anchor" href="#Better-bounds-on-distinguish-quantum-states" aria-hidden="true"></a></h3><p>Suppose we have two quantum states $\vert a\rangle$, $\vert b\rangle$, projective measurements $\{P, I-P\}$ s.t. $\left\Vert P\vert a\rangle \right\Vert^2 \le \varepsilon$, $\left\Vert P\vert b\rangle \right\Vert^2\ge 1-\varepsilon$, $~\varepsilon\in [0, \frac{1}{2}]$.</p>
 <p>Claim: $\vert\langle a\vert b\rangle\vert\le 2\sqrt{\varepsilon(1-\varepsilon)}$</p>
 <div class="note success">
             <p><em>Proof</em> $\vert\langle a\vert b\rangle\vert\le 2\sqrt{\varepsilon(1-\varepsilon)}$</p><p><strong>Proof 1</strong></p><script type="math/tex; mode=display">\begin{align*}\vert \langle a \vert b \rangle \vert &= \vert \langle a \vert P+(I-P)\vert b\rangle\vert\\    &= \vert \langle a\vert P^2+(I-P)^2\vert b\rangle\vert\\    &\le \vert \langle a \vert PP\vert b\rangle \vert + \vert \langle a\vert (I-P)(I-P)\vert b\rangle\vert\\    &\le\big\Vert \underbrace{P\vert a\rangle}_{x_1}\big\Vert \big\Vert \underbrace{P\vert b\rangle}_{x_2}\big\Vert + \big\Vert\underbrace{(I-P)\vert b\rangle}_{y_1}\big\Vert \big\Vert\underbrace{(I-P)\vert a\rangle}_{y_2}\big\Vert\\\end{align*}</script><p>By Cauchy theory $x_1x_2+y_1y_2\le \sqrt{x_1^2+x_2^2}+\sqrt{y_1^2+y_2^2}$</p><script type="math/tex; mode=display">\begin{align*}    \vert \langle a \vert b \rangle \vert &\le \sqrt{x_1^2+x_2^2} + \sqrt{y_1^2+y_2^2}\\\end{align*}</script><p>By</p><script type="math/tex; mode=display">\begin{cases}x_1^2+y_2^2=1,&x_1^2\le \varepsilon\\x_2^2+y_1^2=1,&y_1^2\le \varepsilon\end{cases}</script><script type="math/tex; mode=display">\vert \langle a \vert b \rangle \vert \le \sqrt{(x_1^2+y_1^2)(2-(x_1^2+y_1^2))}</script><p>By $x\le2\varepsilon$</p><script type="math/tex; mode=display">\vert \langle a \vert b \rangle \vert \le \sqrt{2\varepsilon(2-2\varepsilon)}=2\sqrt{\varepsilon(1-\varepsilon)}</script><p><strong>Proof 2</strong></p><p>The best way to distingish $\vert a\rangle$ and $\vert b\rangle$: $\vert b\rangle \sim \vert 0\rangle$ and $\vert a\rangle \sim \vert 1\rangle$</p><p><img src="https://i.imgur.com/H0PpikY.png" width="300px"></p><script type="math/tex; mode=display">\begin{align*}\text{error} = \sin^2\delta \le \varepsilon\end{align*}</script><script type="math/tex; mode=display">\begin{align*}\Rightarrow~\vert \langle a\vert b\rangle &= \vert \cos(\frac{\pi}{2} - 2\delta)\vert\\    &= \vert \sin(2\delta)\vert \\    &= 2\vert \sin\delta \vert \vert\cos\delta\vert = 2\sqrt{\varepsilon(1-\varepsilon)}\end{align*}</script><p><strong>Proof 3</strong><br>Let $T$ be the trace distance between $\vert a\rangle, \vert b\rangle$, $F$ be the Fidelity between $\vert a\rangle$, $\vert b\rangle$.</p><ul><li>Fact 1: $T\ge$ bias betweem measurement probability $\ge(1-\varepsilon)-\varepsilon=1-2\epsilon$<ul><li>$|P\vert b\rangle|^2\ge 1-\varepsilon$</li><li>$|P\vert a\rangle|^2 \le \varepsilon$</li></ul></li><li>Fact 2: For $\vert a\rangle$ and $\vert b\rangle$ pur states<ul><li>$T^2+F^2=1$</li><li>$F=|\langle a\vert b\rangle|=\sqrt{1-T^2}\le \sqrt{1-(1-2\varepsilon)^2}=2\sqrt{\varepsilon(1-\varepsilon)}$</li></ul></li></ul>
           </div>
-<h3 id="Applications-of-Grover’s-algorithm"><a href="#Applications-of-Grover’s-algorithm" class="headerlink" title="Applications of Grover’s algorithm"></a>Applications of Grover’s algorithm</h3><h4 id="Speed-up-for-NP-complete-problems"><a href="#Speed-up-for-NP-complete-problems" class="headerlink" title="Speed up for $NP$-complete problems"></a>Speed up for $NP$-complete problems</h4><ul>
+<h3 id="Applications-of-Grover’s-algorithm" class="heading-control"><a href="#Applications-of-Grover’s-algorithm" class="headerlink" title="Applications of Grover’s algorithm"></a>Applications of Grover’s algorithm<a class="heading-anchor" href="#Applications-of-Grover’s-algorithm" aria-hidden="true"></a></h3><h4 id="Speed-up-for-NP-complete-problems" class="heading-control"><a href="#Speed-up-for-NP-complete-problems" class="headerlink" title="Speed up for $NP$-complete problems"></a>Speed up for $NP$-complete problems<a class="heading-anchor" href="#Speed-up-for-NP-complete-problems" aria-hidden="true"></a></h4><ul>
 <li>Satisfiability: given boolean formula $\phi(i_1,i_2,\dots,i_n)$, determine whether there exist $i=i_1i_2\dots i_n$ s.t. $\phi(i)=1$ ($\phi(i)$ is easy to compute, but there are $N=2^n$ possible assignment of $i$)<ul>
 <li>Quantum alg: construct $q$ circuit $Q_\phi$ s.t. $\vert i\rangle\to(-1)^{\phi(i)}\vert i\rangle$ ($\vert i,b\rangle\to\vert i,b\oplus \phi(i)\rangle$)</li>
 <li>$O_\phi$ is easy to construct because $\phi(i)$ is easy to compute<ul>
@@ -549,7 +549,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 </ul>
 </li>
 </ul>
-<h4 id="OR-of-AND"><a href="#OR-of-AND" class="headerlink" title="$OR$ of $AND$"></a>$OR$ of $AND$</h4><ul>
+<h4 id="OR-of-AND" class="heading-control"><a href="#OR-of-AND" class="headerlink" title="$OR$ of $AND$"></a>$OR$ of $AND$<a class="heading-anchor" href="#OR-of-AND" aria-hidden="true"></a></h4><ul>
 <li>A boolean matrix<script type="math/tex; mode=display">
   \left[\begin{matrix}
   0 & 0 & 0 & 1 & 0 & 0\\
@@ -577,7 +577,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 </ul>
 </li>
 </ul>
-<h4 id="AND-OR-tree"><a href="#AND-OR-tree" class="headerlink" title="$AND$-$OR$ tree"></a>$AND$-$OR$ tree</h4><p><img src="https://i.imgur.com/FBpOCas.png" width="400px"></p>
+<h4 id="AND-OR-tree" class="heading-control"><a href="#AND-OR-tree" class="headerlink" title="$AND$-$OR$ tree"></a>$AND$-$OR$ tree<a class="heading-anchor" href="#AND-OR-tree" aria-hidden="true"></a></h4><p><img src="https://i.imgur.com/FBpOCas.png" width="400px"></p>
 <ul>
 <li>Game tree for chess or Go etc.<ul>
 <li>$1$: win, $0$: lose (ignore tie)</li>
@@ -588,7 +588,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 <li>Recursive Grover? Don’t actually work because error builds up through recursion</li>
 <li>Still has $O(\sqrt N)$ quantum alg. through quantum walk</li>
 </ul>
-<h4 id="Collision-problem"><a href="#Collision-problem" class="headerlink" title="Collision problem"></a>Collision problem</h4><ul>
+<h4 id="Collision-problem" class="heading-control"><a href="#Collision-problem" class="headerlink" title="Collision problem"></a>Collision problem<a class="heading-anchor" href="#Collision-problem" aria-hidden="true"></a></h4><ul>
 <li>Given blackbox access to the function $f:\{1,2,\dots,N\}\to\{1,2,\dots,N\}$</li>
 <li>Promise: $f$ is either one-to-one or two-to-one (has lots of collision)<ul>
 <li>e.g. one-to-one $f:1\to1,~2\to2,~3\to4,~4\to3$</li>
@@ -617,7 +617,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 </ul>
 </li>
 </ul>
-<h4 id="Element-distinctness"><a href="#Element-distinctness" class="headerlink" title="Element distinctness"></a>Element distinctness</h4><ul>
+<h4 id="Element-distinctness" class="heading-control"><a href="#Element-distinctness" class="headerlink" title="Element distinctness"></a>Element distinctness<a class="heading-anchor" href="#Element-distinctness" aria-hidden="true"></a></h4><ul>
 <li>also $f:\{1,2,\dots,N\}\to\{1,2,\dots,N\}$, no promise</li>
 <li>Problem: determine whether $f$ is one-to-one (ie. whether $f$ have collision)<ul>
 <li>Classical: $\Theta(N)$</li>
@@ -636,7 +636,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 </ul>
 </li>
 </ul>
-<h3 id="Exact-Grover-search"><a href="#Exact-Grover-search" class="headerlink" title="Exact Grover search"></a>Exact Grover search</h3><ul>
+<h3 id="Exact-Grover-search" class="heading-control"><a href="#Exact-Grover-search" class="headerlink" title="Exact Grover search"></a>Exact Grover search<a class="heading-anchor" href="#Exact-Grover-search" aria-hidden="true"></a></h3><ul>
 <li>Promised that an unique marked item, find alg. that find the marked item with prob $1$, in $O(\sqrt N)$ steps.<script type="math/tex; mode=display">
   f:\{1,2,\dots,N\}\to\{0,1\},\quad \exists~x^* ~\text{s.t.}~ f(x)\begin{cases}
   1, &x=x^*\\
@@ -648,7 +648,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
       f'(x)=0, &\text{if}~N+1\le x\le 2N
   \end{cases}</script></li>
 <li>can simulate $O_{f’}$ with one $\tilde{O_f}$<script type="math/tex; mode=display">
-  \tilde{O}_f\vert x,b\rangle = \vert x,f(x)\oplus b\rangle</script>  <img src="https://i.imgur.com/qJk8fnu.png" alt=""><ul>
+  \tilde{O}_f\vert x,b\rangle = \vert x,f(x)\oplus b\rangle</script>  <img src="https://i.imgur.com/qJk8fnu.png" alt><ul>
 <li>define <script type="math/tex; mode=display">
   U_\gamma=\left(\begin{matrix}\cos\gamma & -\sin\gamma \\ \sin\gamma & \cos\gamma\end{matrix}\right),\quad A=H^{\otimes n}\otimes U_\gamma</script></li>
 <li>We have <script type="math/tex; mode=display">
@@ -658,7 +658,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
   \text{Prob}(A\vert 0\rangle^{\oplus n+1}~\text{marked})
       &= \left|\langle x^*,0|A|0\rangle\right|^2\\
       &= \frac{1}{N} \cos^2\gamma
-  \end{align*}</script>  <img src="https://i.imgur.com/W6cIhAs.png" alt=""><script type="math/tex; mode=display">
+  \end{align*}</script>  <img src="https://i.imgur.com/W6cIhAs.png" alt><script type="math/tex; mode=display">
   \sin\theta_\gamma=\frac{\cos\theta_\gamma}{\sqrt N},\quad \text{write}~\lceil\tilde k\rceil=k</script><script type="math/tex; mode=display">
   \begin{align*}
   (2k+1)\theta_\gamma=\frac{\pi}{2} 
@@ -669,7 +669,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 </ul>
 </li>
 </ul>
-<h3 id="Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items"><a href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items" class="headerlink" title="$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items"></a>$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items</h3><ul>
+<h3 id="Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items" class="heading-control"><a href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items" class="headerlink" title="$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items"></a>$\Omega(\sqrt{\frac{N}{M}})$ query lower bound for $M$ marked items<a class="heading-anchor" href="#Omega-sqrt-frac-N-M-query-lower-bound-for-M-marked-items" aria-hidden="true"></a></h3><ul>
 <li>easy solution<br>  $Q($search $M$ marked items from $N$ items $)$<br>  $\ge Q($search $M$ marked items from $N$ items promised that marked items are blocks$)$<br>  $\ge Q($search one marked item in $\frac{N}{M}$ items$)$<br>  $=\Omega(\sqrt{\frac{N}{M}})$</li>
 <li>harder solution<ul>
 <li>consider all $C^N_M$ ways to mark $M$ items</li>
@@ -704,7 +704,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 </ul>
 </li>
 </ul>
-<h3 id="Minimum-finding"><a href="#Minimum-finding" class="headerlink" title="Minimum finding"></a>Minimum finding</h3><ul>
+<h3 id="Minimum-finding" class="heading-control"><a href="#Minimum-finding" class="headerlink" title="Minimum finding"></a>Minimum finding<a class="heading-anchor" href="#Minimum-finding" aria-hidden="true"></a></h3><ul>
 <li>Given quantum access to input of $N$ numbers, $x_1,x_2,\dots,x_N$, find the $\min$ of them in $O(\sqrt N\log N)$ steps.</li>
 <li>start with random $s\in\{1,\dots,N\}$ query $x_s$.</li>
 <li>Grover search among the items to find some $r$ s.t. $x_r\le x_s$<ul>
@@ -714,7 +714,7 @@ G=\left(\begin{matrix}\cos\theta & -\sin\theta\\\sin\theta & \cos\theta\end{matr
 </ul>
 </li>
 </ul>
-
+</body></html>
     </div>
 
     
