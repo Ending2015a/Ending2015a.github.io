@@ -325,7 +325,7 @@
 <p>原論文：Li Chen, J. Lingys, Kai Chen and Feng Liu. AuTO: Scaling Deep Reinforcement Learnign for Datacenter-Scale Automatic Traffic Optimization. SIGCOMM 2018.</p>
 </blockquote>
 <a id="more"></a>
-<div class="pdfobject-container" data-target="https://conferences.sigcomm.org/events/apnet2018/papers/auto.pdf" data-height="500px"></div>
+<div class="pdfobject-container" data-target="https://conferences.sigcomm.org/events/apnet2018/papers/auto.pdf" data-height="400px"></div>
 <h2 id="1-Introduction" class="heading-control"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction<a class="heading-anchor" href="#1-Introduction" aria-hidden="true"></a></h2><p>Traffic optimization (TO) 是很重要的 datacenter management 問題，包括：</p>
 <ul>
 <li>flow/coflow scheduling</li>
@@ -733,7 +733,7 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
       <i class="fa fa-coffee"></i>
     </span>
     <span title="所需總閱讀時間">16:10</span>
-</div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+</div><!--script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>-->
 
 
 
@@ -918,6 +918,26 @@ window.addEventListener('pjax:success', () => {
 
 
 
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
 
 
 
