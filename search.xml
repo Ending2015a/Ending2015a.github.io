@@ -524,9 +524,9 @@ r_t = \frac{ \sum_{f^t\in F^t_d} {Tput}^t_f }{ \sum_{f^{t-1}\in F^{t-1}_d} {Tput
       </categories>
       <tags>
         <tag>Note</tag>
+        <tag>Paper Note</tag>
         <tag>Deep Learning</tag>
         <tag>Reinforcement Learning</tag>
-        <tag>Paper Note</tag>
         <tag>Datacenter Management</tag>
         <tag>Traffic Optimization</tag>
       </tags>
@@ -2517,7 +2517,7 @@ p(m) &= \sum_i p(m\vert i)p_i\\
       </tags>
   </entry>
   <entry>
-    <title>[教學] 夢魘のCUDA: 使用 Preconditioned Conjugate Gradient 輕鬆解決大型稀疏線性方程組</title>
+    <title>[Tuto] 夢魘のCUDA: 使用 Preconditioned Conjugate Gradient 輕鬆解決大型稀疏線性方程組</title>
     <url>/Ending2015a/52045/</url>
     <content><![CDATA[<html><head></head><body><p><img src="https://i.imgur.com/Duz436p.png" width="60%"><br><em>圖片來源：<a href="http://fourier.eng.hmc.edu/e176/lectures/NM/node29.html">http://fourier.eng.hmc.edu/e176/lectures/NM/node29.html</a></em></p>
 <div class="note info">
@@ -3379,7 +3379,7 @@ y\gets \alpha \text{OP}(A)x+\beta y</script><p><img src="https://i.imgur.com/zxs
       <tags>
         <tag>C++</tag>
         <tag>Programming</tag>
-        <tag>教學</tag>
+        <tag>Tutorial</tag>
         <tag>Linear Algebra</tag>
         <tag>Numerical Analysis</tag>
         <tag>CUDA</tag>
@@ -3389,7 +3389,7 @@ y\gets \alpha \text{OP}(A)x+\beta y</script><p><img src="https://i.imgur.com/zxs
       </tags>
   </entry>
   <entry>
-    <title>[Note] NIPS2020 Reinforcement Learning - 163 Papers</title>
+    <title>[List] NIPS2020 Reinforcement Learning - 163 Papers</title>
     <url>/Ending2015a/62651/</url>
     <content><![CDATA[<p><img src="https://i.imgur.com/CuyVsVZ.png" width="50%"></p>
 <a id="more"></a>
