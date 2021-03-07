@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.1.1">
+<meta name="generator" content="Hexo 5.4.0">
 
 
 <script data-ad-client="ca-pub-7507926436817293" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -103,9 +103,7 @@
   </style>
 </noscript>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --></head>
+</head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -303,16 +301,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <html><head></head><body><p><img src="https://i.imgur.com/k5HI4sV.png" alt></p>
+        <p><img src="https://i.imgur.com/k5HI4sV.png" alt=""></p>
 <blockquote>
 <p>原論文：M.Macklin and M. Müller. Position Based Fluids. ACM Transactions on Graphics, 2013.</p>
 </blockquote>
-<a id="more"></a>
+<span id="more"></span>
 <iframe width="100%" height="600" src="https://www.docdroid.net/K8Qac1F/pbf-sig-preprint-pdf" frameborder="0" allowtransparency allowfullscreen></iframe>
 
-<h2 id="1-Introduction" class="heading-control"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction<a class="heading-anchor" href="#1-Introduction" aria-hidden="true"></a></h2><p>對於互動的環境來說，流體模擬的穩定性非常重要。Smoothed Particle Hydrodynamics (SPH) 是一個在互動環境中被廣泛使用的 Particle-Based 方法，然而他卻有個致命的缺點：當粒子周圍的相鄰粒子過少時會很難維持住這個算法的穩定性，尤其以在流體表面、或是在邊緣的流體粒子更常發生。將每個 Time step 調到足夠小，或是增加足夠的粒子數量即使可避免掉這項問題，卻會大幅度增加計算成本。</p>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><p>對於互動的環境來說，流體模擬的穩定性非常重要。Smoothed Particle Hydrodynamics (SPH) 是一個在互動環境中被廣泛使用的 Particle-Based 方法，然而他卻有個致命的缺點：當粒子周圍的相鄰粒子過少時會很難維持住這個算法的穩定性，尤其以在流體表面、或是在邊緣的流體粒子更常發生。將每個 Time step 調到足夠小，或是增加足夠的粒子數量即使可避免掉這項問題，卻會大幅度增加計算成本。</p>
 <p>Position Based Dynamics (PBD) 在遊戲開發或是影片製作中都是很受歡迎的一套物理模擬方式，作者選擇使用 PBD 正是因為其具有 Unconditionally Stable 以及穩定性等性質。這篇 Paper 將介紹如何使用 PBD Framework 來模擬 Incompressible flow，並克服上述在 Free Surfaces 發生 Particle Deficiency 的問題。</p>
-<h2 id="2-Related-Work" class="heading-control"><a href="#2-Related-Work" class="headerlink" title="2. Related Work"></a>2. Related Work<a class="heading-anchor" href="#2-Related-Work" aria-hidden="true"></a></h2><ul>
+<h2 id="2-Related-Work"><a href="#2-Related-Work" class="headerlink" title="2. Related Work"></a>2. Related Work</h2><ul>
 <li>Muller [2003] 等人在 <a target="_blank" rel="noopener" href="http://matthias-mueller-fischer.ch/publications/sca03.pdf">Particle-Based Fluid Simulation for Intereactive Applicatoins</a> 中提出使用 Smoothed Particle Hydrodynamics (SPH) 模擬具有 Viscosity 跟 Surface Tension 的流體</li>
 <li>為了維持住 Incompressibility，<a target="_blank" rel="noopener" href="https://cg.informatik.uni-freiburg.de/publications/2007_SCA_SPH.pdf">Weakly Compressible SPH (WCSPH)</a> [2007] 與標準 SPH 所使用的 Stiff Equation 會大大限制住 Time step 的長度。</li>
 <li><a target="_blank" rel="noopener" href="https://graphics.ethz.ch/~sobarbar/papers/Sol09/Sol09.pdf">Predictive-Corrective Incompressible SPH</a> [2009] 利用 Iterative Jacobi-style 方法，藉由不斷迭代、累積流體壓力並逐步施力的方式，來確保流體能夠在較長的Time step 上也能夠穩定存在，而不需要額外設置 Stiffness value 且可以分散掉不斷矯正相鄰粒子密度的計算成本。</li>
@@ -321,7 +319,7 @@
 <li>Clavet [2005] 使用 Position Based 方法模擬 Viscoelastic Fluids。但是他們的方法只是 Conditionally Stable。</li>
 <li>Position Based Dynamics [2007] 基於 Verlet integration 提供一個在遊戲中模擬物理的方法。</li>
 </ul>
-<h2 id="3-Enforcing-Incompressibility" class="heading-control"><a href="#3-Enforcing-Incompressibility" class="headerlink" title="3. Enforcing Incompressibility"></a>3. Enforcing Incompressibility<a class="heading-anchor" href="#3-Enforcing-Incompressibility" aria-hidden="true"></a></h2><p>對每一個粒子使用 Density Constraint 來確保流體密度不變。Constraint 是每個粒子位置與鄰近粒子位置的函數，位置寫作 $\mathbf{p}_1,\cdots,\mathbf{p}_n$，以下是對第$i$個粒子的 Constraint Function：</p>
+<h2 id="3-Enforcing-Incompressibility"><a href="#3-Enforcing-Incompressibility" class="headerlink" title="3. Enforcing Incompressibility"></a>3. Enforcing Incompressibility</h2><p>對每一個粒子使用 Density Constraint 來確保流體密度不變。Constraint 是每個粒子位置與鄰近粒子位置的函數，位置寫作 $\mathbf{p}_1,\cdots,\mathbf{p}_n$，以下是對第$i$個粒子的 Constraint Function：</p>
 <script type="math/tex; mode=display">
 C_i\big(\mathbf{p}_1,\cdots,\mathbf{p}_n\big)=\frac{\rho_i}{\rho_0}-1\tag{1}</script><p>其中 $\rho_0$是靜止密度 (Rest Density)，$\rho_i$ 是由 SPH density estimator 計算出來的粒子密度:</p>
 <script type="math/tex; mode=display">
@@ -377,11 +375,11 @@ C\big(\mathbf{p}+\Delta\mathbf{p}\big) \approx  C\big(\mathbf{p}\big)+\nabla C^T
 \Delta \mathbf{p}_i=\frac{1}{\rho_0}\sum_j\big(\lambda_i+\lambda_j\big)m_j\nabla W\big(\mathbf{p}_i-\mathbf{p}_j, h\big)\tag{12}</script><div class="note info">
             <p><strong>註:</strong> </p><script type="math/tex; mode=display">\begin{align}\Delta \mathbf{p}_i     &= \lambda_i\nabla_{\mathbf{p}_i}C_i+\sum_j\lambda_j\nabla_{\mathbf{p}_j}C_i\\    &= \frac{1}{\rho_0}\sum_j \lambda_i m_j\nabla_{\mathbf{p}_i}W\big(\mathbf{p}_i-\mathbf{p}_j, h\big) + \Big(-\frac{1}{\rho_0}\sum_j\lambda_j m_j\nabla_{\mathbf{p}_j}W\big(\mathbf{p}_i-\mathbf{p}_j, h\big)\Big)\\    &= \frac{1}{\rho_0}\sum_j \lambda_i m_j\nabla_{\mathbf{p}_i}W\big(\mathbf{p}_i-\mathbf{p}_j, h\big) + \frac{1}{\rho_0}\sum_j\lambda_j m_j\nabla_{\mathbf{p}_i}W\big(\mathbf{p}_i-\mathbf{p}_j, h\big) \\    &= \frac{1}{\rho_0}\sum_j\big(\lambda_i+\lambda_j\big)m_j\nabla_{\mathbf{p}_i}W\big(\mathbf{p}_i-\mathbf{p}_j, h\big)\end{align}</script><p>其中第2行到第3行是因為:</p><script type="math/tex; mode=display">\because\nabla_{\mathbf{p}_j}W\big(\mathbf{p}_i-\mathbf{p}_j, h\big)=-\nabla_{\mathbf{p}_i}W\big(\mathbf{p}_i-\mathbf{p}_j, h\big)</script>
           </div>
-<h2 id="4-Tensile-Instability" class="heading-control"><a href="#4-Tensile-Instability" class="headerlink" title="4. Tensile Instability"></a>4. Tensile Instability<a class="heading-anchor" href="#4-Tensile-Instability" aria-hidden="true"></a></h2><p>SPH 中常見的問題就是因鄰近粒子數量不足無法達到 Rest Density，而產生負壓力所導致的粒子的聚集效應 (粒子間的排斥力變成吸力)。</p>
-<p><img src="https://i.imgur.com/xWMEnJj.jpg" alt><br><em>上圖為聚集效應產生的不自然現象 / 下圖為施加人工壓力項的結果</em></p>
-<p>一種解決方案是對壓力做 Clamping 讓壓力不為負值，但是這會讓粒子的內聚力衰弱。<br></p><div class="note info">
-            <p><strong>註:</strong><br></p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">clamp(x) {</span><br><span class="line">    return x>0 ? x:0;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><p></p>
-          </div><p></p>
+<h2 id="4-Tensile-Instability"><a href="#4-Tensile-Instability" class="headerlink" title="4. Tensile Instability"></a>4. Tensile Instability</h2><p>SPH 中常見的問題就是因鄰近粒子數量不足無法達到 Rest Density，而產生負壓力所導致的粒子的聚集效應 (粒子間的排斥力變成吸力)。</p>
+<p><img src="https://i.imgur.com/xWMEnJj.jpg" alt=""><br><em>上圖為聚集效應產生的不自然現象 / 下圖為施加人工壓力項的結果</em></p>
+<p>一種解決方案是對壓力做 Clamping 讓壓力不為負值，但是這會讓粒子的內聚力衰弱。<br><div class="note info">
+            <p><strong>註:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">clamp(x) &#123;</span><br><span class="line">    return x&gt;0 ? x:0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+          </div></p>
 <p>其他解決方案:</p>
 <ul>
 <li>Clavet [2005] 使用 second near pressure term</li>
@@ -393,23 +391,23 @@ C\big(\mathbf{p}+\Delta\mathbf{p}\big) \approx  C\big(\mathbf{p}\big)+\nabla C^T
 s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}\bigg)^n\tag{13}</script><p>其中 $\Delta \mathbf{q}$ 是固定的距離，$k$ 是微小的正常數。通常取 $|\Delta \mathbf{q}|=0.1h, \cdots,0.3h$，$k=0.1$，$n=4$。將此項納入修正項:</p>
 <script type="math/tex; mode=display">
 \Delta \mathbf{p}_i=\frac{1}{\rho_0}\sum_j\big(\lambda_i+\lambda_j+s_{corr}\big)m_j\nabla W\big(\mathbf{p}_i-\mathbf{p}_j, h\big)\tag{14}</script><p>這個醜陋的項會保持粒子略低於 Rest Density，最終產生出類似 Surface Tension 的效果。</p>
-<h2 id="5-Vorticity-Confinement-and-Viscosity" class="heading-control"><a href="#5-Vorticity-Confinement-and-Viscosity" class="headerlink" title="5. Vorticity Confinement and Viscosity"></a>5. Vorticity Confinement and Viscosity<a class="heading-anchor" href="#5-Vorticity-Confinement-and-Viscosity" aria-hidden="true"></a></h2><p>PBD 方法通常會產生額外的 Damping 造成渦流快速消散。Fedkiw [2001] 引進 Vorticity Confinement 方法來克服模擬煙霧時的消散問題(Numerical Dissipation)，後來由 Lentine [2011] 當作 Energy Conserving 引入流體模擬。Hong [2008] 展示如何將 Vorticity Confinement 導入 Hybrid 的模擬方法。</p>
-<p><img src="https://i.imgur.com/AeZSiRb.png" alt><br><em>左邊沒有加 Vorticity Confinement / 右邊有加 Vorticity Confinement</em></p>
+<h2 id="5-Vorticity-Confinement-and-Viscosity"><a href="#5-Vorticity-Confinement-and-Viscosity" class="headerlink" title="5. Vorticity Confinement and Viscosity"></a>5. Vorticity Confinement and Viscosity</h2><p>PBD 方法通常會產生額外的 Damping 造成渦流快速消散。Fedkiw [2001] 引進 Vorticity Confinement 方法來克服模擬煙霧時的消散問題(Numerical Dissipation)，後來由 Lentine [2011] 當作 Energy Conserving 引入流體模擬。Hong [2008] 展示如何將 Vorticity Confinement 導入 Hybrid 的模擬方法。</p>
+<p><img src="https://i.imgur.com/AeZSiRb.png" alt=""><br><em>左邊沒有加 Vorticity Confinement / 右邊有加 Vorticity Confinement</em></p>
 <p>此篇文章使用 Vorticity Confinement 來補充流失的能量。此方法需要先計算粒子位置的 Vorticity，Monaghan [1992]:</p>
 <script type="math/tex; mode=display">
 \omega_i=\nabla\times\mathbf{v}=\sum_j m_j\mathbf{v}_{ij}\times\nabla\mathbf{p}_j W\big(\mathbf{p}_i-\mathbf{p}_j, h\big)\tag{15}</script><script type="math/tex; mode=display">
-\mathbf{f}^{\text{vorticity}}_i=\varepsilon\big(\mathbf{N}\times\omega_i\big)\tag{16}</script><p>其中 $\mathbf{N}=\frac{\eta}{|\eta|}$，$\eta=\nabla|\omega|_i$， $\mathbf{v}_{ij}=\mathbf{v}_{j}-\mathbf{v}_{i}$ 。<br></p><div class="note info">
+\mathbf{f}^{\text{vorticity}}_i=\varepsilon\big(\mathbf{N}\times\omega_i\big)\tag{16}</script><p>其中 $\mathbf{N}=\frac{\eta}{|\eta|}$，$\eta=\nabla|\omega|_i$， $\mathbf{v}_{ij}=\mathbf{v}_{j}-\mathbf{v}_{i}$ 。<br><div class="note info">
             <p><strong>註:</strong> 這邊有點小 Tricky，原論文裏面也沒有寫清楚，首先這邊目標是加速粒子的渦流速度，因此他先算出旋度向量 $\omega_i$，也就是遵守右手定則的旋轉軸心方向 (大姆指指的方向)。接著用 $\omega_i$ 的 Gradient L2-norm 算出往旋轉軸心方向的向量 $\eta$，算出單位向量 $\mathbf{N}$，最後再用外積算出旋轉方向並乘上 $\varepsilon$ 算出 Vorticity forces</p>
-          </div><p></p>
+          </div></p>
 <div class="note info">
             <p><strong>註:</strong></p><script type="math/tex; mode=display">\begin{align}\eta &= \nabla|\omega|=\nabla\bigg(\sum_{k=1}^n\omega_k^2\bigg)^{\frac{1}{2}}\\    &= \sum_{j=1}^n\frac{\partial}{\partial \omega_j}\bigg(\sum_{k=1}^n\omega_k^2\bigg)^{\frac{1}{2}}\hat{\omega_j}\\    &= \frac{1}{2}\sum_{j=1}^n\frac{2\omega_j}{\Big(\displaystyle\sum_{k=1}^n\omega_k^2\Big)^{\frac{1}{2}}}\hat{\omega_j}\\    &=\sum_{j=1}^n\frac{\omega_j}{|\omega|}\hat{\omega_j}\end{align}</script>
           </div>
 <p>此外，此篇論文也使用 XSPH viscosity 來模擬流體的黏滯力:</p>
 <script type="math/tex; mode=display">
 \mathbf{v}_i^{new}=\mathbf{v}_i+c\sum_jm_j\mathbf{v}_{ij}\cdot W\big(\mathbf{p}_i-\mathbf{p}_j, h\big)\tag{17}</script><p>其中，參數 $c$ 通常設為 $0.1$。</p>
-<h2 id="6-Algorithm" class="heading-control"><a href="#6-Algorithm" class="headerlink" title="6. Algorithm"></a>6. Algorithm<a class="heading-anchor" href="#6-Algorithm" aria-hidden="true"></a></h2><p><img src="https://i.imgur.com/PZz8Zvo.png" width="500px"></p>
-<h2 id="7-Rendering" class="heading-control"><a href="#7-Rendering" class="headerlink" title="7. Rendering"></a>7. Rendering<a class="heading-anchor" href="#7-Rendering" aria-hidden="true"></a></h2><p>使用 GPU based ellipsoid splatting technique 詳情見 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38280537">液体渲染：一种屏幕空间方法</a></p>
-</body></html>
+<h2 id="6-Algorithm"><a href="#6-Algorithm" class="headerlink" title="6. Algorithm"></a>6. Algorithm</h2><p><img src="https://i.imgur.com/PZz8Zvo.png" width="500px"></p>
+<h2 id="7-Rendering"><a href="#7-Rendering" class="headerlink" title="7. Rendering"></a>7. Rendering</h2><p>使用 GPU based ellipsoid splatting technique 詳情見 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38280537">液体渲染：一种屏幕空间方法</a></p>
+
     </div>
 
     
@@ -630,9 +628,7 @@ s_{corr}=-k\bigg(\frac{W(\mathbf{p}_i-\mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)}
       <i class="fa fa-coffee"></i>
     </span>
     <span title="所需總閱讀時間">16:10</span>
-</div><!--script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>-->
-
-
+</div>
 
         
 
